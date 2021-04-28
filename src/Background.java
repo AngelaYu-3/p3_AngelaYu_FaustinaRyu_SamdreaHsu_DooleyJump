@@ -19,6 +19,7 @@ public class Background{
 		y = startx;
 		
 		img = getImage(fileName);
+		img = img.getScaledInstance(600, 800, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 
@@ -47,7 +48,6 @@ public class Background{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(tempImage);
 		return tempImage;
 	}
 
