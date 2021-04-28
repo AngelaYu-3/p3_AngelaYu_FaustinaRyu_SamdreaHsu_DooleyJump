@@ -7,6 +7,7 @@ public class Enemies extends Character {
 	int height;
 	private int xv;
 	
+	//hello
 			
 	// default constructor, sets all to zero
 	public Enemies(int x, int y, int w, int h)
