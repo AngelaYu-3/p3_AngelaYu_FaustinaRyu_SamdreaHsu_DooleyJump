@@ -1,4 +1,5 @@
 
+
 public class Enemies extends Character {
 	
 	int x;
@@ -29,3 +30,4 @@ public class Enemies extends Character {
 				
 		
 }
+
