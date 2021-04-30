@@ -1,4 +1,3 @@
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -20,7 +19,6 @@ public class Background{
 		y = startx;
 		
 		img = getImage(fileName);
-		img = img.getScaledInstance(600, 800, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 
@@ -51,6 +49,8 @@ public class Background{
 		}
 		return tempImage;
 	}
+
+
 
 
 }
