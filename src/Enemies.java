@@ -10,9 +10,9 @@ public class Enemies extends Character {
 	//hello
 			
 	// default constructor, sets all to zero
-	public Enemies(int x, int y, int w, int h)
+	public Enemies(String fileName, int width, int height)
 		{
-			super(x,y,w,h);
+			super(fileName, width, height);
 			xv=1;
 		}
 		
@@ -22,10 +22,10 @@ public class Enemies extends Character {
 		}
 		
 
-		public void move()
+		/*public void move()
 		{
 			changeX(xv);
-		}
+		}*/
 				
 		
 }

@@ -6,19 +6,18 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Background{
-	// attributes of a frog
-	private int x, y; // Position of frog
-
-	private Image img; // image of the frog
+	private int x, y; 
+	private Image img; 
 
 	
 	/* if filename is provided */
-	public Background(String fileName, int startx, int starty) {
+	public Background(String fileName, int startx, int starty, int width, int height) {
 		// assignment statements for attributes
 		x = starty;
 		y = startx;
 		
 		img = getImage(fileName);
+		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 
