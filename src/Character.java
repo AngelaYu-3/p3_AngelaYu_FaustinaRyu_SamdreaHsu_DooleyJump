@@ -38,8 +38,10 @@ public class Character{
 
 	}
 
-	public void hop(int t) {
-
+	public void hop(int x, int y) {
+        this.y += y;
+        this.x += x;
+        
 		tx.setToTranslation(x, y);
 		
 	}
