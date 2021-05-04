@@ -23,5 +23,4 @@ public class Enemies extends Character {
 			changeX(xv);
 	}
 				
-		
 }
