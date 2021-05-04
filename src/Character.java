@@ -1,57 +1,112 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+import java.net.URL;
 
-public class Character
-
-{
-	protected int x;
-	protected int y;
-	protected int width, height;
+public class Character{
+	// attributes of a frog
+	private int x, y; // Position of frog
+	private int vx, vy;
+	protected int width; // the size of frog
+	protected int height;
 	
-	// default constructor
-	public Character() {
-		x = 0;
-		y = 0;
-		width = 0;
-		height = 0;
+	private Image img; 
+	
+	/* if filename is provided */
+	public Character(String fileName, int width, int height) {
+		// assignment statements for attributes
+		x = 400;
+		y = 400;
+		vx = 0;
+		vy = 0;
+		img = getImage(fileName);
+		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
+		init(x, y);
+
+	}
+
+
+	// gets image and proccess it
+	public void move() {
+		
+		y += vy;
+		x += vx;
+		tx.setToTranslation(x, y);
+
+	}
+
+	public void hop(int x, int y) {
+        this.y += y;
+        this.x += x;
+        
+		tx.setToTranslation(x, y);
+		
 	}
 	
-	// call with super 
-	public Character(int x1, int y1, int w, int h) {
-		x = x1;
-		y = y1;
-		width = w;
-		height = h;
+	
+	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
+
+	// draw the affine transform
+	public void paint(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		move(); //ask frog to update its location variables
+		g2.drawImage(img, tx, null);
+		
+	}
+
+	private void init(double a, double b) {
+		tx.setToTranslation(a, b);
+		tx.scale(1, 1);
+	}
+
+	// converts image to make it drawable in paint
+	private Image getImage(String path) {
+		Image tempImage = null;
+		try {
+			URL imageURL = Character.class.getResource(path);
+			tempImage = Toolkit.getDefaultToolkit().getImage(imageURL);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tempImage;
+	}
+
+	// setters and getters
+
+	public void setVx(int vx) {
+		this.vx = vx;
+	}
+
+	public void setVy(int vy) {
+		this.vy = vy;
+		
 	}
 
 	public int getX() {
 		return x;
 	}
-	
+
+	public void setX(int x) {
+		this.x = x;
+		tx.setToTranslation(x, y);
+	}
+
 	public int getY() {
 		return y;
 	}
-	
-	public int getWidth() {
-		return width;
+
+	public void setY(int y) {
+		this.y = y;
+		tx.setToTranslation(x, y);
 	}
 	
-	public int getHeight() {
-		return height;
+	/* Helper function for collision detection later */
+	public Rectangle getRect() {
+		Rectangle temp = new Rectangle(x,y,width,height);
+		return temp;
 	}
-	
-	public void setX(int x1) {
-		x = x1;
-	}
-	
-	public void setY(int y1) {
-		y = y1;
-	}
-	
-	public void changeX(int k) {
-		x += k;
-	}
-	
-	public void changeY(int k) {
-		y += k;
-	}
-	
+
 }
