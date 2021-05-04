@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener {
-	
+
 	private String state = "RUNNING1";
 	Background bg;
-	Character d = new Character("/Graphics/dooleyLeft.png", 60, 60);
+	Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60);
 	
 	// ****************************paint
 	// method******************************************
@@ -22,7 +22,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 		super.paintComponent(g);
 		bg.paint(g);
-		d.paint(g);
+		dooley.paint(g);
         
         
 
@@ -39,7 +39,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	public static void main(String[] arg) {
-		Driver d = new Driver();
+		new Driver();
 	}
 
 	public Driver() {
@@ -79,7 +79,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-	
+		dooley.keyPressed(e);	
 	}
 
 	@Override

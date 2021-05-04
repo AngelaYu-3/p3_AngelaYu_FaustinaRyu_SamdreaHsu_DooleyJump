@@ -10,8 +10,7 @@ public class Enemies extends Character {
 	//hello
 			
 	// default constructor, sets all to zero
-	public Enemies(String fileName, int width, int height)
-		{
+	public Enemies(String fileName, int width, int height){
 			super(fileName, width, height);
 			xv=1;
 		}
