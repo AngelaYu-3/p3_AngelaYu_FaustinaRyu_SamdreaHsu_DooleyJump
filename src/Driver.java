@@ -1,7 +1,9 @@
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,7 +30,30 @@ public class Driver extends JPanel implements ActionListener, KeyListener{
 	JPanel startPanel, startButtonPanel, mainTextPanel;
 	JButton startButton;
 	JLabel startName;
+	ImagePanel testImg = new ImagePanel(new ImageIcon("/Graphics/background1.png").getImage());
 	TitleScreenHandler tHandler = new TitleScreenHandler();
+	
+	public class ImagePanel extends JPanel{
+		private Image img;
+		
+		public ImagePanel(String img) {
+			this(new ImageIcon(img).getImage());
+		}
+		
+		public ImagePanel(Image img) {
+		    this.img = img;
+		    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+		    setPreferredSize(size);
+		    setMinimumSize(size);
+		    setMaximumSize(size);
+		    setSize(size);
+		    setLayout(null);
+		  }
+
+		  public void paintComponent(Graphics g) {
+		    g.drawImage(img, 0, 0, null);
+		  }
+	}
 	
 	// ****************************paint
 	// method******************************************
@@ -76,7 +102,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener{
 		f = new JFrame();
 		f.setTitle("DooleyJump!");
 		f.setSize(800, 600);
-		f.getContentPane().setBackground(Color.black);
+		//f.getContentPane().setBackground(Color.black);
 		f.setLayout(null);
 		f.setResizable(false);
 		f.addKeyListener(this);
@@ -88,12 +114,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener{
 		
 		con = f.getContentPane();
 		
-		startPanel = new JPanel();
+		/*startPanel = new JPanel();
 		startPanel.setBounds(100, 100, 600, 150);
 		startPanel.setBackground(Color.black);
 		startName = new JLabel("DOOLEY JUMP");
 		startName.setForeground(Color.WHITE);
-		startName.setFont(titleFont);
+		startName.setFont(titleFont);*/
 		
 		startButtonPanel = new JPanel();
 		startButtonPanel.setBounds(300, 400, 200, 100);
@@ -104,7 +130,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener{
 		startButton.setForeground(Color.white);
 		startButton.addActionListener(tHandler);
 		
-		startPanel.add(startName);
+		startPanel.add(testImg);
 		startButtonPanel.add(startButton);
 		
 		con.add(startPanel);
