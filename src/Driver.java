@@ -1,9 +1,4 @@
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,49 +6,15 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Driver extends JPanel implements ActionListener, KeyListener{
+public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener {
 
 	private String state = "RUNNING1";
 	Background bg;
 	Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60);
-	Font titleFont = new Font("Times New Roman", Font.PLAIN, 28);
-	
-	JFrame f;
-	Container con;
-	JPanel startPanel, startButtonPanel, mainTextPanel;
-	JButton startButton;
-	JLabel startName;
-	ImagePanel testImg = new ImagePanel(new ImageIcon("/Graphics/background1.png").getImage());
-	TitleScreenHandler tHandler = new TitleScreenHandler();
-	
-	public class ImagePanel extends JPanel{
-		private Image img;
-		
-		public ImagePanel(String img) {
-			this(new ImageIcon(img).getImage());
-		}
-		
-		public ImagePanel(Image img) {
-		    this.img = img;
-		    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-		    setPreferredSize(size);
-		    setMinimumSize(size);
-		    setMaximumSize(size);
-		    setSize(size);
-		    setLayout(null);
-		  }
-
-		  public void paintComponent(Graphics g) {
-		    g.drawImage(img, 0, 0, null);
-		  }
-	}
 	
 	// ****************************paint
 	// method******************************************
@@ -63,7 +24,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener{
 		bg.paint(g);
 		dooley.paint(g);
         
-       
+        
 
 	}
 
@@ -99,60 +60,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener{
 	        throw new RuntimeException("Unknown state: " + state);
 	    }
 		
-		f = new JFrame();
+		JFrame f = new JFrame();
 		f.setTitle("DooleyJump!");
-		f.setSize(800, 600);
-		//f.getContentPane().setBackground(Color.black);
-		f.setLayout(null);
+		f.setSize(600, 800);
 		f.setResizable(false);
 		f.addKeyListener(this);
 
+	
+		f.addMouseListener(this);
 		f.add(this);
 		t = new Timer(17, this);
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		con = f.getContentPane();
-		
-		/*startPanel = new JPanel();
-		startPanel.setBounds(100, 100, 600, 150);
-		startPanel.setBackground(Color.black);
-		startName = new JLabel("DOOLEY JUMP");
-		startName.setForeground(Color.WHITE);
-		startName.setFont(titleFont);*/
-		
-		startButtonPanel = new JPanel();
-		startButtonPanel.setBounds(300, 400, 200, 100);
-		startButtonPanel.setBackground(Color.black);
-		
-		startButton = new JButton("START");
-		startButton.setBackground(Color.black);
-		startButton.setForeground(Color.white);
-		startButton.addActionListener(tHandler);
-		
-		startPanel.add(testImg);
-		startButtonPanel.add(startButton);
-		
-		con.add(startPanel);
-		con.add(startButtonPanel);
-		
 		f.setVisible(true);
-		
-	}
-	
-	public void createGameScreen() {
-		startPanel.setVisible(false);
-		startButtonPanel.setVisible(false);
-		mainTextPanel = new JPanel();
-		mainTextPanel.setBounds(100, 100, 600, 250);
-		mainTextPanel.setBackground(Color.blue);;
-		con.add(mainTextPanel);
-	}
-	
-	public class TitleScreenHandler implements ActionListener{
-		public void actionPerformed(ActionEvent event) {
-			createGameScreen();
-		}
 	}
 
 	Timer t;
@@ -176,6 +96,35 @@ public class Driver extends JPanel implements ActionListener, KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
