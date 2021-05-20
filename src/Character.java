@@ -19,22 +19,23 @@ public class Character{
 	private Image img; 
 	
 	/* if filename is provided */
-	public Character(String fileName, int width, int height) {
+	public Character(String fileName, int width, int height, int x, int y, int vx, int vy) {
 		// assignment statements for attributes
-		x = 400;
-		y = 400;
-		vx = 0;
-		vy = 0;
+		this.x = x;
+		this.y = y;
+		this.vx = vx;
+		this.vy = vy;
 		img = getImage(fileName);
 		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
 		init(x, y);
 
 	}
+	
+	
 
 
-	// gets image and proccess it
+	// gets image and process it
 	public void move() {
-		
 		y += vy;
 		x += vx;
 		tx.setToTranslation(x, y);
@@ -46,7 +47,6 @@ public class Character{
         this.x += x;
         
 		tx.setToTranslation(x, y);
-		
 	}
 	
 	//check if two characters are in the same spot 
@@ -164,4 +164,6 @@ public class Character{
 		return temp;
 	}
 
+	
+	
 }
