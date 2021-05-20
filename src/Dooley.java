@@ -2,8 +2,8 @@ import java.awt.event.KeyEvent;
 
 public class Dooley extends Character{
 
-	public Dooley(String fileName, int width, int height) {
-		super(fileName, width, height);
+	public Dooley(String fileName, int width, int height, int x, int y) {
+		super(fileName, width, height, x, y);
 		// TODO Auto-generated constructor stub
 	}
 	

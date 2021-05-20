@@ -16,10 +16,10 @@ public class Character{
 	private Image img; 
 	
 	/* if filename is provided */
-	public Character(String fileName, int width, int height) {
+	public Character(String fileName, int width, int height, int x, int y) {
 		// assignment statements for attributes
-		x = 400;
-		y = 400;
+		this.x = x;
+		this.y = y;
 		vx = 0;
 		vy = 0;
 		img = getImage(fileName);
