@@ -15,16 +15,20 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private String state = "RUNNING1";
 	Background bg;
 	Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60);
-	
-	// ****************************paint
-	// method******************************************
+	Enemies e1 = new Enemies("/Graphics/Enemy1.png", 60, 60);
+	Enemies e2 = new Enemies("/Graphics/Enemy2.png", 60, 60);
+	Enemies e3 = new Enemies("/Graphics/Enemy3.png", 60, 60);
+
 	public void paint(Graphics g) {
 
 		super.paintComponent(g);
 		bg.paint(g);
 		dooley.paint(g);
-        
-        
+		
+        e1.paint(g);
+        e2.paint(g);
+        e3.paint(g);
+
 
 	}
 
