@@ -12,8 +12,6 @@ public class Enemies extends Character {
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
 	}
-	
-	
 		
 	public String toString() {
 			return x + " " + y;

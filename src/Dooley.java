@@ -8,7 +8,6 @@ public class Dooley extends Character{
 		super(fileName, width, height, x, y, vx, vy);
 		x=100;
 		y=700;
-		
 		// TODO Auto-generated constructor stub
 	}
 	
