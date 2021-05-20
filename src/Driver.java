@@ -17,15 +17,24 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean isStart = true;
 	private Background bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
 	private Background bg1 = new Background("/Graphics/background1.png", 0, 0, 600, 800);
-	private Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247);
+	private Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
 	private JFrame f = new JFrame();
 	private Font f1 = new Font("Courier New", 1, 35);
 	private Font f2 = new Font("Courier New", 1, 25);
 	private int mx, my;
+
+	Enemies e1 = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
+	Enemies e2 = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
+	Enemies e3 = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
+
 	
 	public void paint(Graphics g) {
 
 		super.paintComponent(g);
+    
+    e1.paint(g);
+        e2.paint(g);
+        e3.paint(g);
 		
 		//homescreen button
 		if(!isStart) {
@@ -54,6 +63,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		g.setFont(f2);
 		g.setColor(Color.black);
 		g.drawString("play", 270, 330);
+ 
 	}
 
 	public void update() {
@@ -83,6 +93,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+		
+		
 	}
 
 	Timer t;
