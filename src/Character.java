@@ -7,31 +7,35 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Character{
-	// attributes of a frog
-	private int x, y; // Position of frog
+	// attributes of a character
+	private int x, y; // Position of character
 	private int vx, vy;
 	protected int width; // the size of frog
 	protected int height;
+	int stepy;
+	int id;
+	int vcount;
 	
 	private Image img; 
 	
 	/* if filename is provided */
-	public Character(String fileName, int width, int height) {
+	public Character(String fileName, int width, int height, int x, int y, int vx, int vy) {
 		// assignment statements for attributes
-		x = 400;
-		y = 400;
-		vx = 0;
-		vy = 0;
+		this.x = x;
+		this.y = y;
+		this.vx = vx;
+		this.vy = vy;
 		img = getImage(fileName);
 		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
 		init(x, y);
 
 	}
+	
+	
 
 
-	// gets image and proccess it
+	// gets image and process it
 	public void move() {
-		
 		y += vy;
 		x += vx;
 		tx.setToTranslation(x, y);
@@ -43,9 +47,22 @@ public class Character{
         this.x += x;
         
 		tx.setToTranslation(x, y);
-		
 	}
 	
+	//check if two characters are in the same spot 
+	public boolean equals(Character obj) {
+		Character other = obj;
+		if ((obj.getX()+obj.getWidth()) >= other.getX() &&
+			obj.getX() <= (other.getX()+other.getWidth()) &&
+			(obj.getY()+obj.getHeight()) >= other.getY() &&
+			obj.getY() <= (other.getY()+other.getHeight())
+			) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
 
@@ -76,31 +93,69 @@ public class Character{
 
 	// setters and getters
 
-	public void setVx(int vx) {
-		this.vx = vx;
-	}
-
-	public void setVy(int vy) {
-		this.vy = vy;
-		
-	}
-
 	public int getX() {
 		return x;
 	}
-
+	
+	public int getY() {
+		return y;
+	}
+	
+	public int getvx(int vx) {
+		return vx;
+	}
+	
+	public int getvy(int vy) {
+		return vy;
+	}
+	
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getVcount() {
+		return vcount;
+	}
+	
 	public void setX(int x) {
 		this.x = x;
 		tx.setToTranslation(x, y);
 	}
-
-	public int getY() {
-		return y;
-	}
-
+	
 	public void setY(int y) {
 		this.y = y;
 		tx.setToTranslation(x, y);
+	}
+
+	public void setvx(int vx) {
+		this.vx = vx;
+	}
+
+	public void setvy(int vy) {
+		this.vy = vy;
+		
+	}
+	
+ 	public void setStepY(int y) {
+		stepy += y;
+	}
+	
+	public void setVcount(int v) {
+		vcount = v;
+	}
+	
+	//returns the index number of image from the ArrayList
+	public int show() {
+		return id;
+	}
+	
+	public String toString() {
+		return x + " " + y;
 	}
 	
 	/* Helper function for collision detection later */
@@ -109,4 +164,6 @@ public class Character{
 		return temp;
 	}
 
+	
+	
 }

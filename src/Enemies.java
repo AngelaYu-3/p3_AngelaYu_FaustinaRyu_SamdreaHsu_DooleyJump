@@ -1,30 +1,26 @@
 
 public class Enemies extends Character {
 	
-	int x;
-	int y;
-	int width; 
-	int height;
-	private int xv;
-	
-	//hello
-			
-	// default constructor, sets all to zero
-	public Enemies(String fileName, int width, int height){
-			super(fileName, width, height);
-			xv=1;
-		}
-		
-		public String toString()
-		{
-			return x + " " + y;
-		}
-		
-
-		/*public void move()
-		{
-			changeX(xv);
-		}*/
+	private int x;
+	private int y;
+	private int vx;
+	private int vy;
+	private int width; 
+	private int height;
 				
+	// default constructor, sets all to zero
+	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
+			super(filename, w, h, x, y, vx, vy);
+	}
+	
+	
 		
+	public String toString() {
+			return x + " " + y;
+	}
+	
+	public void move() {
+		super.move();
+	}
+	
 }

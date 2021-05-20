@@ -10,20 +10,26 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener {
 
 	private String state = "RUNNING1";
 	Background bg;
-	Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60);
+	Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 100,700, 0, 0);
+	Enemies e1 = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
+	Enemies e2 = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
+	Enemies e3 = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
+
 	
-	// ****************************paint
-	// method******************************************
 	public void paint(Graphics g) {
 
 		super.paintComponent(g);
 		bg.paint(g);
 		dooley.paint(g);
-        
+        e1.paint(g);
+        e2.paint(g);
+        e3.paint(g);
+
         
 
 	}
@@ -73,6 +79,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
+		
+		
 	}
 
 	Timer t;
