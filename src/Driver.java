@@ -31,14 +31,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public void paint(Graphics g) {
 
 		super.paintComponent(g);
-    
-    e1.paint(g);
-        e2.paint(g);
-        e3.paint(g);
 		
 		//homescreen button
 		if(!isStart) {
 			bg1.paint(g);
+			e1.paint(g);
+		     e2.paint(g);
+		     e3.paint(g);
 		}
 		if(isStart) {
 			bg.paint(g);
