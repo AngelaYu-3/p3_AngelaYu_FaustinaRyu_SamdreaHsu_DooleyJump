@@ -1,5 +1,3 @@
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,12 +13,11 @@ import javax.swing.Timer;
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
 
 	private boolean isStart = true;
+	private boolean isDead = false;
 	private Background bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
 	private Background bg1 = new Background("/Graphics/background1.png", 0, 0, 600, 800);
 	private Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
 	private JFrame f = new JFrame();
-	private Font f1 = new Font("Courier New", 1, 35);
-	private Font f2 = new Font("Courier New", 1, 25);
 	private int mx, my;
 
 	Enemies e1 = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
@@ -32,46 +29,28 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 		super.paintComponent(g);
 		
-		//homescreen button
+		//playscreen
 		if(!isStart) {
 			bg1.paint(g);
 			e1.paint(g);
-		     e2.paint(g);
-		     e3.paint(g);
+		    e2.paint(g);
+		    e3.paint(g);
 		}
+		
+		//startscreen
 		if(isStart) {
 			bg.paint(g);
-			startScreen(g);
+			bg.startScreen(g);
 			dooley.paint(g);
+			dooley.bounce(25);
 		}		
 		if(isStart && mx < 400 && mx > 200 && my > 300 && my < 380) {
 			isStart = false;
 		}
-		
-		
-	
-	}
-	
-	public void startScreen(Graphics g) {
-		g.setFont(f1);
-		g.setColor(Color.black);
-		g.drawString("Welcome to Dooley Jump", 80, 250);
-		
-		g.setColor(Color.green);
-		g.fillRect(200, 300, 200, 50);
-		g.setFont(f2);
-		g.setColor(Color.black);
-		g.drawString("play", 270, 330);
- 
-	}
-
-	public void update() {
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		update();
 		repaint();
 	}
 
