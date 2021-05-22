@@ -15,7 +15,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean isStart = true;
 	private boolean isDead = false;
 	private Background bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
-	private Background bg1 = new Background("/Graphics/background1.png", 0, 0, 600, 800);
 	private Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
 	private JFrame f = new JFrame();
 	private int mx, my;
@@ -48,7 +47,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		//startscreen
 		if(isStart) {
 			bg.paint(g);
-			bg.startScreen(g);
+			bg.endScreen(g);
 			dooley.paint(g);
 			dooley.bounce(25);
 		}		
@@ -59,13 +58,15 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		//endscreen
 		if(isDead) {
 			bg.endScreen(g);
+			
+			if(mx < 400 && mx > 200 && my > 300 && my < 380) {
+				isDead = false;
+			}
+			if(mx < 400 && mx > 200 && my > 370 && my < 450) {
+				System.exit(1);
+			}
 		}
-		if(isDead && mx < 400 && mx > 200 && my > 300 && my < 380) {
-			isDead = false;
-		}
-		if(isDead) {
-			//exit out
-		}
+		
 	}
 
 	@Override
