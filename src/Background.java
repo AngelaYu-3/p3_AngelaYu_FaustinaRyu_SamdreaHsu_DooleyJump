@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Background{
-	private int x, y; 
+	private int x, y, vx, vy; 
 	private Image img; 
 	private Font f1 = new Font("Courier New", 1, 35);
 	private Font f2 = new Font("Courier New", 1, 25);
@@ -83,6 +83,14 @@ public class Background{
 		return tempImage;
 	}
 
+	public void move() {
+		y += vy;
+		x += vx;
+		tx.setToTranslation(x, y);
+
+	}
+	
+	
 
 
 

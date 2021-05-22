@@ -47,6 +47,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(isStart && mx < 400 && mx > 200 && my > 300 && my < 380) {
 			isStart = false;
 		}
+		
+		//endscreen
+		if(isDead) {
+			bg.endScreen(g);
+		}
+		if(isDead && mx < 400 && mx > 200 && my > 300 && my < 380) {
+			isDead = false;
+		}
+		if(isDead) {
+			//exit out
+		}
 	}
 
 	@Override
