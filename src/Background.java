@@ -5,8 +5,9 @@ import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
 
+//include autoscroller logic here! 
 public class Background{
-	private int x, y; 
+	private int x, y, vy; 
 	private Image img; 
 
 	
@@ -15,13 +16,26 @@ public class Background{
 		// assignment statements for attributes
 		x = starty;
 		y = startx;
+		vy = 2;
 		
 		img = getImage(fileName);
 		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 
+	public void scroll() {
+		y += vy;
+		tx.setToTranslation(x, y);
 
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public void setY(int y) {
+	    this.y = y;
+	}
 	
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
 
