@@ -19,6 +19,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
 	private JFrame f = new JFrame();
 	private int mx, my;
+	private Background[] scroll = {new Background("/Graphics/background1.png", 0, 0, 600, 800), new Background("/Graphics/background1.png", -800, 0, 600, 800)};
 
 	Enemies e1 = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
 	Enemies e2 = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
@@ -31,7 +32,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		//playscreen
 		if(!isStart) {
-			bg1.paint(g);
+			//autoscroll --needs to be modified for dooley
+			scroll[0].paint(g);
+			scroll[1].paint(g);
+			scroll[0].scroll();
+			scroll[1].scroll();
+			if(scroll[0].getY() >= 800) scroll[0].setY(-800);
+			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
+			
 			e1.paint(g);
 		    e2.paint(g);
 		    e3.paint(g);
