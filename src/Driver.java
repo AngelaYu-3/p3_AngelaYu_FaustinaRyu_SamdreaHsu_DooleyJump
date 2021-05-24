@@ -114,6 +114,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+	    if(!Start){
       	    switch(e.getKeyChar()) {
 	    
 	    case 'w':
@@ -143,8 +144,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    	resetPos(1);
 	    	dooley[di].hop(50, 0);
     	    break;
-	    }	
+	    } 
+	    }
 	}
+		
 
 	@Override
 	public void keyReleased(KeyEvent e) {
