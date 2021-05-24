@@ -13,6 +13,7 @@ public class Character{
 	protected int vx, vy;
 	protected int width; // the size of frog
 	protected int height;
+	protected String fileName;
 	int stepy;
 	int id;
 	int vcount;
@@ -26,14 +27,12 @@ public class Character{
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
+		this.fileName = fileName;
 		img = getImage(fileName);
 		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
 		init(x, y);
 
 	}
-	
-	
-
 
 	// gets image and process it
 	public void move() {
@@ -140,6 +139,10 @@ public class Character{
 	public void setvy(int vy) {
 		this.vy = vy;
 		
+	}
+	
+	public void setfileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
  	public void setStepY(int y) {

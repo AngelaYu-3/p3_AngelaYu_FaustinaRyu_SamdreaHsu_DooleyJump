@@ -19,16 +19,16 @@ public class Background{
 		// assignment statements for attributes
 		x = starty;
 		y = startx;
-		vy = 2;
+		//vy = 2;
 		
 		img = getImage(fileName);
 		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 	
-	public void scroll() {
-		y += vy;
-		tx.setToTranslation(x, y);
+	public void scroll(int y) {
+		this.y += y;
+		tx.setToTranslation(x, this.y);
 
 	}
 	
@@ -39,7 +39,6 @@ public class Background{
 	public void setY(int y) {
 	    this.y = y;
 	}
-
 	
 	public void startScreen(Graphics g) {
 		g.setFont(f1);
