@@ -47,7 +47,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		//startscreen
 		if(isStart) {
 			bg.paint(g);
-			bg.endScreen(g);
+			bg.startScreen(g);
 			dooley.paint(g);
 			dooley.bounce(25);
 		}		
