@@ -114,7 +114,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-	    if(!Start){
+	    if(!isStart){
       	    switch(e.getKeyChar()) {
 	    
 	    case 'w':
