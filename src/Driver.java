@@ -1,5 +1,3 @@
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,21 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-/**
- * TODO: (note this should all be in bg class)
- *    -autoscroller for bg1 (x)
- *    -figure out dead button 
- *
- */
-
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
 
 	private boolean isStart = true;
+	private boolean isDead = false;
 	private Background bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
 	private Dooley dooley = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
 	private JFrame f = new JFrame();
-	private Font f1 = new Font("Courier New", 1, 35);
-	private Font f2 = new Font("Courier New", 1, 25);
 	private int mx, my;
 	private Background[] scroll = {new Background("/Graphics/background1.png", 0, 0, 600, 800), new Background("/Graphics/background1.png", -800, 0, 600, 800)};
 
@@ -39,7 +29,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 		super.paintComponent(g);
 		
-		//play screen
+		//playscreen
 		if(!isStart) {
 			//autoscroll --needs to be modified for dooley
 			scroll[0].paint(g);
@@ -53,9 +43,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    e2.paint(g);
 		    e3.paint(g);
 		}
+		
+		//startscreen
 		if(isStart) {
 			bg.paint(g);
-			startScreen(g);
+			bg.startScreen(g);
 			dooley.paint(g);
 			dooley.bounce(25);
 		}		
@@ -63,30 +55,22 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isStart = false;
 		}
 		
+		//endscreen
+		if(isDead) {
+			bg.endScreen(g);
+			
+			if(mx < 400 && mx > 200 && my > 300 && my < 380) {
+				isDead = false;
+			}
+			if(mx < 400 && mx > 200 && my > 370 && my < 450) {
+				System.exit(1);
+			}
+		}
 		
-	
-	}
-	
-	public void startScreen(Graphics g) {
-		g.setFont(f1);
-		g.setColor(Color.black);
-		g.drawString("Welcome to Dooley Jump", 80, 250);
-		
-		g.setColor(Color.green);
-		g.fillRect(200, 300, 200, 50);
-		g.setFont(f2);
-		g.setColor(Color.black);
-		g.drawString("play", 270, 330);
- 
-	}
-
-	public void update() {
-
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		update();
 		repaint();
 	}
 
@@ -107,7 +91,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
-
+		
+		
 	}
 
 	Timer t;
@@ -168,16 +153,4 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

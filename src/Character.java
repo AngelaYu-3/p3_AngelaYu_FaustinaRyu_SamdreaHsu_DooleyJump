@@ -8,8 +8,9 @@ import java.net.URL;
 
 public class Character{
 	// attributes of a character
-	private int x, y; // Position of character
-	private int vx, vy;
+	protected int x; // Position of character
+	protected int y;
+	protected int vx, vy;
 	protected int width; // the size of frog
 	protected int height;
 	int stepy;
