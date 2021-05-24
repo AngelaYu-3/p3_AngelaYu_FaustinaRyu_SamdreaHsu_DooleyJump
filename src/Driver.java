@@ -116,36 +116,38 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-       switch(e.getKeyChar()) {
-	    
-	    case 'w':
-	    	resetPos(2);
-	    	if(isBeginning) isBeginning = false;
-	    	scroll[0].scroll(50);
-	  		scroll[1].scroll(50);
-	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
-			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
-	    	break;
-	    
-	    case 's':
-	    	if(!isBeginning) {
-	    		scroll[0].scroll(-50);
-		  		scroll[1].scroll(-50);
-		  		if(scroll[0].getY() <= -800) scroll[0].setY(800);
-				if(scroll[1].getY() <= -800) scroll[1].setY(800);	
-	    	}
-    	    break;
-    	    
-	    case 'a':
-	    	resetPos(0);
-	    	dooley[di].hop(-50, 0);
-    	    break;
-    	    
-	    case 'd':
-	    	resetPos(1);
-	    	dooley[di].hop(50, 0);
-    	    break;
-	    }	
+	   if(!isStart) {
+		   switch(e.getKeyChar()) {
+		    
+		    case 'w':
+		    	resetPos(2);
+		    	if(isBeginning) isBeginning = false;
+		    	scroll[0].scroll(50);
+		  		scroll[1].scroll(50);
+		  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
+				if(scroll[1].getY() >= 800) scroll[1].setY(-800);
+		    	break;
+		    
+		    case 's':
+		    	if(!isBeginning) {
+		    		scroll[0].scroll(-50);
+			  		scroll[1].scroll(-50);
+			  		if(scroll[0].getY() <= -800) scroll[0].setY(800);
+					if(scroll[1].getY() <= -800) scroll[1].setY(800);	
+		    	}
+	    	    break;
+	    	    
+		    case 'a':
+		    	resetPos(0);
+		    	dooley[di].hop(-50, 0);
+	    	    break;
+	    	    
+		    case 'd':
+		    	resetPos(1);
+		    	dooley[di].hop(50, 0);
+	    	    break;
+		    }	 
+	   } 
 	}
 
 	@Override
