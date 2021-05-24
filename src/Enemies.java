@@ -21,4 +21,13 @@ public class Enemies extends Character {
 		super.move();
 	}
 	
+	public void setvx(int vx) {
+		this.vx = vx;
+	}
+
+	public void setvy(int vy) {
+		this.vy = vy;
+		
+	}
+	
 }

@@ -20,6 +20,5 @@ public class Dooley extends Character{
 			setvy(1);
 			if(getY() >= currY) isUp = true;
 		}
-	}
 
 }

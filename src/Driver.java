@@ -11,14 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
-
+  
 	private boolean isStart, isDead, isBeginning;
 	private Background bg; 
 	private JFrame f;
 	private int mx, my, di, x, y;
 	private Background[] scroll = new Background[2]; 
-    private Enemies[] enemies = new Enemies[3];   
-    private Dooley[] dooley = new Dooley[3];
+  private Enemies[] enemies = new Enemies[3];   
+  private Dooley[] dooley = new Dooley[3];
 	
 	public void paint(Graphics g) {
 
@@ -33,8 +33,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[0].paint(g);
 			enemies[1].paint(g);
 			enemies[2].paint(g);
-		    dooley[di].paint(g);
-		    dooley[di].setvy(0);
+		  dooley[di].paint(g);
+		  dooley[di].setvy(0);
 		}
 		
 		//startscreen
