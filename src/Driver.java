@@ -17,8 +17,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private JFrame f;
 	private int mx, my, di, x, y;
 	private Background[] scroll = new Background[2]; 
-  private Enemies[] enemies = new Enemies[3];   
-  private Dooley[] dooley = new Dooley[3];
+        private Enemies[] enemies = new Enemies[3];   
+        private Dooley[] dooley = new Dooley[3];
 	
 	public void paint(Graphics g) {
 
