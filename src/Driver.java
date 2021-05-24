@@ -75,16 +75,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f = new JFrame();
 		isStart = true;
 		isBeginning = true;
-        bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
-        scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
-        scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
-        enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
-        enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
-        enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
-        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
-        dooley[1] = new Dooley("/Graphics/dooleyRight.png", 60, 60, 350, 247, 0, 0);
-        dooley[2] = new Dooley("/Graphics/dooleyUp.png", 60, 60, 350, 247, 0, 0);
-        di = 0;
+        	bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
+       		scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
+        	scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
+        	enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
+        	enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
+        	enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
+        	dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
+        	dooley[1] = new Dooley("/Graphics/dooleyRight.png", 60, 60, 350, 247, 0, 0);
+        	dooley[2] = new Dooley("/Graphics/dooleyUp.png", 60, 60, 350, 247, 0, 0);
+        	di = 0;
 		
 	    f.setTitle("DooleyJump!");
 		f.setSize(600, 800);
@@ -106,15 +106,15 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	public void resetPos(int di) {
 		x = dooley[this.di].getX();
-    	y = dooley[this.di].getY();
-    	this.di = di;
-    	dooley[di].setX(x);
-    	dooley[di].setY(y);
+    		y = dooley[this.di].getY();
+    		this.di = di;
+    		dooley[di].setX(x);
+    		dooley[di].setY(y);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-       switch(e.getKeyChar()) {
+      	    switch(e.getKeyChar()) {
 	    
 	    case 'w':
 	    	resetPos(2);
