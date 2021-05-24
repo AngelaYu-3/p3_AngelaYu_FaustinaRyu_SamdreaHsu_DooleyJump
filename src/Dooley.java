@@ -20,27 +20,5 @@ public class Dooley extends Character{
 			setvy(1);
 			if(getY() >= currY) isUp = true;
 		}
-	}
-	
-	public void keyPressed(KeyEvent e) {
-	    switch(e.getKeyChar()) {
-	    
-	    case 'w':
-	    	super.hop(0, -50);
-	    	break;
-	    
-	    case 's':
-	    	super.hop(0, 50);
-    	    break;
-    	    
-	    case 'a':
-	    	super.hop(-50, 0);
-    	    break;
-    	    
-	    case 'd':
-	    	super.hop(50, 0);
-    	    break;
-	    }
-	}
 
 }
