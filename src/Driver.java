@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,17 +13,18 @@ import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
   
-	private boolean isStart, isDead, isBeginning;
+	private boolean isStart, isDead, isBeginning, paintPea;
 	private Background bg; 
 	private JFrame f;
 	private int mx, my, di, x, y;
 	private Background[] scroll = new Background[2]; 
     private Enemies[] enemies = new Enemies[3];   
     private Dooley[] dooley = new Dooley[3];
+    private Pea p;
 
 	//use awsd keys to move dooley once game starts
 	public void paint(Graphics g) {
-
+		long currTime = System.currentTimeMillis();
 		super.paintComponent(g);
 		//System.out.println(dooley[di].getX());
 		
@@ -36,10 +38,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[2].paint(g);
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);
-		    
-		    if(di == 2) {
-		    	
-		    }
 		}
 		
 		//startscreen
@@ -90,6 +88,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 60, 60, 350, 247, 0, 0);
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 60, 60, 350, 247, 0, 0);
         di = 0;
+        p = new Pea("/Graphics/pea.png", 45, 35, dooley[di].getX() + 30, dooley[di].getY() - 20, 0, -1);
 		
 	    f.setTitle("DooleyJump!");
 		f.setSize(600, 800);
@@ -123,13 +122,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
       	    switch(e.getKeyChar()) {
 	    
 	    case 'w':
+	    	long currTime = System.currentTimeMillis();
 	    	resetPos(2);
 	    	if(isBeginning) isBeginning = false;
 	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
 			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
-	    	scroll[0].scroll(50);
-	  		scroll[1].scroll(50);
-
+	    	scroll[0].scroll(100);
+	  		scroll[1].scroll(100);
 	    	break;
 	    
 	    case 's':
@@ -150,7 +149,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    	resetPos(1);
 	    	dooley[di].hop(50, 0);
     	    break;
-	    } 
+	    }
+      	    
 	    }
 	}
 		
