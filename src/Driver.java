@@ -19,16 +19,15 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Background[] scroll = new Background[2]; 
     private Enemies[] enemies = new Enemies[3];   
     private Dooley[] dooley = new Dooley[3];
-	
-    //CLICK AWSD TO MOVE DOOLEY!
-    
+
+	//use awsd keys to move dooley once game starts
 	public void paint(Graphics g) {
 
 		super.paintComponent(g);
+		//System.out.println(dooley[di].getX());
 		
 		//playscreen
 		if(!isStart) {
-			//autoscroll --needs to be modified for dooley
 			scroll[0].paint(g);
 			scroll[1].paint(g);
 			
@@ -37,6 +36,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[2].paint(g);
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);
+		    
+		    if(di == 2) {
+		    	
+		    }
 		}
 		
 		//startscreen
@@ -78,7 +81,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		isStart = true;
 		isBeginning = true;
         bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
-        scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
+       	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
         enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
         enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
@@ -108,47 +111,49 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	public void resetPos(int di) {
 		x = dooley[this.di].getX();
-    	y = dooley[this.di].getY();
-    	this.di = di;
-    	dooley[di].setX(x);
-    	dooley[di].setY(y);
+    		y = dooley[this.di].getY();
+    		this.di = di;
+    		dooley[di].setX(x);
+    		dooley[di].setY(y);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-	   if(!isStart) {
-		   switch(e.getKeyChar()) {
-		    
-		    case 'w':
-		    	resetPos(2);
-		    	if(isBeginning) isBeginning = false;
-		    	scroll[0].scroll(50);
-		  		scroll[1].scroll(50);
-		  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
-				if(scroll[1].getY() >= 800) scroll[1].setY(-800);
-		    	break;
-		    
-		    case 's':
-		    	if(!isBeginning) {
-		    		scroll[0].scroll(-50);
-			  		scroll[1].scroll(-50);
-			  		if(scroll[0].getY() <= -800) scroll[0].setY(800);
-					if(scroll[1].getY() <= -800) scroll[1].setY(800);	
-		    	}
-	    	    break;
-	    	    
-		    case 'a':
-		    	resetPos(0);
-		    	dooley[di].hop(-50, 0);
-	    	    break;
-	    	    
-		    case 'd':
-		    	resetPos(1);
-		    	dooley[di].hop(50, 0);
-	    	    break;
-		    }	 
-	   } 
+	    if(!isStart){
+      	    switch(e.getKeyChar()) {
+	    
+	    case 'w':
+	    	resetPos(2);
+	    	if(isBeginning) isBeginning = false;
+	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
+			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
+	    	scroll[0].scroll(50);
+	  		scroll[1].scroll(50);
+
+	    	break;
+	    
+	    case 's':
+	    	if(!isBeginning) {
+	    		if(scroll[0].getY() <= -800) scroll[0].setY(800);
+				if(scroll[1].getY() <= -800) scroll[1].setY(800);
+	    		scroll[0].scroll(-50);
+		  		scroll[1].scroll(-50);
+	    	}
+    	    break;
+    	    
+	    case 'a':
+	    	resetPos(0);
+	    	dooley[di].hop(-50, 0);
+    	    break;
+    	    
+	    case 'd':
+	    	resetPos(1);
+	    	dooley[di].hop(50, 0);
+    	    break;
+	    } 
+	    }
 	}
+		
 
 	@Override
 	public void keyReleased(KeyEvent e) {
