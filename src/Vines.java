@@ -2,7 +2,7 @@
 public class Vines extends Platform {
 	
 	public Vines() {
-		super("vine.png");
+		super("/Graphics/vine.png");
 	}
 	
 	

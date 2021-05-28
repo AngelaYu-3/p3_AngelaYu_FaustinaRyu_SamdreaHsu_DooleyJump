@@ -29,18 +29,21 @@ public class Platform {
 	protected int vy;
 	
 	protected Image img;
-	final int WIDTH = 50;
-	final int HEIGHT = 20;
+	final int WIDTH = 90;
+	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
 	final int WINDOW_HEIGHT = 800;
 	
 
 	
 	/*
-	 * constructor for generic platform
+	 * constructor for custom platform
 	 */
 	public Platform(String pType) {
 		// TODO: generate random x and y according to dimensions of platform and window 
+		
+		x = 50;
+		y = 50;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
@@ -51,7 +54,7 @@ public class Platform {
 	 * Default constructor creates the normal platform
 	 */
 	public Platform() {
-		this("platform");
+		this("/Graphics/platform.png");
 	}
 
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
