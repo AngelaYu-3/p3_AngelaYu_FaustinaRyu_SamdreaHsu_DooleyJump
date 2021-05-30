@@ -11,14 +11,14 @@ public class Character{
 	protected int x; // Position of character
 	protected int y;
 	protected int vx, vy;
-	protected int width; // the size of frog
+	protected int width; 
 	protected int height;
 	protected String fileName;
 	int stepy;
 	int id;
 	int vcount;
 	
-	private Image img; 
+	protected Image img; 
 	
 	/* if filename is provided */
 	public Character(String fileName, int width, int height, int x, int y, int vx, int vy) {
@@ -64,7 +64,7 @@ public class Character{
 		}
 	}
 	
-	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
+	protected AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
 
 	// draw the affine transform
 	public void paint(Graphics g) {
