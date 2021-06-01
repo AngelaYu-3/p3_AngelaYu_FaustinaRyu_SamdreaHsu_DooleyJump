@@ -50,6 +50,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    }
 		    p[0].shoot(g, p, dooley[di]);
 		    reset();
+		    
+		    //left right respawning
+		    if(dooley[di].getX() <= 0) dooley[di].setX(535);
+		    if(dooley[di].getX() >= 600) dooley[di].setX(5);
 		}
 		
 	//STARTSCREEN
