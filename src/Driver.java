@@ -5,6 +5,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,20 +16,19 @@ import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
   
-	private boolean isStart, isDead, isBeginning;
+	private boolean isStart, isDead, isBeginning, isUp;
 	private Background bg; 
 	private JFrame f;
-	private int mx, my, di, x, y;
+	private int mx, my, di, x, y, sy, px, py, pc;
 	private Background[] scroll = new Background[2]; 
-        private Enemies[] enemies = new Enemies[3];   
-        private Dooley[] dooley = new Dooley[3];
-	
-	//use awsd keys to move dooley once game starts
-	public void paint(Graphics g) {
+    private Enemies[] enemies = new Enemies[3];   
+    private Dooley[] dooley = new Dooley[3];
+    private Pea[] p = new Pea[4];
 
+	public void paint(Graphics g) {
 		super.paintComponent(g);
-		
-		//playscreen
+
+	//PLAYSCREEN
 		if(!isStart) {
 			scroll[0].paint(g);
 			scroll[1].paint(g);
@@ -33,11 +36,27 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[0].paint(g);
 			enemies[1].paint(g);
 			enemies[2].paint(g);
-		  dooley[di].paint(g);
-		  dooley[di].setvy(0);
+			
+		    dooley[di].paint(g);
+		    dooley[di].setvy(0);
+		    
+		    //moving background
+		    if(isUp) scroll(50);  	
+		    
+		    //shooting
+		    if(pc == 1) {
+		    	p[0].newShot(g, p);
+		    	pc = 0;
+		    }
+		    p[0].shoot(g, p, dooley[di]);
+		    reset();
+		    
+		    //left right respawning
+		    if(dooley[di].getX() <= 0) dooley[di].setX(535);
+		    if(dooley[di].getX() >= 600) dooley[di].setX(5);
 		}
 		
-		//startscreen
+	//STARTSCREEN
 		if(isStart) {
 			bg.paint(g);
 			bg.startScreen(g);
@@ -48,7 +67,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isStart = false;
 		}
 		
-		//endscreen
+	//ENDSCREEN
 		if(isDead) {
 			bg.endScreen(g);
 			
@@ -60,6 +79,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 		}
 		
+	}	
+	
+	public void reset() {
+		for(int i = 0; i < 4; i++) {
+	    	if(p[i].getMoving() && p[i].getY() < 0) {
+	    		p[i].reset();
+	    	}
+	    }
 	}
 
 	@Override
@@ -72,20 +99,30 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	public Driver() {
-		f = new JFrame();
+        bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
+       	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
+        scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
+        
+        enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
+        enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
+        enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
+        
+        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);
+        dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 247, 0, 0);
+        dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
+        
+        f = new JFrame();
 		isStart = true;
 		isBeginning = true;
-        	bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
-       		scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
-        	scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
-        	enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
-        	enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
-        	enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
-        	dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
-        	dooley[1] = new Dooley("/Graphics/dooleyRight.png", 60, 60, 350, 247, 0, 0);
-        	dooley[2] = new Dooley("/Graphics/dooleyUp.png", 60, 60, 350, 247, 0, 0);
-        	di = 0;
-		
+		di = 0;
+		pc = 0;
+		px = dooley[di].getX() + 17;
+		py = dooley[di].getY() - 20;
+        
+        for(int i = 0; i < 4; i++) {
+        	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
+        }
+        
 	    f.setTitle("DooleyJump!");
 		f.setSize(600, 800);
 		f.setResizable(false);
@@ -96,20 +133,32 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		t = new Timer(17, this);
 		t.start();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);
-		
-		
-		
+		f.setVisible(true);	
 	}
 
 	Timer t;
 	
 	public void resetPos(int di) {
 		x = dooley[this.di].getX();
-    		y = dooley[this.di].getY();
-    		this.di = di;
-    		dooley[di].setX(x);
-    		dooley[di].setY(y);
+    	y = dooley[this.di].getY();
+    	this.di = di;
+    	dooley[di].setX(x);
+    	dooley[di].setY(y);
+	}
+	
+	public void scroll(int y) {		
+		scroll[0].setvy(2);
+		scroll[1].setvy(2);
+			
+		if(scroll[0].getY() <= sy + y) {
+			scroll[0].scroll();
+			scroll[1].scroll();
+		}else {
+			scroll[0].setvy(0);
+			scroll[1].setvy(0);
+			resetPos(0);
+			isUp = false;
+		}
 	}
 
 	@Override
@@ -122,20 +171,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    	if(isBeginning) isBeginning = false;
 	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
 			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
-	    	scroll[0].scroll(50);
-	  		scroll[1].scroll(50);
-
+	  		resetPos(2);
+	  		sy = scroll[0].getY();
+			isUp = true;
+			pc = 1;
 	    	break;
-	    
-	    case 's':
-	    	if(!isBeginning) {
-	    		if(scroll[0].getY() <= -800) scroll[0].setY(800);
-				if(scroll[1].getY() <= -800) scroll[1].setY(800);
-	    		scroll[0].scroll(-50);
-		  		scroll[1].scroll(-50);
-	    	}
-    	    break;
-    	    
+    	
+	    //add horizontal movement here look at logic for up movement
 	    case 'a':
 	    	resetPos(0);
 	    	dooley[di].hop(-50, 0);
@@ -145,21 +187,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    	resetPos(1);
 	    	dooley[di].hop(50, 0);
     	    break;
-	    } 
+	    }
+      	    
 	    }
 	}
 		
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
-		
-		/*
-		 * turn off velocity for Frog if you don't want it moving when you have stopped
-		 * pressing the keys
-		 */
-
-		// do the same thing for the other keys
 	}
 
 	@Override
