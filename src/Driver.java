@@ -23,7 +23,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Background[] scroll = new Background[2]; 
     private Enemies[] enemies = new Enemies[3];   
     private Dooley[] dooley = new Dooley[3];
-    private LinkedList<Pea> p = new LinkedList<Pea>();
+    private Pea[] p = new Pea[4];
+    Pea p1 = new Pea("/Graphics/Pea.png", 38, 38, 100, 100, 0, 0);
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -33,30 +34,32 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			scroll[0].paint(g);
 			scroll[1].paint(g);
 			
-			enemies[0].paint(g);
-			enemies[1].paint(g);
-			enemies[2].paint(g);
+			//enemies[0].paint(g);
+			//enemies[1].paint(g);
+			//enemies[2].paint(g);
 			
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);
 		    
-		    if(isUp) scroll(10);  	
+		    if(isUp) scroll(50);  	
 		    
-		    if(paintPea) {
-		    	int ind = -1;
+		    if(isUp) {
+		    	int pi = 0;
 		    	for(int i = 0; i < 4; i++) {
-		    		if(p.get(i).getMoving() == false && ind == -1) {
-		    			ind = i;
-		    			p.get(ind).paint(g);
-		    			p.get(ind).setMoving(true);
-		    		}
-		    		if(!p.get(i).getMoving() && p.get(i).getY() < 0) {
-		    			p.remove(i);
-		    			p.add(new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -5));
-		    		}
+		    		if(!p[i].getMoving()) {
+		    			pi = i;
+		    			p[pi].setMoving(true);
+		    			break;
+		    		}else continue;
 		    	}
+		    	System.out.println(pi);
+		    	System.out.println(p[pi].getMoving());
+		    	p[pi].paint(g);
+		    	//p1 = new Pea("/Graphics/Pea.png", 38, 38, 100, 100, 0, 0);
+		    	//p1.paint(g);
 		    	//paintPea = false;
-		    }
+		    } //p[0].resetP(p);
+		    
 		 
 		}
 		
@@ -83,6 +86,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 		}
 		
+	}	
+	
+	public int findPi(Pea[] p) {
+		int pi = -1;
+    	for(int i = 0; i < 4; i++) {
+    		if(p[i].getMoving() == false && pi == -1) {
+    			System.out.println("hi");
+    			pi = i;
+    			p[pi].setMoving(true);
+    			
+    		}
+    	}
+    	return pi;
 	}
 
 	@Override
@@ -115,7 +131,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		py = dooley[di].getY() - 20;
         
         for(int i = 0; i < 4; i++) {
-        	p.add(new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -5));
+        	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -5);
         }
         
 	    f.setTitle("DooleyJump!");
@@ -169,7 +185,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	  		resetPos(2);
 	  		sy = scroll[0].getY();
 			isUp = true;
-			paintPea = true;
 	    	break;
     	    
 	    case 'a':
