@@ -29,7 +29,27 @@ public class Pea extends Character{
 		return isMoving;
 	}
 	
-	public void resetP(Pea[] p) {
+	public void newShot(Graphics g, Pea[] p) {
+		boolean pfound = false;
+		for(int i = 0; i < 4; i++) {
+	    	if(!p[i].getMoving() && !pfound) {
+	    		p[i].setMoving(true);
+	    		pfound = true;
+	    	}
+	    }
+	    
+	}
+	
+	public void shoot(Graphics g, Pea[] p, Dooley d) {
+		for(int i = 0; i < 4; i++) {
+    		if(p[i].getMoving()) {	
+    			p[i].setX(d.getX() + 17);
+    			p[i].paint(g);
+    		}
+    	}
+	}
+	
+	/*public void resetP(Pea[] p) {
 		for(int i = 0; i < 4; i++) {
     		if(p[i].getMoving() && p[i].getY() < 0) {
     			p[i].reset();
@@ -48,6 +68,6 @@ public class Pea extends Character{
     		}
     	}
     	return pi;
-	}
+	}*/
 
 }

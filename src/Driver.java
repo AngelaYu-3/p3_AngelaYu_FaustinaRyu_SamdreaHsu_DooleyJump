@@ -16,54 +16,43 @@ import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
   
-	private boolean isStart, isDead, isBeginning, paintPea, isUp;
+	private boolean isStart, isDead, isBeginning, isUp;
 	private Background bg; 
 	private JFrame f;
-	private int mx, my, di, x, y, sy, px, py;
+	private int mx, my, di, x, y, sy, px, py, pc;
 	private Background[] scroll = new Background[2]; 
     private Enemies[] enemies = new Enemies[3];   
     private Dooley[] dooley = new Dooley[3];
     private Pea[] p = new Pea[4];
-    Pea p1 = new Pea("/Graphics/Pea.png", 38, 38, 100, 100, 0, 0);
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 
-		//playscreen
+	//PLAYSCREEN
 		if(!isStart) {
 			scroll[0].paint(g);
 			scroll[1].paint(g);
 			
-			//enemies[0].paint(g);
-			//enemies[1].paint(g);
-			//enemies[2].paint(g);
+			enemies[0].paint(g);
+			enemies[1].paint(g);
+			enemies[2].paint(g);
 			
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);
 		    
+		    //moving background
 		    if(isUp) scroll(50);  	
 		    
-		    if(isUp) {
-		    	int pi = 0;
-		    	for(int i = 0; i < 4; i++) {
-		    		if(!p[i].getMoving()) {
-		    			pi = i;
-		    			p[pi].setMoving(true);
-		    			break;
-		    		}else continue;
-		    	}
-		    	System.out.println(pi);
-		    	System.out.println(p[pi].getMoving());
-		    	p[pi].paint(g);
-		    	//p1 = new Pea("/Graphics/Pea.png", 38, 38, 100, 100, 0, 0);
-		    	//p1.paint(g);
-		    	//paintPea = false;
-		    } //p[0].resetP(p);
+		    //shooting
+		    if(pc == 1) {
+		    	p[0].newShot(g, p);
+		    	pc = 0;
+		    }p[0].shoot(g, p, dooley[di]);
 		    
-		 
+
 		}
 		
-		//startscreen
+	//STARTSCREEN
 		if(isStart) {
 			bg.paint(g);
 			bg.startScreen(g);
@@ -74,7 +63,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isStart = false;
 		}
 		
-		//endscreen
+	//ENDSCREEN
 		if(isDead) {
 			bg.endScreen(g);
 			
@@ -88,17 +77,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 	}	
 	
-	public int findPi(Pea[] p) {
-		int pi = -1;
-    	for(int i = 0; i < 4; i++) {
-    		if(p[i].getMoving() == false && pi == -1) {
-    			System.out.println("hi");
-    			pi = i;
-    			p[pi].setMoving(true);
-    			
-    		}
-    	}
-    	return pi;
+	public void reset() {
+		for(int i = 0; i < 4; i++) {
+	    	if(p[i].getMoving() && p[i].getY() < 0) {
+	    		p[i].reset();
+	    	}
+	    }
 	}
 
 	@Override
@@ -127,11 +111,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		isStart = true;
 		isBeginning = true;
 		di = 0;
+		pc = 0;
 		px = dooley[di].getX() + 17;
 		py = dooley[di].getY() - 20;
         
         for(int i = 0; i < 4; i++) {
-        	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -5);
+        	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
         }
         
 	    f.setTitle("DooleyJump!");
@@ -185,6 +170,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	  		resetPos(2);
 	  		sy = scroll[0].getY();
 			isUp = true;
+			pc = 1;
 	    	break;
     	    
 	    case 'a':
