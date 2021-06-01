@@ -47,9 +47,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    if(pc == 1) {
 		    	p[0].newShot(g, p);
 		    	pc = 0;
-		    }p[0].shoot(g, p, dooley[di]);
-		    
-
+		    }
+		    p[0].shoot(g, p, dooley[di]);
+		    reset();
 		}
 		
 	//STARTSCREEN
@@ -172,7 +172,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isUp = true;
 			pc = 1;
 	    	break;
-    	    
+    	
+	    //add horizontal movement here look at logic for up movement
 	    case 'a':
 	    	resetPos(0);
 	    	dooley[di].hop(-50, 0);

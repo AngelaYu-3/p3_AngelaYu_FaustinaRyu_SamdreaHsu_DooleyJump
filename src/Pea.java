@@ -8,8 +8,8 @@ public class Pea extends Character{
 	public Pea(String fileName, int width, int height, int x, int y, int vx, int vy) {
 		super(fileName, width, height, x, y, vx, vy);
 		//isMoving = false;
-		//xi = x;
-		//yi = y;
+		xi = x;
+		yi = y;
 	}
 	
 	public String toString() {
@@ -43,31 +43,11 @@ public class Pea extends Character{
 	public void shoot(Graphics g, Pea[] p, Dooley d) {
 		for(int i = 0; i < 4; i++) {
     		if(p[i].getMoving()) {	
+    			System.out.println(i);
     			p[i].setX(d.getX() + 17);
     			p[i].paint(g);
     		}
     	}
 	}
-	
-	/*public void resetP(Pea[] p) {
-		for(int i = 0; i < 4; i++) {
-    		if(p[i].getMoving() && p[i].getY() < 0) {
-    			p[i].reset();
-    		}
-    	}
-	}
-	
-	public int findPi(Pea[] p) {
-		int pi = -1;
-    	for(int i = 0; i < 4; i++) {
-    		if(p[i].getMoving() == false && pi == -1) {
-    			System.out.println("hi");
-    			pi = i;
-    			p[pi].setMoving(true);
-    			
-    		}
-    	}
-    	return pi;
-	}*/
 
 }
