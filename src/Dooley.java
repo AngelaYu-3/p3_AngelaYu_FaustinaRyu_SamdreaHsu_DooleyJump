@@ -1,3 +1,4 @@
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Timer;
@@ -12,6 +13,15 @@ public class Dooley extends Character{
 		// TODO Auto-generated constructor stub
 	}
 	
+	//collision between dooley and enemy
+		public boolean isColliding(Enemies e) {
+			
+			//represent enemy as a "rectangle"
+			Rectangle dRect = new Rectangle(x, y, width, height);
+			Rectangle eRect = new Rectangle(e.getX(), e.getY(), e.getWidth(), e.getHeight());
+			return dRect.intersects(eRect);
+		}
+	
 	public void bounce(int height) {
 		if(isUp) {
 			setvy(-1);
@@ -22,14 +32,5 @@ public class Dooley extends Character{
 			if(getY() >= currY) isUp = true;
 		}
 	}
-	
-	
-	public boolean getIsDead() {
-    	return isDead;
-    }
-    
-    public void setIsDead(boolean isDead) {
-    	this.isDead = isDead;
-    }
 
 }

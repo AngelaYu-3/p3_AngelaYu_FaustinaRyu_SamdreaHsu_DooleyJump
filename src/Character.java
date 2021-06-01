@@ -13,10 +13,14 @@ public class Character{
 	protected int vx, vy;
 	protected int width; // the size of frog
 	protected int height;
+	
+	protected boolean isDead;
+	
 	protected String fileName;
 	int stepy;
 	int id;
 	int vcount;
+	
 	
 	private Image img; 
 	
@@ -49,20 +53,7 @@ public class Character{
 		tx.setToTranslation(x, y);
 	}
 	
-	//check if two characters are in the same spot 
-	public boolean equals(Character obj) {
-		Character other = obj;
-		if ((obj.getX()+obj.getWidth()) >= other.getX() &&
-			obj.getX() <= (other.getX()+other.getWidth()) &&
-			(obj.getY()+obj.getHeight()) >= other.getY() &&
-			obj.getY() <= (other.getY()+other.getHeight())
-			) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+	
 	
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
 
@@ -122,6 +113,11 @@ public class Character{
 		return vcount;
 	}
 	
+	public boolean getIsDead() {
+		return isDead;
+	}
+	
+	
 	public void setX(int x) {
 		this.x = x;
 		tx.setToTranslation(x, y);
@@ -151,6 +147,10 @@ public class Character{
 	
 	public void setVcount(int v) {
 		vcount = v;
+	}
+	
+	public void setIsDead(boolean isDead) {
+		this.isDead = isDead;
 	}
 	
 	//returns the index number of image from the ArrayList

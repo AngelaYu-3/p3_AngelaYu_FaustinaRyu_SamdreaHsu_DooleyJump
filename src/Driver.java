@@ -19,7 +19,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Background[] scroll = new Background[2]; 
         private Enemies[] enemies = new Enemies[3];   
         private Dooley[] dooley = new Dooley[3];
-	
+        private Pea[] pea = new Pea[1000];
+        
 	//use awsd keys to move dooley once game starts
 	public void paint(Graphics g) {
 
@@ -29,10 +30,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(!isStart) {
 			scroll[0].paint(g);
 			scroll[1].paint(g);
-			
+		
+		//spawn enemies
 			enemies[0].paint(g);
 			enemies[1].paint(g);
 			enemies[2].paint(g);
+			
 		  dooley[di].paint(g);
 		  dooley[di].setvy(0);
 		}
@@ -48,9 +51,32 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isStart = false;
 		}
 		
+		//spawn enemy[0]
+		if (dooley[0].getY() > 150 && dooley[0].getY() < 300) {
+			enemies[0].paint(g);
+		}
+		
+		if (dooley[0].getY() > 300 && dooley[0].getY() < 600) {
+			enemies[1].paint(g);
+		}
+		
+		if (dooley[0].getY() > 600 && dooley[0].getY() < 770) {
+			enemies[3].paint(g);
+		}
+		
+		//enemies die
+		for (int i = 0; i < enemies.length; i++) {
+			for (int j = 0; j < pea.length; j++) {
+				if (enemies[i].isColliding(pea[j])) {
+					enemies[i].setIsDead(true);
+				}
+			}
+		}
+		
+		//dooley dies
 		for (int i = 0; i < enemies.length; i++) {
 			for (int j = 0; j < dooley.length; j++) {
-				if (enemies[i].equals(dooley[i])) {
+				if (dooley[i].isColliding(enemies[i])) {
 					dooley[i].setIsDead(true);
 				}
 			}
@@ -86,9 +112,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         	bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
        		scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         	scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
-        	enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
-        	enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
-        	enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
+        	
+        	enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 200, 0, 0);
+        	enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 50, 400, 1, 0);
+        	enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 50, 700, 1, 0);
+        	
+        	
         	dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
         	dooley[1] = new Dooley("/Graphics/dooleyRight.png", 60, 60, 350, 247, 0, 0);
         	dooley[2] = new Dooley("/Graphics/dooleyUp.png", 60, 60, 350, 247, 0, 0);
@@ -163,7 +192,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		
 		/*
-		 * turn off velocity for Frog if you don't want it moving when you have stopped
+		 * turn off velocity for dooley if you don't want it moving when you have stopped
 		 * pressing the keys
 		 */
 

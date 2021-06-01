@@ -14,31 +14,22 @@ public class Enemies extends Character {
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
 	}
-		
-//	public boolean isCollidingD(Dooley d) {
-//		//represent enemy as a "rectangle"
-//		Rectangle eRect = new Rectangle(x, y, width, height);
-//		//represent dooley as a rectangle
-//		Rectangle dRect = new Rectangle(d.getX(), d.getY(), d.getWidth(), d.getHeight());
-//		d.setIsDead(true);
-//		return eRect.intersects(dRect);
-//	}
-//	
-//	public boolean equals(Pea p) {
-//		
-//		//represent enemy as a "rectangle"
-//		Rectangle eRect = new Rectangle(x, y, width, height);
-//		//represent p as a rectangle
-//		Rectangle pRect = new Rectangle(p.getX(), p.getY(), p.getWidth(), p.getHeight());
-//		return eRect.intersects(pRect);
-//	}
 	
-	public String toString() {
-			return x + " " + y;
+	public void sideToside() {
+		if (x<60) {
+			vx*=-1;
+		} else if (x>540) {
+			vx*=-1;
+		}
 	}
 	
-	public void move() {
-		super.move();
+	
+	//collision between enemy and pea
+	public boolean isColliding(Pea p) {
+		//represent object as a "rectangle"
+		Rectangle tRect = new Rectangle(x, y, width, height);
+		Rectangle pRect = new Rectangle(p.getX(), p.getY(), p.getWidth(), p.getHeight());
+		return tRect.intersects(pRect);
 	}
 	
 	public void setvx(int vx) {
@@ -47,6 +38,10 @@ public class Enemies extends Character {
 
 	public void setvy(int vy) {
 		this.vy = vy;
+	}
+	
+	public String toString() {
+		return x + " " + y;
 	}
 	
 }

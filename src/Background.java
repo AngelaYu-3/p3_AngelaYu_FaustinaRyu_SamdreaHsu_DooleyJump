@@ -20,7 +20,6 @@ public class Background{
 		// assignment statements for attributes
 		x = starty;
 		y = startx;
-		//vy = 2;
 		
 		img = getImage(fileName);
 		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
