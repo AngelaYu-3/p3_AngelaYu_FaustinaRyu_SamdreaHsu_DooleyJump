@@ -19,7 +19,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private Background[] scroll = new Background[2]; 
         private Enemies[] enemies = new Enemies[3];   
         private Dooley[] dooley = new Dooley[3];
-        private Pea[] pea = new Pea[1000];
+        private Pea[] pea = new Pea[4];
         
 	//use awsd keys to move dooley once game starts
 	public void paint(Graphics g) {
