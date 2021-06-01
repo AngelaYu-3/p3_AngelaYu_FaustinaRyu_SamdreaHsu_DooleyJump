@@ -80,14 +80,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 	}	
-	
-	public void reset() {
-		for(int i = 0; i < 4; i++) {
-	    	if(p[i].getMoving() && p[i].getY() < 0) {
-	    		p[i].reset();
-	    	}
-	    }
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
