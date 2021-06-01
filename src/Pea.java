@@ -43,7 +43,6 @@ public class Pea extends Character{
 	public void shoot(Graphics g, Pea[] p, Dooley d) {
 		for(int i = 0; i < 4; i++) {
     		if(p[i].getMoving()) {	
-    			System.out.println(i);
     			p[i].setX(d.getX() + 17);
     			p[i].paint(g);
     		}
