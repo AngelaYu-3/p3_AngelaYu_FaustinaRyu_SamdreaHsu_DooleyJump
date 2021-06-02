@@ -5,10 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,14 +12,14 @@ import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
   
-	private boolean isStart, isDead, isBeginning, isUp;
+	private boolean isStart, isDead, isUp;
 	private Background bg; 
 	private JFrame f;
 	private int mx, my, di, x, y, sy, px, py, pc;
 	private Background[] scroll = new Background[2]; 
     private Enemies[] enemies = new Enemies[3];   
     private Dooley[] dooley = new Dooley[3];
-    private Pea[] p = new Pea[4];
+    private Pea[] p = new Pea[10];
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -113,13 +109,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         
         f = new JFrame();
 		isStart = true;
-		isBeginning = true;
 		di = 0;
 		pc = 0;
 		px = dooley[di].getX() + 17;
 		py = dooley[di].getY() - 20;
         
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 10; i++) {
         	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
         }
         
@@ -147,8 +142,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 	
 	public void scroll(int y) {		
-		scroll[0].setvy(2);
-		scroll[1].setvy(2);
+		scroll[0].setvy(5);
+		scroll[1].setvy(5);
 			
 		if(scroll[0].getY() <= sy + y) {
 			scroll[0].scroll();
@@ -168,10 +163,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    
 	    case 'w':
 	    	resetPos(2);
-	    	if(isBeginning) isBeginning = false;
 	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
 			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
-	  		resetPos(2);
 	  		sy = scroll[0].getY();
 			isUp = true;
 			pc = 1;

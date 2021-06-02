@@ -7,7 +7,6 @@ public class Pea extends Character{
 	
 	public Pea(String fileName, int width, int height, int x, int y, int vx, int vy) {
 		super(fileName, width, height, x, y, vx, vy);
-		//isMoving = false;
 		xi = x;
 		yi = y;
 	}
@@ -30,18 +29,17 @@ public class Pea extends Character{
 	}
 	
 	public void newShot(Graphics g, Pea[] p) {
-		boolean pfound = false;
-		for(int i = 0; i < 4; i++) {
-	    	if(!p[i].getMoving() && !pfound) {
+		for(int i = 0; i < 10; i++) {
+	    	if(!p[i].getMoving() ) {
 	    		p[i].setMoving(true);
-	    		pfound = true;
+	    		break;
 	    	}
 	    }
 	    
 	}
 	
 	public void shoot(Graphics g, Pea[] p, Dooley d) {
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < 10; i++) {
     		if(p[i].getMoving()) {	
     			p[i].setX(d.getX() + 17);
     			p[i].paint(g);
