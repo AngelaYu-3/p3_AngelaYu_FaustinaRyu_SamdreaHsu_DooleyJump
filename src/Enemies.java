@@ -32,16 +32,31 @@ public class Enemies extends Character {
 		return tRect.intersects(pRect);
 	}
 	
+	public int getvx() {
+		return vx;
+	}
+
+	public int getvy() {
+		return vy;
+	}
+	
+		
+	public String toString() {
+		return x + " " + y;
+	}
+	
+
+	public void move() {
+		super.move();
+	}
+	
 	public void setvx(int vx) {
 		this.vx = vx;
 	}
 
 	public void setvy(int vy) {
 		this.vy = vy;
-	}
-	
-	public String toString() {
-		return x + " " + y;
+		
 	}
 	
 }

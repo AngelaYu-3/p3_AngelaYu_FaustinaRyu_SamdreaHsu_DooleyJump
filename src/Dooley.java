@@ -14,13 +14,12 @@ public class Dooley extends Character{
 	}
 	
 	//collision between dooley and enemy
-		public boolean isColliding(Enemies e) {
-			
-			//represent enemy as a "rectangle"
-			Rectangle dRect = new Rectangle(x, y, width, height);
-			Rectangle eRect = new Rectangle(e.getX(), e.getY(), e.getWidth(), e.getHeight());
-			return dRect.intersects(eRect);
-		}
+	public boolean isColliding(Enemies e) {
+		//represent enemy as a "rectangle"
+		Rectangle dRect = new Rectangle(x, y, width, height);
+		Rectangle eRect = new Rectangle(e.getX(), e.getY(), e.getWidth(), e.getHeight());
+		return dRect.intersects(eRect);
+	}
 	
 	public void bounce(int height) {
 		if(isUp) {

@@ -65,13 +65,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 		//enemies die
-		for (int i = 0; i < enemies.length; i++) {
-			for (int j = 0; j < pea.length; j++) {
-				if (enemies[i].isColliding(pea[j])) {
-					enemies[i].setIsDead(true);
-				}
-			}
-		}
+//		for (int i = 0; i < enemies.length; i++) {
+//			for (int j = 0; j < pea.length; j++) {
+//				if (enemies[i].isColliding(pea[j])) {
+//					enemies[i].setIsDead(true);
+//				}
+//			}
+//		}
 		
 		//dooley dies
 		for (int i = 0; i < enemies.length; i++) {

@@ -16,6 +16,7 @@ public class Character{
 	
 	protected boolean isDead;
 	
+
 	protected String fileName;
 	int stepy;
 	int id;
