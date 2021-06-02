@@ -8,7 +8,6 @@ public class Enemies extends Character {
 	private int vy;
 	private int width; 
 	private int height;
-	private boolean isDead;
 				
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
@@ -27,9 +26,16 @@ public class Enemies extends Character {
 	//collision between enemy and pea
 	public boolean isColliding(Pea p) {
 		//represent object as a "rectangle"
-		Rectangle tRect = new Rectangle(x, y, width, height);
-		Rectangle pRect = new Rectangle(p.getX(), p.getY(), p.getWidth(), p.getHeight());
-		return tRect.intersects(pRect);
+		Rectangle eRect = new Rectangle(x, y, width, height);
+		Rectangle pRect = new Rectangle(p.getX(), p.getY(), 38, 38);
+		return eRect.intersects(pRect);
+	}
+	
+	public boolean isColliding(Dooley d) {
+		//represent object as a "rectangle"
+		Rectangle eRect = new Rectangle(x, y, width, height);
+		Rectangle dRect = new Rectangle(d.getX(), d.getY(), 40, 40);
+		return eRect.intersects(dRect);
 	}
 	
 	public int getvx() {
