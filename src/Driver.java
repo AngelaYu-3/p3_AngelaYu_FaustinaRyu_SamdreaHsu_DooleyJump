@@ -12,7 +12,7 @@ import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
   
-	private boolean isStart, isDead, isBeginning, isUp;
+	private boolean isStart, isDead, isUp;
 	private Background bg; 
 	private JFrame f;
 	private int mx, my, di, x, y, sy, px, py, pc;
@@ -25,7 +25,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public void paint(Graphics g) {
     private Enemies[] enemies = new Enemies[3];   
     private Dooley[] dooley = new Dooley[3];
-    private Pea[] p = new Pea[4];
+    private Pea[] p = new Pea[10];
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -143,28 +143,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         
         f = new JFrame();
 		isStart = true;
-		isBeginning = true;
-    
-        	bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
-       		scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
-        	scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
-        	
-        	enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 200, 0, 0);
-        	enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 50, 400, 1, 0);
-        	enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 50, 700, 1, 0);
-        	
-        	
-        	dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 60, 60, 350, 247, 0, 0);
-        	dooley[1] = new Dooley("/Graphics/dooleyRight.png", 60, 60, 350, 247, 0, 0);
-        	dooley[2] = new Dooley("/Graphics/dooleyUp.png", 60, 60, 350, 247, 0, 0);
-        	di = 0;
-		
+
 		di = 0;
 		pc = 0;
 		px = dooley[di].getX() + 17;
 		py = dooley[di].getY() - 20;
         
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 10; i++) {
         	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
         }
         
@@ -192,8 +177,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 	
 	public void scroll(int y) {		
-		scroll[0].setvy(2);
-		scroll[1].setvy(2);
+		scroll[0].setvy(5);
+		scroll[1].setvy(5);
 			
 		if(scroll[0].getY() <= sy + y) {
 			scroll[0].scroll();
@@ -213,10 +198,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    
 	    case 'w':
 	    	resetPos(2);
-	    	if(isBeginning) isBeginning = false;
 	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
 			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
-	  		resetPos(2);
 	  		sy = scroll[0].getY();
 			isUp = true;
 			pc = 1;
