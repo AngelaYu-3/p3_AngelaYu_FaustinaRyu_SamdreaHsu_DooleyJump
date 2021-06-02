@@ -1,3 +1,4 @@
+import java.awt.Rectangle;
 
 public class Enemies extends Character {
 	
@@ -7,16 +8,44 @@ public class Enemies extends Character {
 	private int vy;
 	private int width; 
 	private int height;
+	private boolean isDead;
 				
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
 	}
-		
-	public String toString() {
-			return x + " " + y;
+	
+	public void sideToside() {
+		if (x<60) {
+			vx*=-1;
+		} else if (x>540) {
+			vx*=-1;
+		}
 	}
 	
+	
+	//collision between enemy and pea
+	public boolean isColliding(Pea p) {
+		//represent object as a "rectangle"
+		Rectangle tRect = new Rectangle(x, y, width, height);
+		Rectangle pRect = new Rectangle(p.getX(), p.getY(), p.getWidth(), p.getHeight());
+		return tRect.intersects(pRect);
+	}
+	
+	public int getvx() {
+		return vx;
+	}
+
+	public int getvy() {
+		return vy;
+	}
+	
+		
+	public String toString() {
+		return x + " " + y;
+	}
+	
+
 	public void move() {
 		super.move();
 	}
