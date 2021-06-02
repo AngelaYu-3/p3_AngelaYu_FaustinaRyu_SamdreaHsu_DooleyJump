@@ -1,7 +1,3 @@
-import java.awt.event.KeyEvent;
-
-import javax.swing.Timer;
-
 public class Dooley extends Character{
 	private int currY = getY();
 	private boolean isUp = true;
@@ -21,5 +17,5 @@ public class Dooley extends Character{
 			if(getY() >= currY) isUp = true;
 		}
 	}
-
 }
+

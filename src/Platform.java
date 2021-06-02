@@ -43,7 +43,7 @@ public class Platform {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
 		x = 50;
-		y = 50;
+		y = 247;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
@@ -90,13 +90,27 @@ public class Platform {
 	 * Checks to see if Dooley stepped on a platform
 	 * Use this method when Dooley's vy < 0 to check if it lands on something
 	 */
-	public boolean steppedOn(Dooley d) {
-		Rectangle dooley = new Rectangle(d.getX(), d.getY(), d.getWidth(), d.getHeight());
-		Rectangle platform = new Rectangle(this.x, this.y, this.WIDTH, this.HEIGHT);
+	public boolean isSteppedOn(Dooley d) {
+		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 40, 40);
+		Rectangle platform = new Rectangle(this.x + 20, this.y + 20, this.WIDTH - 30, this.HEIGHT - 30);
 		
-		return dooley.intersects(platform);
+		return platform.intersects(dooley);
 	}
 	
+	public int getWidth() {
+		return WIDTH;
+	}
+	public int getHeight() {
+		return HEIGHT;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
 	
 	/*
 	 * This method will give the result of being stepped on

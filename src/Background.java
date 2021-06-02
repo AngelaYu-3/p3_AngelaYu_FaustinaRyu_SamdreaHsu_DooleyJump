@@ -19,16 +19,16 @@ public class Background{
 		// assignment statements for attributes
 		x = starty;
 		y = startx;
-		//vy = 2;
+		vy = 0;
 		
 		img = getImage(fileName);
 		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 	
-	public void scroll(int y) {
-		this.y += y;
-		tx.setToTranslation(x, this.y);
+	public void scroll() {
+		y += vy;
+		tx.setToTranslation(x, y);
 
 	}
 	
@@ -38,6 +38,10 @@ public class Background{
 	
 	public void setY(int y) {
 	    this.y = y;
+	}
+	
+	public void setvy(int vy) {
+		this.vy = vy;
 	}
 	
 	public void startScreen(Graphics g) {
@@ -96,12 +100,5 @@ public class Background{
 			e.printStackTrace();
 		}
 		return tempImage;
-	}
-
-	public void move() {
-		y += vy;
-		x += vx;
-		tx.setToTranslation(x, y);
-
 	}
 }

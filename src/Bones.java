@@ -13,7 +13,7 @@ public class Bones extends Platform{
 	 */
 	public int result(Dooley d) {
 		d.bounce(10);
-		img = getImage("bones1.jpg");
+		img = getImage("/Graphics/bone1.png");
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
 		init(x, y);
 		return 0;
