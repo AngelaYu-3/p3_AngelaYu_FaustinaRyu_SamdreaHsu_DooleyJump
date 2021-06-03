@@ -26,16 +26,16 @@ public class Enemies extends Character {
 	//collision between enemy and pea
 	public boolean isColliding(Pea p) {
 		//represent object as a "rectangle"
-		Rectangle eRect = new Rectangle(x, y, width, height);
-		Rectangle pRect = new Rectangle(p.getX(), p.getY(), 38, 38);
-		return eRect.intersects(pRect);
+		Rectangle enemy = new Rectangle(this.x, this.y, this.width, this.height);
+		Rectangle pea = new Rectangle(p.getX(), p.getY(), 38, 38);
+		return enemy.intersects(pea);
 	}
 	
 	public boolean isColliding(Dooley d) {
 		//represent object as a "rectangle"
-		Rectangle eRect = new Rectangle(x, y, width, height);
-		Rectangle dRect = new Rectangle(d.getX(), d.getY(), 40, 40);
-		return eRect.intersects(dRect);
+		Rectangle enemy = new Rectangle(this.x, this.y, this.width, this.height);
+		Rectangle dooley = new Rectangle(d.getX(), d.getY(), 65, 65);
+		return enemy.intersects(dooley);
 	}
 	
 	public int getvx() {
