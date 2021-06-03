@@ -14,6 +14,7 @@ public class Enemies extends Character {
 			super(filename, w, h, x, y, vx, vy);
 	}
 	
+	
 	public void sideToside() {
 		if (x<60) {
 			vx*=-1;
@@ -26,15 +27,24 @@ public class Enemies extends Character {
 	//collision between enemy and pea
 	public boolean isColliding(Pea p) {
 		//represent object as a "rectangle"
-		Rectangle enemy = new Rectangle(this.x, this.y, this.width, this.height);
-		Rectangle pea = new Rectangle(p.getX(), p.getY(), 38, 38);
+		Rectangle enemy = new Rectangle(x+10, y+10, width-20, height-20);
+		Rectangle pea = new Rectangle(p.getX(), p.getY(), p.getWidth(), p.getHeight());
+		
 		return enemy.intersects(pea);
+		
+		
 	}
 	
 	public boolean isColliding(Dooley d) {
 		//represent object as a "rectangle"
-		Rectangle enemy = new Rectangle(this.x, this.y, this.width, this.height);
-		Rectangle dooley = new Rectangle(d.getX(), d.getY(), 65, 65);
+//		Rectangle enemy = new Rectangle(x, y, width, height);
+//		Rectangle doodle = new Rectangle(d.getX(), d.getY(), d.getWidth(), d.getHeight());
+		
+//		return enemy.intersects(doodle);
+		
+		Rectangle enemy = new Rectangle(x+10, y+10, width-20, height-20);
+		Rectangle dooley = new Rectangle(d.getX(), d.getY()-7, d.getWidth(), d.getHeight());
+		
 		return enemy.intersects(dooley);
 	}
 	

@@ -122,6 +122,19 @@ public class Character{
 		return vcount;
 	}
 	
+	public int returnCenterX() {
+		return Math.abs((x+(width))/2);
+	}
+	
+	public int returnCenterY() {
+		return Math.abs((y+(width))/2);
+		
+	}
+	
+	public int getRad() {
+		return width/2;
+	}
+	
 	public void setX(int x) {
 		this.x = x;
 		tx.setToTranslation(x, y);

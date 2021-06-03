@@ -17,11 +17,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private JFrame f;
 	private int mx, my, di, x, y, sy, px, py, pc;
 	private Background[] scroll = new Background[2]; 
-        private Enemies[] enemies = new Enemies[3];   
+        private Enemies[] enemies = new Enemies[3];  
         private Dooley[] dooley = new Dooley[3];
         private Pea[] p = new Pea[4];
-        
-	//use awsd keys to move dooley once game starts
+
+        //use awsd keys to move dooley once game starts
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
@@ -30,11 +30,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(!isStart) {
 			scroll[0].paint(g);
 			scroll[1].paint(g);
-		
-		//spawn enemies
-//			enemies[0].paint(g);
-//			enemies[1].paint(g);
-//			enemies[2].paint(g);
 			
 		  dooley[di].paint(g);
 		  dooley[di].setvy(0);
@@ -42,7 +37,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    dooley[di].setvy(0);
 		    
 		    //moving background
-		    if(isUp) scroll(50);  	
+		    if(isUp) {
+		    	scroll(50);  
+		    
+		    }
 		    
 		    //shooting
 		    if(pc == 1) {
@@ -68,41 +66,41 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isStart = false;
 		}
 		
-		//spawn enemy[0]
-		if (dooley[di].getY() > 150 && dooley[di].getY() < 300) {
-			if(!isStart) {
-				enemies[0].paint(g);
-			}
-		}
-		
-		if (dooley[di].getY() > 300 && dooley[di].getY() < 600) {
-			if(!isStart) {
-				enemies[1].paint(g);
-			}
-		}
-		
-		if (dooley[di].getY() > 600 && dooley[di].getY() < 770) {
-			if(!isStart) {
-				enemies[2].paint(g);
-			}
+		//spawn enemy based on dooley position
+		if (dooley[di].getY() > 150 && dooley[di].getY() < 300 && !isStart) {
+			enemies[0].paint(g);
 			
+//	        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);
+			g.drawRect(350, 240, 65, 65);
+			
+//	        enemies[0] = new Enemies("/Graphics/Enemy1.png", 65, 65, 50, 50, 0, 0);
+			g.drawRect(60, 60, 45, 45);
+		}
+		
+		if (dooley[di].getY() > 301 && dooley[di].getY() < 450 && !isStart) {
+			enemies[1].paint(g);
+		}
+		if (dooley[di].getY() > 450 && dooley[di].getY() < 800 && !isStart) {
+			enemies[2].paint(g);
 		}
 		
 		//enemies die
-//		for (int i = 0; i < enemies.length; i++) {
-//			for (int j = 0; j < p.length; j++) {
-//				if (enemies[i].isColliding(p[j])) {
-//					enemies[i].setvy(-1);
-//				}
-//			}
-//		}
+		for (int i = 0; i < enemies.length; i++) {
+			for (int j = 0; j < p.length; j++) {
+				if (enemies[i].isColliding(p[j])) {
+					System.out.println("enemies die");
+					enemies[i].setvy(1);
+				}
+			}
+		}
+		
+		
 		
 		//dooley dies
 		for (int i = 0; i < enemies.length; i++) {
-			for (int j = 0; j < dooley.length; j++) {
-				if (enemies[i].isColliding(dooley[di])) {
-					dooley[di].setvy(-1);
-				}
+			if (enemies[i].isColliding(dooley[di])) {
+				System.out.println("dooley die");
+				isDead = true;
 			}
 		}
 		
@@ -140,9 +138,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         enemies[1] = new Enemies("/Graphics/Enemy2.png", 65, 65, 100, 50, 0, 0);
         enemies[2] = new Enemies("/Graphics/Enemy3.png", 65, 65, 150, 50, 0, 0);
         
-        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);
+        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);        
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 247, 0, 0);
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
+        
         
         f = new JFrame();
 		isStart = true;
