@@ -134,9 +134,27 @@ public class Platform {
 	
 	/*
 	 * When it goes off the bottom of the screen, it respawns on the top
+	 * Parameter: the max y the platform can spawn to
+	 * 
 	 */
-	public void respawn() {
-		//TODO: Logic to implement random spawning to guarantee no 
-		//      overlapping and adequate spacing
+	public void respawn(int maxY) {
+		//The whole screen is essentially a 10 by 14 grid 
+		int rows = 14;
+		int cols = 10;
+		
+		// the max y
+		int max = (maxY/HEIGHT) * rows;
+		
+		// random indexes for x and y
+		int x = (int)(Math.random() * cols);
+		int y = (int)(Math.random() * max);
+		
+		// change x and y to match a cell on the grid
+		x = (int)((double) x / rows * HEIGHT);
+		y = (int)((double) y / cols * WIDTH);
+		
+		this.x = x;
+		this.y = y;
+		
 	}
 }
