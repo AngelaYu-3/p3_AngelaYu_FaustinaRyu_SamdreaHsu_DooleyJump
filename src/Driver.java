@@ -42,13 +42,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			dooley[di].paint(g);
 			dooley[di].setvy(0);
 			
-			
+			int shift = 0;
 			for(Platform p: platforms) {
 				p.paint(g);
 				if(p.isSteppedOn(dooley[di])) {
-					p.result(dooley[di]);
+					shift = p.result(dooley[di]);
+					for(Platform i: platforms) {
+						i.setY(i.getY() + shift);
+					}
 				}
 			}
+			
 			
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);

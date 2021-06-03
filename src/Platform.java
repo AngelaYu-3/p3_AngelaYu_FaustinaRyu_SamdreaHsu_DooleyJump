@@ -112,6 +112,14 @@ public class Platform {
 		return y;
 	}
 	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+	
 	/*
 	 * This method will give the result of being stepped on
 	 * 
@@ -128,7 +136,7 @@ public class Platform {
 		return WINDOW_HEIGHT - this.y - 20;
 	}
 	
-	public boolean offScreen() {
+	public boolean isOffScreen() {
 		return y > WINDOW_HEIGHT - HEIGHT;
 	}
 	
