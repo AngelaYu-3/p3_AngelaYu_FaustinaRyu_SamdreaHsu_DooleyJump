@@ -58,8 +58,8 @@ public class Background{
 		
 		g.setFont(f3);
 		g.drawString("Credits: Faustina Ryu, Samdrea Hsu, Angela Yu", 65, 380);
-		g.drawString("Music: Blinding Lights-The Weeknd", 65, 400);
- 
+		g.drawString("Music: Blinding Lights-The Weeknd, Butter-BTS", 65, 410);
+		g.drawString("Never Gonna Give You Up-Rick Astley", 132, 430);
 	}
 
 	//still need to link end button & animate endScreen to come in at right time
