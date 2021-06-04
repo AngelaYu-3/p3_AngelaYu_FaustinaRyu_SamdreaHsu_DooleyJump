@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/Graphics/enemyraw-removebg-preview.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Downloads/enemyraw-removebg-preview.png</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
