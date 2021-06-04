@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,46 +17,54 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private boolean isStart, isDead, isUp;
 	private Background bg; 
 	private JFrame f;
-	private int mx, my, di, x, y, sy, px, py, pc;
+	private int mx, my, di, x, y, sy, px, py, pc, score;
 	private Background[] scroll = new Background[2]; 
-        private Enemies[] enemies = new Enemies[3];   
-        private Dooley[] dooley = new Dooley[3];
-        private Pea[] pea = new Pea[4];
-        
-	//use awsd keys to move dooley once game starts
-	public void paint(Graphics g) {
     private Enemies[] enemies = new Enemies[3];   
     private Dooley[] dooley = new Dooley[3];
-    private Pea[] p = new Pea[10];
+    private int numPeas = 10;
+    private Pea[] p = new Pea[numPeas];
+    private Platform p1 = new Bones();
+    private Font font = new Font("Courier New", 1, 25);
+    
+    //BTS (butter), Never Gonna Give You Up, Taylor Swift
+    private Music playMusic;
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 
 	//PLAYSCREEN
 		if(!isStart) {
+			playMusic.play();
+			
 			scroll[0].paint(g);
 			scroll[1].paint(g);
-		
-		//spawn enemies
+			
+			g.setFont(font);
+			g.setColor(Color.black);
+			g.drawString("Score: " + score, 5, 20);
+			
 			enemies[0].paint(g);
 			enemies[1].paint(g);
 			enemies[2].paint(g);
 			
-		  dooley[di].paint(g);
-		  dooley[di].setvy(0);
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);
 		    
+		    p1.paint(g);
+		    //System.out.println(p1.isSteppedOn(dooley[di]));
+		    
 		    //moving background
-		    if(isUp) scroll(50);  	
+		    if(isUp) {
+		    	scroll(50);  
+		    }
 		    
 		    //shooting
 		    if(pc == 1) {
-		    	p[0].newShot(g, p);
+		    	p[0].newShot(g, p, numPeas);
 		    	pc = 0;
 		    }
-		    p[0].shoot(g, p, dooley[di]);
-		    p[0].reset(p);
+		    p[0].shoot(g, p, dooley[di], numPeas);
+		    reset();
 		    
 		    //left right respawning
 		    if(dooley[di].getX() <= 0) dooley[di].setX(535);
@@ -72,37 +82,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isStart = false;
 		}
 		
-		//spawn enemy[0]
-		if (dooley[0].getY() > 150 && dooley[0].getY() < 300) {
-			enemies[0].paint(g);
-		}
-		
-		if (dooley[0].getY() > 300 && dooley[0].getY() < 600) {
-			enemies[1].paint(g);
-		}
-		
-		if (dooley[0].getY() > 600 && dooley[0].getY() < 770) {
-			enemies[3].paint(g);
-		}
-		
-		//enemies die
-//		for (int i = 0; i < enemies.length; i++) {
-//			for (int j = 0; j < pea.length; j++) {
-//				if (enemies[i].isColliding(pea[j])) {
-//					enemies[i].setIsDead(true);
-//				}
-//			}
-//		}
-		
-		//dooley dies
-		for (int i = 0; i < enemies.length; i++) {
-			for (int j = 0; j < dooley.length; j++) {
-				if (dooley[i].isColliding(enemies[i])) {
-					dooley[i].setIsDead(true);
-				}
-			}
-		}
-		
 	//ENDSCREEN
 		if(isDead) {
 			bg.endScreen(g);
@@ -117,7 +96,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 	}	
 	
-	
+	public void reset() {
+		for(int i = 0; i < numPeas; i++) {
+	    	if(p[i].getMoving() && p[i].getY() < 0) {
+	    		p[i].reset();
+	    	}
+	    }
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -129,6 +114,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	public Driver() {
+		playMusic = new Music("Butter.wav", true);
         bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
@@ -143,9 +129,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         
         f = new JFrame();
 		isStart = true;
-
 		di = 0;
 		pc = 0;
+		score = 0;
 		px = dooley[di].getX() + 17;
 		py = dooley[di].getY() - 20;
         
@@ -183,7 +169,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		if(scroll[0].getY() <= sy + y) {
 			scroll[0].scroll();
 			scroll[1].scroll();
+			if(scroll[0].getY() >= 800) scroll[0].setY(-800);
+			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
 		}else {
+			score += 50;
 			scroll[0].setvy(0);
 			scroll[1].setvy(0);
 			resetPos(0);
@@ -198,8 +187,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    
 	    case 'w':
 	    	resetPos(2);
-	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
-			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
 	  		sy = scroll[0].getY();
 			isUp = true;
 			pc = 1;
@@ -223,15 +210,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
-		
-		/*
-		 * turn off velocity for dooley if you don't want it moving when you have stopped
-		 * pressing the keys
-		 */
-
-		// do the same thing for the other keys
-
 	}
 
 	@Override
@@ -273,3 +251,4 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 }
+

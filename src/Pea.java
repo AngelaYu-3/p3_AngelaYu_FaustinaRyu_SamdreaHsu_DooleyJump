@@ -1,5 +1,4 @@
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 public class Pea extends Character{
 	private boolean isMoving;
@@ -28,8 +27,8 @@ public class Pea extends Character{
 		return isMoving;
 	}
 	
-	public void newShot(Graphics g, Pea[] p) {
-		for(int i = 0; i < 10; i++) {
+	public void newShot(Graphics g, Pea[] p, int numPeas) {
+		for(int i = 0; i < numPeas; i++) {
 	    	if(!p[i].getMoving() ) {
 	    		p[i].setMoving(true);
 	    		break;
@@ -38,8 +37,8 @@ public class Pea extends Character{
 	    
 	}
 	
-	public void shoot(Graphics g, Pea[] p, Dooley d) {
-		for(int i = 0; i < 10; i++) {
+	public void shoot(Graphics g, Pea[] p, Dooley d, int numPeas) {
+		for(int i = 0; i < numPeas; i++) {
     		if(p[i].getMoving()) {	
     			p[i].setX(d.getX() + 17);
     			p[i].paint(g);

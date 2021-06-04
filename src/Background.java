@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -13,6 +12,7 @@ public class Background{
 	private Image img; 
 	private Font f1 = new Font("Courier New", 1, 35);
 	private Font f2 = new Font("Courier New", 1, 25);
+	private Font f3 = new Font("Courier New", 1, 16);
 
 	
 	/* if filename is provided */
@@ -55,6 +55,10 @@ public class Background{
 		g.setFont(f2);
 		g.setColor(Color.black);
 		g.drawString("play", 270, 330);
+		
+		g.setFont(f3);
+		g.drawString("Credits: Faustina Ryu, Samdrea Hsu, Angela Yu", 65, 380);
+		g.drawString("Music: Blinding Lights-The Weeknd", 65, 400);
  
 	}
 
