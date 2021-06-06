@@ -25,6 +25,7 @@ public class Platform {
 	protected int vx;
 	protected int vy;	
 	protected Image img;
+	protected boolean isStepped;
 	final int WIDTH = 90;
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
