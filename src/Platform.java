@@ -35,11 +35,11 @@ public class Platform {
 	/*
 	 * constructor for custom platform
 	 */
-	public Platform(String pType) {
+	public Platform(String pType, int x, int y) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
-		x = 50;
-		y = 247;
+		this.x = x;
+		this.y = y;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
@@ -49,8 +49,8 @@ public class Platform {
 	/*
 	 * Default constructor creates the normal platform
 	 */
-	public Platform() {
-		this("/Graphics/platform.png");
+	public Platform(int x, int y) {
+		this("/Graphics/platform.png", x, y);
 	}
 
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
@@ -80,7 +80,9 @@ public class Platform {
 		return tempImage;
 	}
 	
-	
+	public void checkPlat(Dooley d) {
+		if(isSteppedOn(d)) result(d);
+	}
 	
 	/*
 	 * Checks to see if Dooley stepped on a platform
@@ -89,7 +91,7 @@ public class Platform {
 	public boolean isSteppedOn(Dooley d) {
 		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 40, 40);
 		Rectangle platform = new Rectangle(this.x + 20, this.y + 20, this.WIDTH - 30, this.HEIGHT - 30);
-		
+		System.out.println(platform.intersects(dooley));
 		return platform.intersects(dooley);
 	}
 	

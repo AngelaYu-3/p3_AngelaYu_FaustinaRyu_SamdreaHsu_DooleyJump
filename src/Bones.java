@@ -1,7 +1,7 @@
 public class Bones extends Platform{
 
-	public Bones() {
-		super("/Graphics/bone.png");
+	public Bones(int x, int y) {
+		super("/Graphics/bone.png", x, y);
 	}
 	
 	/*

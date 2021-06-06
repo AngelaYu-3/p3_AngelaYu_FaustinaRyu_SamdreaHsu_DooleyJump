@@ -14,27 +14,28 @@ import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
   
-	private boolean isStart, isDead, isUp;
-	private Background bg; 
+	private boolean isStart, isDead, isUp, isLeft, isRight;
 	private JFrame f;
-	private int mx, my, di, x, y, sy, px, py, pc, score;
+	private int mx, my, di, x, y, sy, sx, px, py, pc, score;
+	private int numPeas = 10;
+	
+	private Background bg; 
 	private Background[] scroll = new Background[2]; 
     private Enemies[] enemies = new Enemies[3];   
-    private Dooley[] dooley = new Dooley[3];
-    private int numPeas = 10;
+    private Dooley[] dooley = new Dooley[3]; 
     private Pea[] p = new Pea[numPeas];
-    private Platform p1 = new Bones();
-    private Font font = new Font("Courier New", 1, 25);
+    private Platform p1;
     
-    //BTS (butter), Never Gonna Give You Up, Taylor Swift
+    private Font font = new Font("Courier New", 1, 25);
     private Music playMusic;
+    private Timer t;
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 
 	//PLAYSCREEN
 		if(!isStart) {
-			playMusic.play();
+			//playMusic.play();
 			
 			scroll[0].paint(g);
 			scroll[1].paint(g);
@@ -51,12 +52,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    dooley[di].setvy(0);
 		    
 		    p1.paint(g);
-		    //System.out.println(p1.isSteppedOn(dooley[di]));
+		    p1.checkPlat(dooley[di]);
 		    
 		    //moving background
-		    if(isUp) {
-		    	scroll(50);  
-		    }
+		    if(isUp) scroll(50);
+		    if(isLeft) translate(-50);
+		    if(isRight) translate(50);
 		    
 		    //shooting
 		    if(pc == 1) {
@@ -77,7 +78,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			bg.paint(g);
 			bg.startScreen(g);
 			dooley[di].paint(g);
-			dooley[di].bounce(25);
+			//dooley[di].bounce(25);
 		}		
 		if(isStart && mx < 400 && mx > 200 && my > 300 && my < 380) {
 			isStart = false;
@@ -96,14 +97,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 	}	
-	
-	public void reset() {
-		for(int i = 0; i < numPeas; i++) {
-	    	if(p[i].getMoving() && p[i].getY() < 0) {
-	    		p[i].reset();
-	    	}
-	    }
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -115,8 +108,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	public Driver() {
-		playMusic = new Music("Butter.wav", true);
+		//playMusic = new Music("Butter.wav", true);
         bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
+        p1 = new Platform(200, 500);
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
         
@@ -124,7 +118,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
         enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
         
-        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);
+        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 210, 475, 0, 0);
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 247, 0, 0);
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
         
@@ -153,7 +147,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.setVisible(true);	
 	}
 
-	Timer t;
+//HELPER METHODS	
+	public void reset() {
+		for(int i = 0; i < numPeas; i++) {
+	    	if(p[i].getMoving() && p[i].getY() < 0) {
+	    		p[i].reset();
+	    	}
+	    }
+	}
 	
 	public void resetPos(int di) {
 		x = dooley[this.di].getX();
@@ -180,6 +181,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isUp = false;
 		}
 	}
+	
+	public void translate(int x) {
+		if(x < 0) dooley[di].setvx(-5);
+		else dooley[di].setvx(5);
+
+		if(Math.abs(sx - dooley[di].getX()) < Math.abs(x)) {
+			dooley[di].move();
+		}else {
+			dooley[di].setvx(0);
+			isLeft = false;
+			isRight = false;
+		}
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -196,12 +210,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    //add horizontal movement here look at logic for up movement
 	    case 'a':
 	    	resetPos(0);
-	    	dooley[di].hop(-50, 0);
+	    	sx = dooley[di].getX();
+	    	isLeft = true;
     	    break;
     	    
 	    case 'd':
 	    	resetPos(1);
-	    	dooley[di].hop(50, 0);
+	    	sx = dooley[di].getX();
+	    	isRight = true;
     	    break;
 	    }
       	    
