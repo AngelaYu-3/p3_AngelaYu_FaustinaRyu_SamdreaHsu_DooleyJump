@@ -42,8 +42,7 @@ public class Platform {
 	public Platform(String pType) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
-		x = 50;
-		y = 247;
+		respawn(WINDOW_HEIGHT);
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
@@ -91,8 +90,8 @@ public class Platform {
 	 * Use this method when Dooley's vy < 0 to check if it lands on something
 	 */
 	public boolean isSteppedOn(Dooley d) {
-		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 40, 40);
-		Rectangle platform = new Rectangle(this.x + 20, this.y + 20, this.WIDTH - 30, this.HEIGHT - 30);
+		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
+		Rectangle platform = new Rectangle(this.x + 14, this.y + 26, this.WIDTH - 25, this.HEIGHT - 45);
 		
 		return platform.intersects(dooley);
 	}
@@ -114,10 +113,14 @@ public class Platform {
 	
 	public void setX(int x) {
 		this.x = x;
+		init(x, y);
+		tx.setToTranslation(x, y);
 	}
 	
 	public void setY(int y) {
 		this.y = y;
+		init(x, y);
+		tx.setToTranslation(x, y);
 	}
 	
 	/*
@@ -151,18 +154,24 @@ public class Platform {
 		int cols = 10;
 		
 		// the max y
-		int max = (maxY/HEIGHT) * rows;
+		int max = (maxY/WINDOW_HEIGHT) * rows;
 		
 		// random indexes for x and y
 		int x = (int)(Math.random() * cols);
 		int y = (int)(Math.random() * max);
 		
 		// change x and y to match a cell on the grid
-		x = (int)((double) x / rows * HEIGHT);
-		y = (int)((double) y / cols * WIDTH);
+		x = (int)((double) x / cols * (WINDOW_WIDTH - WIDTH));
+		y = (int)((double) y / rows * (WINDOW_HEIGHT - HEIGHT));
 		
 		this.x = x;
 		this.y = y;
 		
+	}
+	
+	public boolean tooClose(Platform p) {
+		Rectangle p1 = new Rectangle(this.x + 14, this.y + 26, this.WIDTH - 25, this.HEIGHT - 45);
+		Rectangle p2 = new Rectangle(this.x + 14, this.y + 26, this.WIDTH - 25, this.HEIGHT - 45);
+		return p1.intersects(p2);
 	}
 }

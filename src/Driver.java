@@ -24,7 +24,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Pea[] p = new Pea[4];
 
     private ArrayList<Platform> platforms = new ArrayList<Platform>();
-    private int numPlatforms = 1;
+    private int numPlatforms = 20;
     
 	//use awsd keys to move dooley once game starts
 	public void paint(Graphics g) {
@@ -45,12 +45,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			int shift = 0;
 			for(Platform p: platforms) {
 				p.paint(g);
+				System.out.println(p.getX() + " " + p.getY());
+				/*
 				if(p.isSteppedOn(dooley[di])) {
 					shift = p.result(dooley[di]);
 					for(Platform i: platforms) {
 						i.setY(i.getY() + shift);
 					}
+					
 				}
+				*/
 			}
 			
 			
@@ -141,8 +145,24 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         for(int i = 0; i < numPlatforms; i++) {
         	// TODO: have some logic that will give 20% chance of vine,
         	//		20% chance of broken, and 60% chance of normal
-        	platforms.add(new Bones());
-        	
+        	platforms.add(0, new Platform());    	
+        }
+        
+        for(int i = 0; i < numPlatforms; i++) {
+        	for (int j = 0; j < numPlatforms; j++) {
+        		if (j != i && platforms.get(i).tooClose(platforms.get(j))) {
+        			// stagger the platforms if they intersect
+        			if ( platforms.get(i).getX() < platforms.get(j).getX()) {
+        				// stagger to the left
+        				platforms.get(i).setX(platforms.get(i).getX() - 10);
+        				platforms.get(i).setY(platforms.get(i).getY() + 10);
+        			} else {
+        				// stagger to the right
+        				platforms.get(i).setX(platforms.get(i).getX() + 10);
+        				platforms.get(i).setY(platforms.get(i).getY() + 10);
+        			}
+        		}
+        	}
         }
         
 		di = 0;
