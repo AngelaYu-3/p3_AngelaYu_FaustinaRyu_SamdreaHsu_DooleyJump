@@ -82,7 +82,9 @@ public class Platform {
 	}
 	
 	public void checkPlat(Dooley d) {
-		if(isSteppedOn(d)) result(d);
+		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
+				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20)))) result(d);
+		else d.fall();
 	}
 	
 	/*
@@ -90,9 +92,9 @@ public class Platform {
 	 * Use this method when Dooley's vy < 0 to check if it lands on something
 	 */
 	public boolean isSteppedOn(Dooley d) {
-		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 40, 40);
-		Rectangle platform = new Rectangle(this.x + 20, this.y + 20, this.WIDTH - 30, this.HEIGHT - 30);
-		System.out.println(platform.intersects(dooley));
+		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
+		Rectangle platform = new Rectangle(x + 14, y + 26, WIDTH - 25, HEIGHT - 45);
+		//System.out.println(platform.intersects(dooley));
 		return platform.intersects(dooley);
 	}
 	
@@ -123,7 +125,7 @@ public class Platform {
 	 * 
 	 */
 	public int result(Dooley d) {
-		d.bounce(10);
+		d.bounce(100, 3);
 		return WINDOW_HEIGHT - this.y - 20;
 	}
 	

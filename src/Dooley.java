@@ -9,14 +9,18 @@ public class Dooley extends Character{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void bounce(int height) {
+	public void bounce(int height, int vy) {
 		if(isUp) {
-			setvy(-1);
+			setvy(-vy);
 			if(getY() <= currY - height) isUp = false;
 		}
 		if(!isUp) {
-			setvy(1);
+			setvy(vy);
 			if(getY() >= currY) isUp = true;
 		}
+	}
+	
+	public void fall() {
+		setvy(4);
 	}
 }

@@ -12,7 +12,7 @@ public class Vines extends Platform {
 	 * 3) the method returns how much all characters need to move by
 	 */
 	public int result(Dooley d) {
-		d.bounce(10);
+		d.bounce(100, 5);
 		return WINDOW_HEIGHT - this.y + 20;
 	}
 }

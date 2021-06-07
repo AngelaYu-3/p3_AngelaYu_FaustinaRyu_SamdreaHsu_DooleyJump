@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -36,7 +37,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	//PLAYSCREEN
 		if(!isStart) {
 			//playMusic.play();
-			
 			scroll[0].paint(g);
 			scroll[1].paint(g);
 			
@@ -47,17 +47,20 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[0].paint(g);
 			enemies[1].paint(g);
 			enemies[2].paint(g);
-			
-		    dooley[di].paint(g);
-		    dooley[di].setvy(0);
-		    
+			  
 		    p1.paint(g);
 		    p1.checkPlat(dooley[di]);
 		    
+		    dooley[di].paint(g);
+		    dooley[di].setvy(0);
+		    
+		    //g.drawRect(dooley[di].getX() + 10, dooley[di].getY() + 10, 48, 50);
+			//g.drawRect(p1.getX() + 14, p1.getY() + 26, p1.getWidth() - 25, p1.getHeight() - 45);
+		    
 		    //moving background
 		    if(isUp) scroll(50);
-		    if(isLeft) translate(-50);
-		    if(isRight) translate(50);
+		    if(isLeft) translate(-60);
+		    if(isRight) translate(60);
 		    
 		    //shooting
 		    if(pc == 1) {
@@ -110,7 +113,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public Driver() {
 		//playMusic = new Music("Butter.wav", true);
         bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
-        p1 = new Platform(200, 500);
+        p1 = new Bones(200, 510);
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
         
