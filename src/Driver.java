@@ -30,7 +30,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Music playMusic;
 
 	public void paint(Graphics g) {
-		//TESTINGMASTER
+	//TESTING
 		super.paintComponent(g);
 	
 	//PLAYSCREEN
