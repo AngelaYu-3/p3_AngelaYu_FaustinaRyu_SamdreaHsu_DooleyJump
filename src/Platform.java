@@ -61,9 +61,15 @@ public class Platform {
 	// draw the affine transform
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		//TODO: move();
+		move();
 		g2.drawImage(img, tx, null);
 		
+	}
+	
+	public void move() {
+		x += vx;
+		y += vy;
+		tx.setToTranslation(x, y);
 	}
 
 	public void init(double a, double b) {
@@ -113,13 +119,11 @@ public class Platform {
 	
 	public void setX(int x) {
 		this.x = x;
-		init(x, y);
 		tx.setToTranslation(x, y);
 	}
 	
 	public void setY(int y) {
 		this.y = y;
-		init(x, y);
 		tx.setToTranslation(x, y);
 	}
 	
@@ -151,17 +155,17 @@ public class Platform {
 	public void respawn(int maxY) {
 		//The whole screen is essentially a 10 by 14 grid 
 		int rows = 14;
-		int cols = 10;
+		int cols = 7;
 		
 		// the max y
-		int max = (maxY/WINDOW_HEIGHT) * rows;
+		int max = (int)((double)maxY/WINDOW_HEIGHT * rows);
 		
 		// random indexes for x and y
 		int x = (int)(Math.random() * cols);
 		int y = (int)(Math.random() * max);
 		
 		// change x and y to match a cell on the grid
-		x = (int)((double) x / cols * (WINDOW_WIDTH - WIDTH));
+		x = (int)((double) x / cols * WINDOW_WIDTH);
 		y = (int)((double) y / rows * (WINDOW_HEIGHT - HEIGHT));
 		
 		this.x = x;
@@ -171,7 +175,7 @@ public class Platform {
 	
 	public boolean tooClose(Platform p) {
 		Rectangle p1 = new Rectangle(this.x + 14, this.y + 26, this.WIDTH - 25, this.HEIGHT - 45);
-		Rectangle p2 = new Rectangle(this.x + 14, this.y + 26, this.WIDTH - 25, this.HEIGHT - 45);
+		Rectangle p2 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25, p.getHeight() - 45);
 		return p1.intersects(p2);
 	}
 }

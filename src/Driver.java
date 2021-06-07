@@ -24,7 +24,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Pea[] p = new Pea[4];
 
     private ArrayList<Platform> platforms = new ArrayList<Platform>();
-    private int numPlatforms = 20;
+    private int numPlatforms = 10;
     
 	//use awsd keys to move dooley once game starts
 	public void paint(Graphics g) {
@@ -45,7 +45,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			int shift = 0;
 			for(Platform p: platforms) {
 				p.paint(g);
-				System.out.println(p.getX() + " " + p.getY());
+				//System.out.println(p.getX() + " " + p.getY());
 				/*
 				if(p.isSteppedOn(dooley[di])) {
 					shift = p.result(dooley[di]);
@@ -145,24 +145,37 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         for(int i = 0; i < numPlatforms; i++) {
         	// TODO: have some logic that will give 20% chance of vine,
         	//		20% chance of broken, and 60% chance of normal
-        	platforms.add(0, new Platform());    	
-        }
-        
-        for(int i = 0; i < numPlatforms; i++) {
-        	for (int j = 0; j < numPlatforms; j++) {
-        		if (j != i && platforms.get(i).tooClose(platforms.get(j))) {
-        			// stagger the platforms if they intersect
-        			if ( platforms.get(i).getX() < platforms.get(j).getX()) {
-        				// stagger to the left
-        				platforms.get(i).setX(platforms.get(i).getX() - 10);
-        				platforms.get(i).setY(platforms.get(i).getY() + 10);
-        			} else {
-        				// stagger to the right
-        				platforms.get(i).setX(platforms.get(i).getX() + 10);
-        				platforms.get(i).setY(platforms.get(i).getY() + 10);
+        	platforms.add(0, new Platform());  
+        	
+        	int moreRand = (int)(Math.random() * 20);
+        	platforms.get(0).setX(platforms.get(0).getX() + moreRand);
+			platforms.get(0).setY(platforms.get(0).getY() + moreRand);
+        	
+        	boolean touching = true;
+        	while(touching) {
+        		touching = false;
+        		for(int j = 0; j < platforms.size(); j++) {
+        			if (j != 0 && platforms.get(0).tooClose(platforms.get(j))) {
+            			touching = true;
+            			
+            			// stagger the platforms if they intersect
+            			int fix = 10;
+            			if ( platforms.get(0).getX() < platforms.get(j).getX()) {
+            				// stagger to the left
+            				platforms.get(0).setX(platforms.get(0).getX() - fix);
+            				platforms.get(0).setY(platforms.get(0).getY() + fix);
+            			} else {
+            				// stagger to the right
+            				platforms.get(0).setX(platforms.get(0).getX() + fix);
+            				platforms.get(0).setY(platforms.get(0).getY() + fix);
+            			}
+
         			}
         		}
         	}
+        	
+        	
+        	
         }
         
 		di = 0;
