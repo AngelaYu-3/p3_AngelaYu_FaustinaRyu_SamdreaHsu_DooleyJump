@@ -84,7 +84,7 @@ public class Platform {
 	public void checkPlat(Dooley d) {
 		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
 				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20)))) result(d);
-		else d.fall();
+		//else d.fall();
 	}
 	
 	/*

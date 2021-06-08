@@ -57,7 +57,7 @@ public class Background{
 		g.drawString("play", 270, 330);
 		
 		g.setFont(f3);
-		g.drawString("Credits: Faustina Ryu, Samdrea Hsu, Angela Yu", 65, 380);
+		g.drawString("Credits: Angela Yu, Faustina Ryu, Samdrea Hsu", 65, 380);
 		g.drawString("Music: Blinding Lights-The Weeknd, Butter-BTS", 65, 410);
 		g.drawString("Never Gonna Give You Up-Rick Astley", 132, 430);
 	}

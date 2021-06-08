@@ -20,7 +20,7 @@ public class Dooley extends Character{
 		}
 	}
 	
-	public void fall() {
+	/*public void fall() {
 		setvy(4);
-	}
+	}*/
 }

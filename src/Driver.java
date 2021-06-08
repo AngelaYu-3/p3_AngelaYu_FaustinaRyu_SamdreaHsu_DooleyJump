@@ -22,7 +22,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	private Background bg; 
 	private Background[] scroll = new Background[2]; 
-    private Enemies[] enemies = new Enemies[3];   
+    private Enemies[] enemies = new Enemies[3];  
+    private Enemies test = new Enemies("/Graphics/Enemy1.png", 60, 60, 100, 257, 0, 0);
     private Dooley[] dooley = new Dooley[3]; 
     private Pea[] p = new Pea[numPeas];
     private Platform p1;
@@ -47,6 +48,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[0].paint(g);
 			enemies[1].paint(g);
 			enemies[2].paint(g);
+			
+			test.paint(g);
+			
+			if(test.isColliding(dooley[di])) {
+				System.out.println(true);
+			}else System.out.println(false);
 			  
 		    p1.paint(g);
 		    p1.checkPlat(dooley[di]);
@@ -55,7 +62,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    dooley[di].setvy(0);
 		    
 		    //g.drawRect(dooley[di].getX() + 10, dooley[di].getY() + 10, 48, 50);
-			//g.drawRect(p1.getX() + 14, p1.getY() + 26, p1.getWidth() - 25, p1.getHeight() - 45);
+		    /*System.out.println(test.getX());
+		    System.out.println(test.getY());
+		    System.out.println(test.getWidth());
+		    System.out.println(test.getHeight());
+			g.drawRect(test.getX() + 10, test.getY() + 10, 40, 40);*/
 		    
 		    //moving background
 		    if(isUp) scroll(50);
