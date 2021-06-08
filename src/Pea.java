@@ -1,5 +1,4 @@
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 public class Pea extends Character{
 	private boolean isMoving;
@@ -7,7 +6,6 @@ public class Pea extends Character{
 	
 	public Pea(String fileName, int width, int height, int x, int y, int vx, int vy) {
 		super(fileName, width, height, x, y, vx, vy);
-		//isMoving = false;
 		xi = x;
 		yi = y;
 	}
@@ -21,15 +19,6 @@ public class Pea extends Character{
 		y = yi;
 		isMoving = false;
 	}
-	
-	public void reset(Pea[] p) {
-		for(int i = 0; i < 4; i++) {
-	    	if(p[i].getMoving() && p[i].getY() < 0) {
-	    		p[i].reset();
-	    	}
-	    }
-	}
-	
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
 	}
@@ -38,19 +27,18 @@ public class Pea extends Character{
 		return isMoving;
 	}
 	
-	public void newShot(Graphics g, Pea[] p) {
-		boolean pfound = false;
-		for(int i = 0; i < 4; i++) {
-	    	if(!p[i].getMoving() && !pfound) {
+	public void newShot(Graphics g, Pea[] p, int numPeas) {
+		for(int i = 0; i < numPeas; i++) {
+	    	if(!p[i].getMoving() ) {
 	    		p[i].setMoving(true);
-	    		pfound = true;
+	    		break;
 	    	}
 	    }
 	    
 	}
 	
-	public void shoot(Graphics g, Pea[] p, Dooley d) {
-		for(int i = 0; i < 4; i++) {
+	public void shoot(Graphics g, Pea[] p, Dooley d, int numPeas) {
+		for(int i = 0; i < numPeas; i++) {
     		if(p[i].getMoving()) {	
     			p[i].setX(d.getX() + 17);
     			p[i].paint(g);

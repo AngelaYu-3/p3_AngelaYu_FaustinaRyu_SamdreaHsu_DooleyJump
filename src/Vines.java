@@ -17,3 +17,4 @@ public class Vines extends Platform {
 		return WINDOW_HEIGHT - this.y + 20;
 	}
 }
+

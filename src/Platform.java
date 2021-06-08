@@ -1,3 +1,4 @@
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,13 +22,9 @@ import java.util.ArrayList;
 public class Platform {
 	
 	protected int x;
-
 	protected int y;
-
 	protected int vx;
-
 	protected int vy;
-	
 	protected Image img;
 	final int WIDTH = 90;
 	final int HEIGHT = 60;
