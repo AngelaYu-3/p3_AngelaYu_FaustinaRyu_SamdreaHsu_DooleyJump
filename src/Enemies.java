@@ -12,6 +12,11 @@ public class Enemies extends Character {
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
+			
+			x = 50;
+			y = 247;
+			width = 65;
+			height = 65;
 	}
 	
 	
@@ -27,24 +32,17 @@ public class Enemies extends Character {
 	//collision between enemy and pea
 	public boolean isColliding(Pea p) {
 		//represent object as a "rectangle"
-		Rectangle enemy = new Rectangle(x+10, y+10, width-20, height-20);
-		Rectangle pea = new Rectangle(p.getX(), p.getY(), p.getWidth(), p.getHeight());
-		
+		Rectangle enemy = new Rectangle(this.x+10, this.y+10, this.width-20, this.height-20);
+		Rectangle pea = new Rectangle(p.getX()+12, p.getY()+13, p.getWidth()+15, p.getHeight()+15);
+				
 		return enemy.intersects(pea);
-		
-		
 	}
 	
 	public boolean isColliding(Dooley d) {
 		//represent object as a "rectangle"
-//		Rectangle enemy = new Rectangle(x, y, width, height);
-//		Rectangle doodle = new Rectangle(d.getX(), d.getY(), d.getWidth(), d.getHeight());
-		
-//		return enemy.intersects(doodle);
-		
-		Rectangle enemy = new Rectangle(x+10, y+10, width-20, height-20);
-		Rectangle dooley = new Rectangle(d.getX(), d.getY()-7, d.getWidth(), d.getHeight());
-		
+		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 45, 45);
+		Rectangle enemy = new Rectangle(this.x + 10, this.y + 10, this.width-20, this.height-20);
+			
 		return enemy.intersects(dooley);
 	}
 	
@@ -72,7 +70,6 @@ public class Enemies extends Character {
 
 	public void setvy(int vy) {
 		this.vy = vy;
-		
 	}
 	
 }
