@@ -23,6 +23,8 @@ public class Character{
 	/* if filename is provided */
 	public Character(String fileName, int width, int height, int x, int y, int vx, int vy) {
 		// assignment statements for attributes
+		this.width = width;
+		this.height = height;
 		this.x = x;
 		this.y = y;
 		this.vx = vx;
