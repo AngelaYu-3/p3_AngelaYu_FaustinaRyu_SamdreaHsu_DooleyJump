@@ -32,7 +32,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Music playMusic;
 
     private ArrayList<Platform> platforms = new ArrayList<Platform>();
-    private int numPlatforms = 10;
+    private int numPlatforms = 1;
+    private boolean isMoving;
     
 	//use awsd keys to move dooley once game starts
 	public void paint(Graphics g) {
@@ -57,19 +58,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			dooley[di].paint(g);
 			dooley[di].setvy(0);
 			
-			int shift = 0;
+
 			for(Platform p: platforms) {
 				p.paint(g);
-				//System.out.println(p.getX() + " " + p.getY());
-				/*
 				if(p.isSteppedOn(dooley[di])) {
-					shift = p.result(dooley[di]);
-					for(Platform i: platforms) {
-						i.setY(i.getY() + shift);
-					}
-					
+					isMoving = true;
 				}
-				*/
+				
+				if(isMoving) {
+					isMoving = p.shiftDown(200);
+				}
+				 
 			}
 			
 			

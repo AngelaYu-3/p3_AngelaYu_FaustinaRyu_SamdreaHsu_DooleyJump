@@ -30,6 +30,8 @@ public class Platform {
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
 	final int WINDOW_HEIGHT = 800;
+	protected boolean shifting = false;
+	protected int startingY;
 	
 
 	
@@ -39,7 +41,9 @@ public class Platform {
 	public Platform(String pType) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
-		respawn(WINDOW_HEIGHT);
+		//respawn(WINDOW_HEIGHT);
+		x = 50;
+		y = 247;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
@@ -124,6 +128,14 @@ public class Platform {
 		tx.setToTranslation(x, y);
 	}
 	
+	public void setVx(int vx) {
+		this.vx = vx;
+	}
+	
+	
+	public void setVy(int vy) {
+		this.vy = vy;
+	}
 	/*
 	 * This method will give the result of being stepped on
 	 * 
@@ -162,7 +174,7 @@ public class Platform {
 		int y = (int)(Math.random() * max);
 		
 		// change x and y to match a cell on the grid
-		x = (int)((double) x / cols * WINDOW_WIDTH);
+		x = (int)((double) x / cols * WINDOW_WIDTH - 10);
 		y = (int)((double) y / rows * (WINDOW_HEIGHT - HEIGHT));
 		
 		this.x = x;
@@ -174,5 +186,20 @@ public class Platform {
 		Rectangle p1 = new Rectangle(this.x + 14, this.y + 26, this.WIDTH - 25, this.HEIGHT - 45);
 		Rectangle p2 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25, p.getHeight() - 45);
 		return p1.intersects(p2);
+	}
+	
+	public boolean shiftDown(int units) {
+		if (!shifting) {
+			setVy(10);
+			shifting = true;
+			startingY = getY();
+		} else {
+			if (getY() - startingY >= units) {
+				setVy(0);
+				shifting = false;
+			}
+		}
+		
+		return shifting;
 	}
 }
