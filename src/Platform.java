@@ -188,9 +188,9 @@ public class Platform {
 		return p1.intersects(p2);
 	}
 	
-	public boolean shiftDown(int units) {
+	public boolean shiftDown(int units, int vy) {
 		if (!shifting) {
-			setVy(10);
+			setVy(vy);
 			shifting = true;
 			startingY = getY();
 		} else {

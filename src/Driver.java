@@ -66,7 +66,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				}
 				
 				if(isMoving) {
-					isMoving = p.shiftDown(600);
+					isMoving = p.shiftDown(600, 5);
+					scroll(600, 5);
 				}
 				 
 			}
@@ -80,7 +81,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    
 		    //moving background
 		    if(isUp) {
-		    	scroll(50);  
+		    	scroll(50, 5);  
 		    }
 		    
 		    //shooting
@@ -226,9 +227,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     	dooley[di].setY(y);
 	}
 	
-	public void scroll(int y) {		
-		scroll[0].setvy(5);
-		scroll[1].setvy(5);
+	public void scroll(int y, int vy) {		
+		scroll[0].setvy(vy);
+		scroll[1].setvy(vy);
 			
 		if(scroll[0].getY() <= sy + y) {
 			scroll[0].scroll();
