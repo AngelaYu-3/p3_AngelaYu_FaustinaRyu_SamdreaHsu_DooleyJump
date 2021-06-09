@@ -18,7 +18,7 @@ public class Vines extends Platform {
 	
 	public boolean checkPlat(Dooley d) {
 		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
-				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20))) && d.getNumBounces() < 1) {
+				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20))) && d.getNumBounces() < 2) {
 			result(d);
 			return false;
 		}

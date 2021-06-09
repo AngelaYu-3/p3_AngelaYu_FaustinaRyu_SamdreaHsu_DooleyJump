@@ -26,7 +26,7 @@ public class Platform {
 	protected int vy;
 	protected int count;
 	protected Image img;
-	protected boolean isStepped;
+	protected boolean isStepped, hasRocket;
 	final int WIDTH = 90;
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
@@ -37,6 +37,9 @@ public class Platform {
 	/*
 	 * constructor for custom platform
 	 */
+	
+	//jetpack: 115, 73
+	//platform: 100, 100
 	public Platform(String pType, int x, int y, int vx, int vy) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
@@ -44,6 +47,7 @@ public class Platform {
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
+		hasRocket = false;
 		count = 0;
 		
 		img = getImage(pType);
@@ -51,11 +55,16 @@ public class Platform {
 		init(x, y);
 	}
 	
-	/*
-	 * Default constructor creates the normal platform
-	 */
 	public Platform(int x, int y) {
 		this("/Graphics/platform.png", x, y, 0, 0);
+	}
+	
+	public int jetX() {
+		return x + 15;
+	}
+	
+	public int jetY() {
+		return y - 27;
 	}
 
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
@@ -143,7 +152,7 @@ public class Platform {
 	 * 
 	 */
 	public void result(Dooley d) {
-		d.bounce(100, 3);
+		d.bounce(100, 4);
 	}
 	
 	public boolean offScreen() {
