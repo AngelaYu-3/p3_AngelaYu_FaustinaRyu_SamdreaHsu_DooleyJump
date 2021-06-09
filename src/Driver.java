@@ -66,7 +66,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				}
 				
 				if(isMoving) {
-					isMoving = p.shiftDown(200);
+					isMoving = p.shiftDown(600);
 				}
 				 
 			}

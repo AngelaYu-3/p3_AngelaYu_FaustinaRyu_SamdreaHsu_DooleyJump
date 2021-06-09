@@ -198,6 +198,10 @@ public class Platform {
 				setVy(0);
 				shifting = false;
 			}
+			if(getY() >= WINDOW_HEIGHT) {
+				respawn(-10);
+				startingY = startingY - WINDOW_HEIGHT;
+			}
 		}
 		
 		return shifting;
