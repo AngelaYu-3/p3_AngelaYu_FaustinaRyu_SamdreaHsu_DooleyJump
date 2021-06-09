@@ -28,7 +28,7 @@ public class Dooley extends Character{
 	}
 	
 	public void fall() {
-		setvy(4);
+		setvy(1);
 	}
 	
 	public int getNumBounces() {

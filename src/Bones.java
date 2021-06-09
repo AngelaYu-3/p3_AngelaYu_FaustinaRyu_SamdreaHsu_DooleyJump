@@ -6,17 +6,12 @@ public class Bones extends Platform{
 		super(fileName, x, y, vx, vy);
 	}
 	
-
-	
 	/*
 	 * The result of stepping on a bone is that
 	 * 1) Dooley bounces 
 	 * 2) the bone breaks
 	 * 3) all objects on screen don't move
 	 */
-	public void result(Dooley d) {
-		d.bounce(100, 5);
-	}
 	
 	public boolean checkPlat(Dooley d) {
 		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 

@@ -26,7 +26,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Enemies test = new Enemies("/Graphics/Enemy1.png", 60, 60, 100, 257, 0, 0);
     private Dooley[] dooley = new Dooley[3]; 
     private Pea[] p = new Pea[numPeas];
-    private Platform[] p1 = new Platform[2];
+    private Platform[] p1 = new Platform[3];
     
     private Font font = new Font("Courier New", 1, 25);
     private Music playMusic;
@@ -50,10 +50,15 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[2].paint(g);
 			
 			test.paint(g);
-			  
+			
+			//bone logic
 		    p1[pi].paint(g);
 		    isDead = p1[pi].checkPlat(dooley[di]);
-		    if(isDead) pi = 1;
+		    if(isDead && dooley[di].getNumBounces() == 1) pi = 1;
+			
+		    //vine logic
+			if(!p1[2].checkPlat(dooley[di])) p1[2].paint(g);
+			else isDead = true;
 		    
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);
@@ -94,6 +99,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 			if(mx < 400 && mx > 200 && my > 300 && my < 380) {
 				isDead = false;
+				repaint();
 			}
 			if(mx < 400 && mx > 200 && my > 370 && my < 450) {
 				System.exit(1);
@@ -116,6 +122,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
         p1[0] = new Bones("/Graphics/bone.png", 200, 510, 0, 0);
         p1[1] = new Bones("/Graphics/bone1.png", 200, 510, 0, 3);
+        p1[2] = new Vines(195, 510, 0, 0);
         
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
@@ -124,7 +131,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
         enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
         
-        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 230, 475, 0, 0);
+        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 247, 475, 0, 0);
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 247, 0, 0);
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
         
