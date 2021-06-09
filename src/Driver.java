@@ -17,7 +17,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
   
 	private boolean isStart, isDead, isUp, isLeft, isRight;
 	private JFrame f;
-	private int mx, my, di, x, y, sy, sx, px, py, pc, score;
+	private int mx, my, di, pi, x, y, sy, sx, px, py, pc, score;
 	private int numPeas = 10;
 	
 	private Background bg; 
@@ -26,7 +26,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Enemies test = new Enemies("/Graphics/Enemy1.png", 60, 60, 100, 257, 0, 0);
     private Dooley[] dooley = new Dooley[3]; 
     private Pea[] p = new Pea[numPeas];
-    private Platform p1;
+    private Platform[] p1 = new Platform[2];
     
     private Font font = new Font("Courier New", 1, 25);
     private Music playMusic;
@@ -50,26 +50,16 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[2].paint(g);
 			
 			test.paint(g);
-			
-			if(test.isColliding(dooley[di])) {
-				System.out.println(true);
-			}else System.out.println(false);
 			  
-		    p1.paint(g);
-		    p1.checkPlat(dooley[di]);
+		    p1[pi].paint(g);
+		    isDead = p1[pi].checkPlat(dooley[di]);
+		    if(isDead) pi = 1;
 		    
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);
 		    
-		    //g.drawRect(dooley[di].getX() + 10, dooley[di].getY() + 10, 48, 50);
-		    /*System.out.println(test.getX());
-		    System.out.println(test.getY());
-		    System.out.println(test.getWidth());
-		    System.out.println(test.getHeight());
-			g.drawRect(test.getX() + 10, test.getY() + 10, 40, 40);*/
-		    
 		    //moving background
-		    if(isUp) scroll(50);
+		    if(isUp) scroll(50, 5);
 		    if(isLeft) translate(-60);
 		    if(isRight) translate(60);
 		    
@@ -124,7 +114,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	public Driver() {
 		//playMusic = new Music("Butter.wav", true);
         bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
-        p1 = new Bones(200, 510);
+        p1[0] = new Bones("/Graphics/bone.png", 200, 510, 0, 0);
+        p1[1] = new Bones("/Graphics/bone1.png", 200, 510, 0, 3);
+        
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
         
@@ -132,7 +124,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
         enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
         
-        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 210, 475, 0, 0);
+        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 230, 475, 0, 0);
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 247, 0, 0);
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
         
@@ -140,6 +132,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		isStart = true;
 		di = 0;
 		pc = 0;
+		pi = 0;
 		score = 0;
 		px = dooley[di].getX() + 17;
 		py = dooley[di].getY() - 20;
@@ -178,9 +171,22 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     	dooley[di].setY(y);
 	}
 	
-	public void scroll(int y) {		
-		scroll[0].setvy(5);
-		scroll[1].setvy(5);
+	public void translate(int x) {
+		if(x < 0) dooley[di].setvx(-5);
+		else dooley[di].setvx(5);
+
+		if(Math.abs(sx - dooley[di].getX()) < Math.abs(x)) {
+			dooley[di].move();
+		}else {
+			dooley[di].setvx(0);
+			isLeft = false;
+			isRight = false;
+		}
+	}
+	
+	public void scroll(int y, int vy) {		
+		scroll[0].setvy(vy);
+		scroll[1].setvy(vy);
 			
 		if(scroll[0].getY() <= sy + y) {
 			scroll[0].scroll();
@@ -193,19 +199,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			scroll[1].setvy(0);
 			resetPos(0);
 			isUp = false;
-		}
-	}
-	
-	public void translate(int x) {
-		if(x < 0) dooley[di].setvx(-5);
-		else dooley[di].setvx(5);
-
-		if(Math.abs(sx - dooley[di].getX()) < Math.abs(x)) {
-			dooley[di].move();
-		}else {
-			dooley[di].setvx(0);
-			isLeft = false;
-			isRight = false;
 		}
 	}
 

@@ -1,8 +1,12 @@
-public class Bones extends Platform{
+import java.awt.Image;
 
-	public Bones(int x, int y) {
-		super("/Graphics/bone.png", x, y);
+public class Bones extends Platform{
+	
+	public Bones(String fileName, int x, int y, int vx, int vy) {
+		super(fileName, x, y, vx, vy);
 	}
+	
+
 	
 	/*
 	 * The result of stepping on a bone is that
@@ -10,11 +14,19 @@ public class Bones extends Platform{
 	 * 2) the bone breaks
 	 * 3) all objects on screen don't move
 	 */
-	/*public int result(Dooley d) {
+	public void result(Dooley d) {
 		d.bounce(100, 5);
-		img = getImage("/Graphics/bone1.png");
-		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
-		init(x, y);
-		return 0;
-	}*/
+	}
+	
+	public boolean checkPlat(Dooley d) {
+		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
+				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20))) && d.getNumBounces() < 1) {
+			result(d);
+			return false;
+		}
+		else{
+			d.fall();
+			return true;
+		}
+	}
 }

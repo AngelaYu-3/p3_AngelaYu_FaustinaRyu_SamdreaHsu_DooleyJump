@@ -23,7 +23,8 @@ public class Platform {
 	protected int x;
 	protected int y;
 	protected int vx;
-	protected int vy;	
+	protected int vy;
+	protected int count;
 	protected Image img;
 	protected boolean isStepped;
 	final int WIDTH = 90;
@@ -36,11 +37,14 @@ public class Platform {
 	/*
 	 * constructor for custom platform
 	 */
-	public Platform(String pType, int x, int y) {
+	public Platform(String pType, int x, int y, int vx, int vy) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
 		this.x = x;
 		this.y = y;
+		this.vx = vx;
+		this.vy = vy;
+		count = 0;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
@@ -51,7 +55,7 @@ public class Platform {
 	 * Default constructor creates the normal platform
 	 */
 	public Platform(int x, int y) {
-		this("/Graphics/platform.png", x, y);
+		this("/Graphics/platform.png", x, y, 0, 0);
 	}
 
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
@@ -59,9 +63,16 @@ public class Platform {
 	// draw the affine transform
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		//TODO: move();
+		move();
 		g2.drawImage(img, tx, null);
 		
+	}
+
+	private void move() {
+		// TODO Auto-generated method stub
+		y += vy;
+		x += vx;
+		tx.setToTranslation(x, y);
 	}
 
 	public void init(double a, double b) {
@@ -81,10 +92,17 @@ public class Platform {
 		return tempImage;
 	}
 	
-	public void checkPlat(Dooley d) {
+	public boolean checkPlat(Dooley d) {
 		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
-				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20)))) result(d);
-		//else d.fall();
+				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20)))) {
+			result(d);
+			return false;
+		}
+		else{
+			System.out.println("falling");
+			d.fall();
+			return true;
+		}
 	}
 	
 	/*
@@ -93,7 +111,7 @@ public class Platform {
 	 */
 	public boolean isSteppedOn(Dooley d) {
 		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
-		Rectangle platform = new Rectangle(x + 14, y + 26, WIDTH - 25, HEIGHT - 45);
+		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 45);
 		//System.out.println(platform.intersects(dooley));
 		return platform.intersects(dooley);
 	}
@@ -124,9 +142,8 @@ public class Platform {
 	 * the value that all objects need to shift by)
 	 * 
 	 */
-	public int result(Dooley d) {
+	public void result(Dooley d) {
 		d.bounce(100, 3);
-		return WINDOW_HEIGHT - this.y - 20;
 	}
 	
 	public boolean offScreen() {
