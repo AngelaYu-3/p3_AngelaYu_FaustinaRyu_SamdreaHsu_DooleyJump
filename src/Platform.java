@@ -23,8 +23,10 @@ public class Platform {
 	protected int x;
 	protected int y;
 	protected int vx;
-	protected int vy;	
+	protected int vy;
+	protected int count;
 	protected Image img;
+	protected boolean isStepped, hasRocket;
 	final int WIDTH = 90;
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
@@ -35,22 +37,34 @@ public class Platform {
 	/*
 	 * constructor for custom platform
 	 */
-	public Platform(String pType) {
+	
+	//jetpack: 115, 73
+	//platform: 100, 100
+	public Platform(String pType, int x, int y, int vx, int vy) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
-		x = 50;
-		y = 247;
+		this.x = x;
+		this.y = y;
+		this.vx = vx;
+		this.vy = vy;
+		hasRocket = false;
+		count = 0;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 	
-	/*
-	 * Default constructor creates the normal platform
-	 */
-	public Platform() {
-		this("/Graphics/platform.png");
+	public Platform(int x, int y) {
+		this("/Graphics/platform.png", x, y, 0, 0);
+	}
+	
+	public int jetX() {
+		return x + 15;
+	}
+	
+	public int jetY() {
+		return y - 27;
 	}
 
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
@@ -58,9 +72,16 @@ public class Platform {
 	// draw the affine transform
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		//TODO: move();
+		move();
 		g2.drawImage(img, tx, null);
 		
+	}
+
+	private void move() {
+		// TODO Auto-generated method stub
+		y += vy;
+		x += vx;
+		tx.setToTranslation(x, y);
 	}
 
 	public void init(double a, double b) {
@@ -80,16 +101,27 @@ public class Platform {
 		return tempImage;
 	}
 	
-	
+	public boolean checkPlat(Dooley d) {
+		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
+				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20)))) {
+			result(d);
+			return false;
+		}
+		else{
+			System.out.println("falling");
+			d.fall();
+			return true;
+		}
+	}
 	
 	/*
 	 * Checks to see if Dooley stepped on a platform
 	 * Use this method when Dooley's vy < 0 to check if it lands on something
 	 */
 	public boolean isSteppedOn(Dooley d) {
-		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 40, 40);
-		Rectangle platform = new Rectangle(this.x + 20, this.y + 20, this.WIDTH - 30, this.HEIGHT - 30);
-		
+		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
+		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 45);
+		//System.out.println(platform.intersects(dooley));
 		return platform.intersects(dooley);
 	}
 	
@@ -119,9 +151,8 @@ public class Platform {
 	 * the value that all objects need to shift by)
 	 * 
 	 */
-	public int result(Dooley d) {
-		d.bounce(10);
-		return WINDOW_HEIGHT - this.y - 20;
+	public void result(Dooley d) {
+		d.bounce(100, 4);
 	}
 	
 	public boolean offScreen() {
