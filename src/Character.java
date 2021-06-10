@@ -101,11 +101,11 @@ public class Character{
 		return y;
 	}
 	
-	public int getvx(int vx) {
+	public int getvx() {
 		return vx;
 	}
 	
-	public int getvy(int vy) {
+	public int getvy() {
 		return vy;
 	}
 	
