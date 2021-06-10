@@ -39,11 +39,10 @@ public class Platform {
 	 * constructor for custom platform
 	 */
 	public Platform(String pType) {
-		// TODO: generate random x and y according to dimensions of platform and window 
 		
-		//respawn(WINDOW_HEIGHT);
-		x = 50;
-		y = 247;
+		respawn(WINDOW_HEIGHT);
+		//x = 50;
+		//y = 247;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
@@ -188,7 +187,7 @@ public class Platform {
 		return p1.intersects(p2);
 	}
 	
-	public boolean shiftDown(int units, int vy) {
+	public void shiftDown(int units, int vy) {
 		if (!shifting) {
 			setVy(vy);
 			shifting = true;
@@ -204,6 +203,10 @@ public class Platform {
 			}
 		}
 		
+		//return shifting;
+	}
+	
+	public boolean isShifting() {
 		return shifting;
 	}
 }
