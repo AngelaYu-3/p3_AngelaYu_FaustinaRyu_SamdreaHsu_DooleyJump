@@ -10,7 +10,7 @@ public class Enemies extends Character {
 			super(filename, w, h, x, y, vx, vy);
 			
 			
-			this.vx = 0;
+			this.vx = 1;
 			width = 65;
 			height = 65;
 	}

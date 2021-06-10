@@ -18,11 +18,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private JFrame f;
 	private int mx, my, di, x, y, sy, px, py, pc;
 	private Background[] scroll = new Background[2]; 
-        private Enemies[] enemies = new Enemies[3];
-        	private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
-        	private int count;
-        	private boolean dead;
-        private Dooley[] dooley = new Dooley[3];
+		private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
+			private Enemies add;
+		private Dooley[] dooley = new Dooley[3];
         private Pea[] p = new Pea[4];
         
         
@@ -76,41 +74,46 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isStart = false;
 		}
 		
-		//spawn enemy based on dooley position
-		for (int i = 0; i < enemy.size(); i++) {
-			if (!isStart && enemy.get(i).getY()<300) {
-				enemy.get(i).paint(g);
-				
+		//make sure enemy doesn't spawn on dooley
+				for (int i = 0; i < enemy.size(); i++) {
+					if (!isStart && enemy.get(i).getY()<350) {
+						enemy.get(i).paint(g);
+//						add.paint(g);
+					}
+				}
+		
+		//enemies die after getting shot more than 3 times 
+		int count = 0;
+		for (int i = enemy.size()-1; i >= 0; i--) {
+			for (int j = 0; j < p.length; j++) {
+				if (enemy.get(i).isColliding(p[j])) {
+						count++;
+						System.out.print(count);
+						System.out.println();
+						if (count == 2) {
+								enemy.get(i).setvx(0);
+								enemy.remove(i);
+								count = 0;
+								break;
+							
+						}
+ 				} 
 			}
 		}
+		
+		
 		
 		//move back and forth
 		for (int i = 0; i < enemy.size(); i++) {
-			if (enemy.get(i).getX()<0 || enemy.get(i).getX()>530) {
+			if (enemy.get(i).getX()<0 || enemy.get(i).getX()>510) {
 				System.out.println("overbounds");
-				enemy.get(i).setvx(enemy.get(i).getvx()*-1);
-			}
+				enemy.get(i).setvx(enemy.get(i).getvx()*(-1));
 				
+			} 
 		}
 		
 		
-		//enemies die after shot 3 times
-		for (int i = 0; i < enemy.size(); i++) {
-			for (int j = 0; j < p.length; j++) {
-				if (enemy.get(i).isColliding(p[j])) {
-					count++;
-				}
-					if (count == 3) {
-						enemy.get(i).setvx(0);
-						enemy.remove(i);
-						System.out.println("enemies die");
-						enemy.get(i).reset(enemy);
-						count = 0;
-					}
-					
-				
-			}
-		}
+		
 		
 		//dooley dies
 		for (int i = 0; i < enemy.size(); i++) {
@@ -156,12 +159,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
         
         	enemy = new ArrayList<Enemies>();
-        	enemy.add(new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)+100),(int)(Math.random()*(400)-100), 1, 0));
-        	enemy.add(new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)+100),(int)(Math.random()*(400)-100), 1, 0));
-        	enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)+100),(int)(Math.random()*(400)-100), 1, 0));
-        	dead = false;
-        	count = 0;
-        
+        	enemy.add(new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        	enemy.add(new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        	enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        		add = new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 0, 0);
         dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);        
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 247, 0, 0);
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
