@@ -1,23 +1,20 @@
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 public class Enemies extends Character {
 	
-	Rectangle world = new Rectangle(0, 0, 600, 800);
-	private int xBound;
+	
+	private boolean shot;
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
 			
 			
-			this.vx = -5;
+			this.vx = 0;
 			width = 65;
 			height = 65;
 	}
 		
-	public void sideToside() {
-			vx*=-1;
-		
-	}
 	
 	
 	//collision between enemy and pea
@@ -38,26 +35,20 @@ public class Enemies extends Character {
 		return enemy.intersects(dooley);
 	}
 	
-//	public void respawn(int maxY) {
-//		//The whole screen is essentially a 10 by 14 grid 
-//		int rows = 14;
-//		int cols = 7;
-//		
-//		// the max y
-//		int max = (int)((double)maxY/800 * rows);
-//		
-//		// random indexes for x and y
-//		int x = (int)(Math.random() * cols);
-//		int y = (int)(Math.random() * max);
-//		
-//		// change x and y to match a cell on the grid
-//		x = (int)((double) x / cols * 600);
-//		y = (int)((double) y / rows * (800 - 60));
-//		
-//		this.x = x;
-//		this.y = y;
-//		
-//	}
+	public void reset() {
+		x = (int)(Math.random()*(500)+100);
+		y = (int)(Math.random()*(400)-100);
+		shot = false;
+	}
+	
+	public void reset(ArrayList<Enemies> e) {
+		for(int i = 0; i < 3; i++) {
+	    	if (shot) {
+	    		e.get(i).reset();
+	    	}
+	    }
+	}
+
 	
 	public int getvx() {
 		return vx;
