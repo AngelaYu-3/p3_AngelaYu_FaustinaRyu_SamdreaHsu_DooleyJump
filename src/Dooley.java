@@ -34,4 +34,22 @@ public class Dooley extends Character{
 	public int getNumBounces() {
 		return numBounces;
 	}
+	
+	/*
+	 * experimenting in progress...
+	 * 
+	public void bounce(int height) {
+		if(!isUp) {
+			setvy(-10);
+			isUp = true;
+			currY = getY();
+		} else {
+			if (getY() - currY >= height) {
+				setvy(-10);
+				isUp = false;
+			}
+			
+		}
+	}
+	*/
 }

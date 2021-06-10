@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,6 +33,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     
     private Font font = new Font("Courier New", 1, 25);
     private Timer t;
+    
+    private ArrayList<Platform> platforms = new ArrayList<Platform>();
+    private int numPlatforms = 10;
 
 	public void paint(Graphics g) {
 	//TESTING
@@ -39,7 +43,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	//PLAYSCREEN
 		if(!isStart) {
-			shuffler[sm].play(-20.0f);
+			//shuffler[sm].play(-20.0f);
 			scroll[0].paint(g);
 			scroll[1].paint(g);
 			
@@ -52,16 +56,38 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			enemies[2].paint(g);
 
 			
-			
+			/*
+			 * The checkPlat seems to return true immediately.. 
+			 * so my game dies immediately
+			 * 
 			p1[3].paint(g);
 			j.paint(g);
 
 			//bone + vine logic --> still needs to be integrated
 		    p1[pi].paint(g);
-		    isDead = p1[pi].checkPlat(dooley[di]);
+		    //isDead = p1[pi].checkPlat(dooley[di]);
 		    if(isDead && dooley[di].getNumBounces() == 3) pi = 1;
 			//if(!p1[2].checkPlat(dooley[di])) p1[2].paint(g);
 			//else isDead = true;
+			 * 
+			 */
+			
+			for(Platform p: platforms) {
+				p.paint(g);
+				if(p.isSteppedOn(dooley[di])) {
+					for(Platform i: platforms) {
+						i.shiftDown(600, 5);
+						scroll(600, 5);
+						}
+					
+				}
+				
+				if(p.isShifting()) {
+					p.shiftDown(600, 5);
+					scroll(600, 5);
+				} 
+				 
+			}
 		    
 		    dooley[di].paint(g);
 		    dooley[di].setvy(0);
@@ -166,6 +192,39 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         
         for(int i = 0; i < 10; i++) {
         	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
+        }
+        
+      //Initialize platforms
+        for(int i = 0; i < numPlatforms; i++) {
+        	// TODO: have some logic that will give 20% chance of vine,
+        	//		20% chance of broken, and 60% chance of normal
+        	platforms.add(0, new Platform(0,0));  
+        	
+        	int moreRand = (int)(Math.random() * 20);
+        	platforms.get(0).setX(platforms.get(0).getX() + moreRand);
+			platforms.get(0).setY(platforms.get(0).getY() + moreRand);
+        	
+        	boolean touching = true;
+        	while(touching) {
+        		touching = false;
+        		for(int j = 0; j < platforms.size(); j++) {
+        			if (j != 0 && platforms.get(0).tooClose(platforms.get(j))) {
+            			touching = true;
+            			
+            			// stagger the platforms if they intersect
+            			int fix = 10;
+            			if ( platforms.get(0).getX() < platforms.get(j).getX()) {
+            				// stagger to the left
+            				platforms.get(0).setX(platforms.get(0).getX() - fix);
+            				platforms.get(0).setY(platforms.get(0).getY() + fix);
+            			} else {
+            				// stagger to the right
+            				platforms.get(0).setX(platforms.get(0).getX() + fix);
+            				platforms.get(0).setY(platforms.get(0).getY() + fix);
+            			}
+        			}
+        		}
+        	}
         }
         
 	    f.setTitle("DooleyJump!");
