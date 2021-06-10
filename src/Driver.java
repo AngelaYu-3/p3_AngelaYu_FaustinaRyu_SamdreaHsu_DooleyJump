@@ -39,7 +39,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	//PLAYSCREEN
 		if(!isStart) {
-			shuffler[sm].play(-40.0f);
+			shuffler[sm].play(-20.0f);
 			scroll[0].paint(g);
 			scroll[1].paint(g);
 			
@@ -68,8 +68,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    
 		    //moving background
 		    if(isUp) scroll(50, 5);
-		    if(isLeft) translate(-60);
-		    if(isRight) translate(60);
+		    if(isLeft && !isDead) translate(-60);
+		    if(isRight && !isDead) translate(60);
 		    
 		    //shooting
 		    if(pc == 1) {
@@ -105,6 +105,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 			if(mx < 400 && mx > 200 && my > 300 && my < 380) {
 				isDead = false;
+				dooley[di].setvx(0);
+				dooley[di].setvy(3);
 				repaint();
 			}
 			if(mx < 400 && mx > 200 && my > 370 && my < 450) {
@@ -241,15 +243,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     	
 	    //add horizontal movement here look at logic for up movement
 	    case 'a':
-	    	resetPos(0);
-	    	sx = dooley[di].getX();
-	    	isLeft = true;
+	    	if(!isDead) {
+	    		resetPos(0);
+			    sx = dooley[di].getX();
+			    isLeft = true;
+	    	}
     	    break;
     	    
 	    case 'd':
-	    	resetPos(1);
-	    	sx = dooley[di].getX();
-	    	isRight = true;
+	    	if(!isDead) {
+	    		resetPos(1);
+			    sx = dooley[di].getX();
+			    isRight = true;
+	    	}
     	    break;
 	    }
       	    
