@@ -1,15 +1,11 @@
-
-
 import java.io.File;
-import java.io.IOException;
+import javax.sound.sampled.*;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Music  implements Runnable  {
@@ -20,6 +16,7 @@ public class Music  implements Runnable  {
 	private Clip audioClip;
 	private String fn;
 	private boolean loops = false;
+	private float decibel;
 	
 	/**
 	 * Create a music object from a given file name. 
@@ -63,7 +60,11 @@ public class Music  implements Runnable  {
 	 * Start the music. If the object was created with loops set to true then
 	 * it will loop otherwise it will be played once. 
 	 */
-	public void play() {		
+	public void play(float decibel) {
+		this.decibel = decibel;
+		FloatControl gainControl = 
+			    (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(this.decibel); // Reduce volume by 10 decibels.
 		if(loops==false) {
 			audioClip.start();
 		}else {
@@ -109,7 +110,7 @@ public class Music  implements Runnable  {
 	@Override
 	public void run() {
 		// audioClip.start();
-		play();
+		play(decibel);
 	}
 	
 

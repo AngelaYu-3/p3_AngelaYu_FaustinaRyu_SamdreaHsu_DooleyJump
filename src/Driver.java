@@ -27,6 +27,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Pea[] p = new Pea[numPeas];
     private Platform[] p1 = new Platform[4];
     private Music[] shuffler = new Music[3];
+    private Music[] soundEffects = new Music[3];
     private Jetpack j;
     
     private Font font = new Font("Courier New", 1, 25);
@@ -38,7 +39,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	//PLAYSCREEN
 		if(!isStart) {
-			shuffler[sm].play();
+			shuffler[sm].play(-40.0f);
 			scroll[0].paint(g);
 			scroll[1].paint(g);
 			
@@ -55,12 +56,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			p1[3].paint(g);
 			j.paint(g);
 
-			//bone logic still needs to be integrated
+			//bone + vine logic --> still needs to be integrated
 		    p1[pi].paint(g);
 		    isDead = p1[pi].checkPlat(dooley[di]);
 		    if(isDead && dooley[di].getNumBounces() == 3) pi = 1;
-			
-		    //vine logic still needs to be integrated
 			//if(!p1[2].checkPlat(dooley[di])) p1[2].paint(g);
 			//else isDead = true;
 		    
@@ -76,6 +75,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    if(pc == 1) {
 		    	p[0].newShot(g, p, numPeas);
 		    	pc = 0;
+		    	soundEffects[0].play(-10.0f);
 		    }
 		    p[0].shoot(g, p, dooley[di], numPeas);
 		    reset();
@@ -101,6 +101,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	//ENDSCREEN
 		if(isDead) {
 			bg.endScreen(g);
+			soundEffects[1].play(-30.0f);
 			
 			if(mx < 400 && mx > 200 && my > 300 && my < 380) {
 				isDead = false;
@@ -123,7 +124,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 	public Driver() {
-		sm = (int)(Math.random()*3);
         bg = new Background("/Graphics/background.png", 0, 0, 600, 800);
         p1[0] = new Bones("/Graphics/bone.png", 200, 510, 0, 0);
         p1[1] = new Bones("/Graphics/bone1.png", 200, 510, 0, 3);
@@ -147,6 +147,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
         dooley[3] = new Dooley("/Graphics/dooleyLeft.png",65, 65, 350, 247, 0, 0);
         dooley[4] = new Dooley("/Graphics/dooleyjetLeft.png", 80, 90, 350, 300, 0,0);
+ 
+        soundEffects[0] = new Music("shoot.wav", true);
+        soundEffects[1] = new Music("fall.wav", false);
+        soundEffects[2] = new Music("jetpack.wav", true);
         
         f = new JFrame();
 		isStart = true;
@@ -154,6 +158,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		pc = 0;
 		pi = 0;
 		score = 0;
+		sm = (int)(Math.random()*3);
 		px = dooley[di].getX() + 17;
 		py = dooley[di].getY() - 20;
         
