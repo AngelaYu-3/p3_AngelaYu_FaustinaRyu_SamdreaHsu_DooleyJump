@@ -1,3 +1,3 @@
 # p3_AngelaYu_FaustinaRyu_SamdreaHsu_DooleyJump
 
-Q4 final project
+APCSA Q4 final project [Doodle Jump] by Angela Yu, Faustina Ryu, Samdrea Hsu
