@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,13 +18,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private JFrame f;
 	private int mx, my, di, x, y, sy, px, py, pc;
 	private Background[] scroll = new Background[2]; 
-        private Enemies[] enemies = new Enemies[3];  
+        private Enemies[] enemies = new Enemies[3];
+        	private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
+        	private boolean dead;
         private Dooley[] dooley = new Dooley[3];
         private Pea[] p = new Pea[4];
         
-        private Platform platform = new Platform();
        
-        private Pea testPea;
         
         //use awsd keys to move dooley once game starts
 
@@ -74,32 +75,20 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 		//spawn enemy based on dooley position
-		if (dooley[di].getY() > 150 && dooley[di].getY() < 300 && !isStart) {
-			
-			//test platform
-			platform.paint(g);
-			enemies[0].paint(g);
-			testPea.paint(g);
-			
-			//draw rectangles for collision coordinates
-			g.drawRect(testPea.getX()+12, testPea.getY()+13, testPea.getWidth()-25, testPea.getHeight()-25);
-			g.drawRect(dooley[di].getX()+10, dooley[di].getY()+10, 48, 55);
-
+		for (int i = 0; i < enemies.length; i++) {
+			if (!isStart) {
+				if (enemies[i].getX() <330 && enemies[i].getX()>400&& enemies[i].getY()>310) {
+					enemies[i].paint(g);
+				}
+			}
 		}
 		
-		
-		if (dooley[di].getY() > 301 && dooley[di].getY() < 450 && !isStart) {
-			enemies[1].paint(g);
-		}
-		if (dooley[di].getY() > 450 && dooley[di].getY() < 800 && !isStart) {
-			enemies[2].paint(g);
-		}
 		
 		//enemies die
 		for (int i = 0; i < enemies.length; i++) {
 			for (int j = 0; j < p.length; j++) {
 				if (enemies[i].isColliding(p[j])) {
-					System.out.println(p[j].getY());
+					dead = true;
 					System.out.println("enemies die");
 				}
 			}
@@ -113,7 +102,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			}
 		}
 		
-		
+	//get rid of enemies
+		if (dead) {
+			
+		}
 		
 		
 		
@@ -147,16 +139,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
         
-        platform = new Platform ("/Graphics/platform.png");
-        enemies[0] = new Enemies("/Graphics/Enemy1.png", 65, 65, 50, 50, 0, 0);
-        enemies[1] = new Enemies("/Graphics/Enemy2.png", 65, 65, 100, 50, 0, 0);
-        enemies[2] = new Enemies("/Graphics/Enemy3.png", 65, 65, 150, 50, 0, 0);
+        enemies[0] = new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)+100),(int)(Math.random()*(400)-100), 1, 0);
+        enemies[1] = new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)+100),(int)(Math.random()*(400)-100), 1, 0);
+        enemies[2] = new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)+100),(int)(Math.random()*(400)-100), 1, 0);
+
+        	dead = false;
         
         dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);        
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 247, 0, 0);
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
         
-        testPea = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, 0);
+        
         
         
         f = new JFrame();
@@ -167,6 +160,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		px = dooley[di].getX() + 17;
 		py = dooley[di].getY() - 20;
         
+		for (int i = 0; i < enemies.length; i++) {
+			if (enemies[i].getX()<100) {
+				System.out.println("overbounds");
+				enemies[i].setvx(enemies[i].getvx()*-1);
+			}
+				
+		}
         for(int i = 0; i < 4; i++) {
         	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
         }

@@ -1,24 +1,22 @@
 import java.awt.Rectangle;
 
 public class Enemies extends Character {
-				
+	
+	Rectangle world = new Rectangle(0, 0, 600, 800);
+	private int xBound;
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
 			
-			x = 50;
-			y = 247;
+			
+			this.vx = -5;
 			width = 65;
 			height = 65;
 	}
-	
-	
+		
 	public void sideToside() {
-		if (x<60) {
 			vx*=-1;
-		} else if (x>540) {
-			vx*=-1;
-		}
+		
 	}
 	
 	
@@ -28,7 +26,6 @@ public class Enemies extends Character {
 		Rectangle enemy = new Rectangle(this.x+10, this.y+10, 40, 40);
 		Rectangle pea = new Rectangle(p.getX()+12, p.getY()+13, p.getWidth()-25, p.getHeight()-25);
 		
-//		System.out.println(pea+":"+enemy);
 
 		return enemy.intersects(pea);
 	}
@@ -40,6 +37,27 @@ public class Enemies extends Character {
 
 		return enemy.intersects(dooley);
 	}
+	
+//	public void respawn(int maxY) {
+//		//The whole screen is essentially a 10 by 14 grid 
+//		int rows = 14;
+//		int cols = 7;
+//		
+//		// the max y
+//		int max = (int)((double)maxY/800 * rows);
+//		
+//		// random indexes for x and y
+//		int x = (int)(Math.random() * cols);
+//		int y = (int)(Math.random() * max);
+//		
+//		// change x and y to match a cell on the grid
+//		x = (int)((double) x / cols * 600);
+//		y = (int)((double) y / rows * (800 - 60));
+//		
+//		this.x = x;
+//		this.y = y;
+//		
+//	}
 	
 	public int getvx() {
 		return vx;
@@ -53,11 +71,7 @@ public class Enemies extends Character {
 	public String toString() {
 		return x + " " + y;
 	}
-	
 
-	public void move() {
-		super.move();
-	}
 	
 	public void setvx(int vx) {
 		this.vx = vx;
