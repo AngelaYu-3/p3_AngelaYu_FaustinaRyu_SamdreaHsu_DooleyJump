@@ -35,9 +35,8 @@ public class Dooley extends Character{
 		return numBounces;
 	}
 	
-	/*
-	 * experimenting in progress...
-	 * 
+
+	// Trying to fix the bouncing... but i don't think this works
 	public void bounce(int height) {
 		if(!isUp) {
 			setvy(-10);
@@ -45,11 +44,16 @@ public class Dooley extends Character{
 			currY = getY();
 		} else {
 			if (getY() - currY >= height) {
-				setvy(-10);
+				System.out.println("this line is executed");
+				setvy(10);
 				isUp = false;
 			}
 			
 		}
 	}
-	*/
+	
+	public boolean isUp() {
+		return isUp;
+	}
+	
 }
