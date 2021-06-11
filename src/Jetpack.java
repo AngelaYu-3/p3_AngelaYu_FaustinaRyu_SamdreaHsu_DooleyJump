@@ -1,4 +1,3 @@
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -8,6 +7,10 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * Jetpack class
+ * deals with jetpack animation
+ */
 public class Jetpack {
 	
 	private int x, y, vx, vy;

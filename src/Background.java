@@ -6,7 +6,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
+import java.util.ArrayList;
 
+/**
+ *creates background objects
+ *sets up both start/end screens to be called in driver
+ */
 public class Background{
 	private int x, y, vx, vy; 
 	private Image img; 
@@ -26,24 +31,9 @@ public class Background{
 		init(x, y);
 	}
 	
-	public void scroll() {
-		y += vy;
-		tx.setToTranslation(x, y);
-
-	}
-	
-	public int getY() {
-		return y;
-	}
-	
-	public void setY(int y) {
-	    this.y = y;
-	}
-	
-	public void setvy(int vy) {
-		this.vy = vy;
-	}
-	
+	/**
+	 * setting up start screen
+	 */
 	public void startScreen(Graphics g) {
 		g.setFont(f1);
 		g.setColor(Color.black);
@@ -63,8 +53,10 @@ public class Background{
  
 	}
 
-	//still need to link end button & animate endScreen to come in at right time
-	public void endScreen(Graphics g) {
+	/**
+	 * setting up end screen
+	 */
+	public void endScreen(Graphics g, ArrayList<Integer> scoreBoard) {
 		g.setFont(f1);
 		g.setColor(Color.black);
 		g.drawString("Dooley is ded RIP", 120, 260);
@@ -80,6 +72,11 @@ public class Background{
 		g.setFont(f2);
 		g.setColor(Color.black);
 		g.drawString("end", 275, 400);
+		
+		/*g.setFont(f3);
+		for(int i = 0; i < scoreBoard.size(); i++) {
+			g.drawString("Game " + 0 + ": " + scoreBoard.get(0), 100, 430);
+		}*/
 	}
 	
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
@@ -89,6 +86,24 @@ public class Background{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(img, tx, null);
 		
+	}
+	
+	public void scroll() {
+		y += vy;
+		tx.setToTranslation(x, y);
+
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public void setY(int y) {
+	    this.y = y;
+	}
+	
+	public void setvy(int vy) {
+		this.vy = vy;
 	}
 	
 	private void init(double a, double b) {
