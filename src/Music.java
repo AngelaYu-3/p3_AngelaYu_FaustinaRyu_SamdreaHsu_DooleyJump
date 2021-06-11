@@ -7,7 +7,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
+/**
+ * Music class
+ * deals with playing music
+ * variables: looping, stopping, volume
+ */
 public class Music  implements Runnable  {
 	
 	private Thread t;

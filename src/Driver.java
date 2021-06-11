@@ -8,11 +8,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+/**
+ * Driver: from which program is run from
+ */
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
   
 	private boolean isStart, isDead, isUp, isLeft, isRight, reset;
@@ -30,19 +34,20 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Music[] shuffler = new Music[3];
     private Music[] soundEffects = new Music[3];
     private Jetpack j;
+    private ArrayList<Integer> scoreBoard = new ArrayList<Integer>();
     
     private Font font = new Font("Courier New", 1, 25);
     private Timer t;
 
+    /**
+     * painting on JFrame
+     */
 	public void paint(Graphics g) {
 	//TESTING
 		super.paintComponent(g);
 	
 	//PLAYSCREEN
-		//System.out.println(isStart);
-		//System.out.println(isDead);
 		if(!isStart && !isDead) {
-			System.out.println("play");
 			shuffler[sm].play(-20.0f);
 			scroll[0].paint(g);
 			scroll[1].paint(g);
@@ -52,10 +57,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			g.drawString("Score: " + score, 5, 20);
 			
 		    starter.paint(g);
-		    System.out.println(dooley[di].getY());
-		    if(starter.checkPlat(dooley[di])) soundEffects[1].play(-20.0f);
-		    if(starter.checkPlat(dooley[di]) && dooley[di].getY() > 820) isDead = true;
 		    dooley[di].paint(g);
+		    if(starter.checkPlat(dooley[di])) {
+		    	soundEffects[1].play(0.0f);
+		    	if(dooley[di].getY() > 820) isDead = true;
+		    }
 
 		    if(isLeft) translate(-65);
 		    if(isRight) translate(65);
@@ -108,20 +114,24 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 		
 	//ENDSCREEN
-		System.out.println(isDead);
 		if(isDead) {
 			bg[1].paint(g);
-			bg[1].endScreen(g);
+			//scoreBoard.add(score);
+			bg[1].endScreen(g, scoreBoard);
 			dooley[3].paint(g);
 			dooley[3].bounce(25, 1);
 			
-			System.out.println("mx: " + mx + "my: " + my);
-			if(mx < 400 && mx > 200 && my > 300 && my < 380) {
+			//replay button
+			if(mx < 400 && mx > 200 && my > 300 && my < 380) {	
+				score = 0;
 				isDead = false;
 				isStart = false;
 				di = 0;
 				dooley[di].setX(247);
 				dooley[di].setY(475);
+				soundEffects[1] = new Music("fall.wav", false);
+				mx = 0;
+				my = 0;
 			}
 			if(mx < 400 && mx > 200 && my > 370 && my < 450) {
 				System.exit(1);
@@ -139,6 +149,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		new Driver();
 	}
 
+	/**
+	 * Driver constructor, objects instantiated
+	 */
 	public Driver() {
         bg[0] = new Background("/Graphics/background.png", 0, 0, 600, 800);
         bg[1] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
@@ -196,7 +209,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.setVisible(true);	
 	}
 
-//HELPER METHODS	
+//HELPER METHODS --> consider moving these to respective classes	
 	public void reset() {
 		for(int i = 0; i < numPeas; i++) {
 	    	if(p[i].getMoving() && p[i].getY() < 0) {
@@ -244,6 +257,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 	}
 
+	/**
+	 * user (keys) game interaction
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 	    if(!isStart){
@@ -284,6 +300,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 
 	}
 
+	/**
+	 * recording where on screen mouse clicks
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub

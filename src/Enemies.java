@@ -1,5 +1,9 @@
 import java.awt.Rectangle;
 
+/**
+ * Enemies class
+ * deals with random generation/animation of Enemies
+ */
 public class Enemies extends Character {
 				
 	// default constructor, sets all to zero

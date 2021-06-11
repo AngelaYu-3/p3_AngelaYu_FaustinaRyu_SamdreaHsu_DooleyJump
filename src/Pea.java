@@ -1,5 +1,8 @@
 import java.awt.Graphics;
-
+/**
+ * Pea class
+ * deals with pea animation including shooting
+ */
 public class Pea extends Character{
 	private boolean isMoving;
 	private int xi, yi;
@@ -19,14 +22,21 @@ public class Pea extends Character{
 		y = yi;
 		isMoving = false;
 	}
+	
+	/**
+	 * sets/returns if a pea is moving
+	 */
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
-	}
-	
+	}	
 	public boolean getMoving() {
 		return isMoving;
 	}
 	
+	/**
+	 * first finds first pea in array that is not already moving and
+	 * creates a new shot by setting a new pea to be moving
+	 */
 	public void newShot(Graphics g, Pea[] p, int numPeas, int px, int py) {
 		for(int i = 0; i < numPeas; i++) {
 	    	if(!p[i].getMoving() ) {
@@ -39,6 +49,9 @@ public class Pea extends Character{
 	    
 	}
 	
+	/**
+	 * shoots all peas with isMoving set to true
+	 */
 	public void shoot(Graphics g, Pea[] p, Dooley d, int numPeas) {
 		for(int i = 0; i < numPeas; i++) {
     		if(p[i].getMoving()) {	

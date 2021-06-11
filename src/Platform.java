@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-/*
+/**
  * The is the class for the normal platform
  * 
  * TODO in driver: 
@@ -37,9 +37,6 @@ public class Platform {
 	/*
 	 * constructor for custom platform
 	 */
-	
-	//jetpack: 115, 73
-	//platform: 100, 100
 	public Platform(String pType, int x, int y, int vx, int vy) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
@@ -101,6 +98,10 @@ public class Platform {
 		return tempImage;
 	}
 	
+	/**
+	 * continuously having dooley bounce on platform 
+	 * unless dooley falls off
+	 */
 	public boolean checkPlat(Dooley d) {
 		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
 				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20)))) {
@@ -113,7 +114,7 @@ public class Platform {
 		}
 	}
 	
-	/*
+	/**
 	 * Checks to see if Dooley stepped on a platform
 	 * Use this method when Dooley's vy < 0 to check if it lands on something
 	 */
@@ -139,16 +140,8 @@ public class Platform {
 		return y;
 	}
 	
-	/*
-	 * This method will give the result of being stepped on
-	 * 
-	 * It will vary according to what type of platform it is
-	 * 
-	 * Stepping on a normal platform will
-	 * 1) cause dooley to jump
-	 * 2) make all the platforms and characters go down (this method returns
-	 * the value that all objects need to shift by)
-	 * 
+	/**
+	 * dooley bounces as a result of stepping on platform
 	 */
 	public void result(Dooley d) {
 		d.bounce(100, 4);

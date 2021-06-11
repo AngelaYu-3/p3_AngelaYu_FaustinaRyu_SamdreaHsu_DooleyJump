@@ -5,7 +5,9 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
-
+/**
+ * Character class that many sprites extend
+ */
 public class Character{
 	// attributes of a character
 	protected int x; // Position of character
@@ -34,7 +36,6 @@ public class Character{
 
 	}
 
-	// gets image and process it
 	public void move() {
 		y += vy;
 		x += vx;
@@ -49,7 +50,9 @@ public class Character{
 		tx.setToTranslation(x, y);
 	}
 	
-	//check if two characters are in the same spot 
+	/**
+	 * check if two characters are in the same spot 
+	 */
 	public boolean equals(Character obj) {
 		Character other = obj;
 		if ((obj.getX()+obj.getWidth()) >= other.getX() &&
