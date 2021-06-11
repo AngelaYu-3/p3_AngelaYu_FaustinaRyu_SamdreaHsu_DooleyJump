@@ -27,10 +27,12 @@ public class Pea extends Character{
 		return isMoving;
 	}
 	
-	public void newShot(Graphics g, Pea[] p, int numPeas) {
+	public void newShot(Graphics g, Pea[] p, int numPeas, int px, int py) {
 		for(int i = 0; i < numPeas; i++) {
 	    	if(!p[i].getMoving() ) {
 	    		p[i].setMoving(true);
+	    		p[i].setX(px);
+	    		p[i].setY(py);
 	    		break;
 	    	}
 	    }
