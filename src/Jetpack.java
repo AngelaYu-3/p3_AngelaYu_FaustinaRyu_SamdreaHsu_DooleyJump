@@ -8,7 +8,6 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.util.ArrayList;
 
-
 public class Jetpack {
 	
 	private int x, y, vx, vy;

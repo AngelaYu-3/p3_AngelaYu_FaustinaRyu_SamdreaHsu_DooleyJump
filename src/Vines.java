@@ -1,5 +1,4 @@
-
-  public class Vines extends Platform {
+public class Vines extends Platform {
 	
 	public Vines(int x, int y, int vx, int vy) {
 		super("/Graphics/vine.png", x, y, vx, vy);

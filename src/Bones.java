@@ -1,4 +1,3 @@
-
 public class Bones extends Platform{
 	
 	public Bones(String fileName, int x, int y, int vx, int vy) {

@@ -59,7 +59,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			 * 
 			p1[3].paint(g);
 			j.paint(g);
-
 			//bone + vine logic --> still needs to be integrated
 		    p1[pi].paint(g);
 		    //isDead = p1[pi].checkPlat(dooley[di]);
@@ -129,20 +128,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				}
 		
 		//enemies die after getting shot more than 3 times 
-		int count = 0;
 		for (int i = enemy.size()-1; i >= 0; i--) {
 			for (int j = 0; j < p.length; j++) {
 				if (enemy.get(i).isColliding(p[j])) {
-						count++;
-						System.out.print(count);
-						System.out.println();
-						if (count == 2) {
-								enemy.get(i).setvx(0);
-								enemy.remove(i);
-								count = 0;
-								break;
+					enemy.get(i).setvx(0);
+					enemy.remove(i);
+					break;
 							
-						}
  				} 
 			}
 		}
@@ -431,4 +423,3 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	}
 
 }
-
