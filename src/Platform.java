@@ -21,16 +21,22 @@ import java.util.ArrayList;
 public class Platform {
 	
 	protected int x;
-	protected int y;
-	protected int vx;
-	protected int vy;
 
+	protected int y;
+
+	protected int vx;
+
+	protected int vy;
+	
 	protected Image img;
+
 	protected boolean isStepped, hasRocket;
-	final int WIDTH = 90;
+
+  final int WIDTH = 90;
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
 	final int WINDOW_HEIGHT = 800;
+
 	protected boolean shifting = false;
 	protected int startingY;
 	
@@ -39,7 +45,13 @@ public class Platform {
 	/*
 	 * constructor for custom platform
 	 */
-	
+	public Platform(String pType) {
+		// TODO: generate random x and y according to dimensions of platform and window 
+		
+		x = 50;
+		y = 247;
+  }
+  
 	//jetpack: 115, 73
 	//platform: 100, 100
 	public Platform(String pType, int x, int y, int vx, int vy) {
@@ -47,14 +59,20 @@ public class Platform {
 		this.vx = vx;
 		this.vy = vy;
 		hasRocket = false;
-
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 	
-	public Platform(int x, int y) {
+	/*
+	 * Default constructor creates the normal platform
+	 */
+	public Platform() {
+		this("/Graphics/platform.png");
+  }
+  
+  public Platform(int x, int y) {
 		this("/Graphics/platform.png", x, y, 0, 0);
 	}
 	
@@ -71,10 +89,12 @@ public class Platform {
 	// draw the affine transform
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+		//TODO: move();
 		move();
 		g2.drawImage(img, tx, null);
 		
 	}
+
 
 	private void move() {
 		// TODO Auto-generated method stub
@@ -118,6 +138,10 @@ public class Platform {
 	 * Use this method when Dooley's vy < 0 to check if it lands on something
 	 */
 	public boolean isSteppedOn(Dooley d) {
+// 		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 40, 40);
+// 		Rectangle platform = new Rectangle(this.x + 20, this.y + 20, this.WIDTH - 30, this.HEIGHT - 30);
+		
+// 		return platform.intersects(dooley);
 		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
 		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 45);
 		return platform.intersects(dooley) && d.getvy() >= 0;
@@ -149,7 +173,11 @@ public class Platform {
 	 * the value that all objects need to shift by)
 	 * 
 	 */
-	public void result(Dooley d) {
+	public int result(Dooley d) {
+		d.bounce(10);
+		return WINDOW_HEIGHT - this.y - 20;
+  }
+    public void result(Dooley d) {
 		d.bounce(100, 4);
 	}
 	
@@ -159,9 +187,14 @@ public class Platform {
 	
 	/*
 	 * When it goes off the bottom of the screen, it respawns on the top
-	 * Parameter: the max y the platform can spawn to
+	 */
+	public void respawn() {
+		//TODO: Logic to implement random spawning to guarantee no 
+		//      overlapping and adequate spacing
+	 /* Parameter: the max y the platform can spawn to
 	 * 
 	 */
+    
 	public void respawn(int maxY) {
 		//The whole screen is essentially a 10 by 14 grid 
 		int rows = 14;
@@ -230,4 +263,5 @@ public class Platform {
 	public void setVy(int vy) {
 		this.vy = vy;
 	}
+    
 }

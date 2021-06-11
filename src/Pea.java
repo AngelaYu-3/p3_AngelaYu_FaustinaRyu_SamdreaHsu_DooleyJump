@@ -1,3 +1,4 @@
+import java.awt.Graphics2D;
 import java.awt.Graphics;
 
 public class Pea extends Character{

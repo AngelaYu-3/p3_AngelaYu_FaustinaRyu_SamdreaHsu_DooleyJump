@@ -16,6 +16,7 @@ import javax.swing.Timer;
 
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
   
+
 	private boolean isStart, isDead, isUp, isLeft, isRight;
 	private JFrame f;
 	private int mx, my, di, pi, x, y, sy, sx, sm, px, py, pc, score;
@@ -23,7 +24,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	private Background bg; 
 	private Background[] scroll = new Background[2]; 
-    private Enemies[] enemies = new Enemies[3];  
+		private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
+
+        
+        
+       
+        
+        //use awsd keys to move dooley once game starts
     private Dooley[] dooley = new Dooley[5]; 
     private Pea[] p = new Pea[numPeas];
     private Platform[] p1 = new Platform[4];
@@ -51,10 +58,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			g.setColor(Color.black);
 			g.drawString("Score: " + score, 5, 20);
 			
-			enemies[0].paint(g);
-			enemies[1].paint(g);
-			enemies[2].paint(g);
-
 			
 			/*
 			 * The checkPlat seems to return true immediately.. 
@@ -93,6 +96,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    dooley[di].setvy(0);
 		    
 		    //moving background
+		   
 		    if(isUp) scroll(50, 5);
 		    if(isLeft && !isDead) translate(-60);
 		    if(isRight && !isDead) translate(60);
@@ -121,8 +125,61 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}		
 		if(isStart && mx < 400 && mx > 200 && my > 300 && my < 380) {
 			isStart = false;
-			di = 0;
 		}
+		
+		//make sure enemy doesn't spawn on dooley
+				for (int i = 0; i < enemy.size(); i++) {
+					if (!isStart && enemy.get(i).getY()<350) {
+						enemy.get(i).paint(g);
+					}
+				}
+		
+		//enemies die after getting shot more than 3 times 
+		int count = 0;
+		for (int i = enemy.size()-1; i >= 0; i--) {
+			for (int j = 0; j < p.length; j++) {
+				if (enemy.get(i).isColliding(p[j])) {
+						count++;
+						System.out.print(count);
+						System.out.println();
+						if (count == 2) {
+								enemy.get(i).setvx(0);
+								enemy.remove(i);
+								count = 0;
+								break;
+							
+						}
+ 				} 
+			}
+		}
+		
+		
+		
+		//move back and forth
+		for (int i = 0; i < enemy.size(); i++) {
+			if (enemy.get(i).getX()<0 || enemy.get(i).getX()>510) {
+				System.out.println("overbounds");
+				enemy.get(i).setvx(enemy.get(i).getvx()*(-1));
+				
+			} 
+		}
+		
+		
+		
+		
+		//dooley dies
+		for (int i = 0; i < enemy.size(); i++) {
+			if (enemy.get(i).isColliding(dooley[di])) {
+				enemy.get(i).setvx(0);
+				System.out.println("dooley die");
+				isDead = true;
+			}
+// 			di = 0;
+		}
+		
+	
+		
+		
 		
 	//ENDSCREEN
 		if(isDead) {
@@ -166,11 +223,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
         
-        enemies[0] = new Enemies("/Graphics/Enemy1.png", 60, 60, 50, 50, 0, 1);
-        enemies[1] = new Enemies("/Graphics/Enemy2.png", 60, 60, 100, 50, 0, 1);
-        enemies[2] = new Enemies("/Graphics/Enemy3.png", 60, 60, 150, 50, 0, 1);
-        
-        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 247, 475, 0, 0);
+        	enemy = new ArrayList<Enemies>();
+        	enemy.add(new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        	enemy.add(new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        	enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);        
+       
+//         dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 247, 475, 0, 0);
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 247, 0, 0);
         dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 247, 0, 0);
         dooley[3] = new Dooley("/Graphics/dooleyLeft.png",65, 65, 350, 247, 0, 0);
@@ -180,8 +239,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         soundEffects[1] = new Music("fall.wav", false);
         soundEffects[2] = new Music("jetpack.wav", true);
         
+        
+        
+        
         f = new JFrame();
 		isStart = true;
+
 		di = 3;
 		pc = 0;
 		pi = 0;
@@ -190,6 +253,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		px = dooley[di].getX() + 17;
 		py = dooley[di].getY() - 20;
         
+
         for(int i = 0; i < 10; i++) {
         	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
         }
@@ -257,7 +321,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     	dooley[di].setY(y);
 	}
 	
-	public void translate(int x) {
+// 	public void scroll(int y) {		
+// 		scroll[0].setvy(5);
+// 		scroll[1].setvy(5);
+//   }
+  
+  public void translate(int x) {
 		if(x < 0) dooley[di].setvx(-5);
 		else dooley[di].setvx(5);
 
@@ -295,6 +364,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    
 	    case 'w':
 	    	resetPos(2);
+	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
+			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
+                
 	  		sy = scroll[0].getY();
 			isUp = true;
 			pc = 1;
