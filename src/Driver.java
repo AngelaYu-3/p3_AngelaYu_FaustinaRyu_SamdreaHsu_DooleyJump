@@ -24,13 +24,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	
 	private Background bg; 
 	private Background[] scroll = new Background[2]; 
-		private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
-
-        
-        
-       
-        
-        //use awsd keys to move dooley once game starts
+	private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
     private Dooley[] dooley = new Dooley[5]; 
     private Pea[] p = new Pea[numPeas];
     private Platform[] p1 = new Platform[4];
@@ -223,10 +217,10 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
         
-        	enemy = new ArrayList<Enemies>();
-        	enemy.add(new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
-        	enemy.add(new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
-        	enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        enemy = new ArrayList<Enemies>();
+        enemy.add(new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        enemy.add(new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+        enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
         dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 350, 247, 0, 0);        
        
 //         dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 247, 475, 0, 0);

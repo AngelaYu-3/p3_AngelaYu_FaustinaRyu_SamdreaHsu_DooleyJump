@@ -173,10 +173,7 @@ public class Platform {
 	 * the value that all objects need to shift by)
 	 * 
 	 */
-	public int result(Dooley d) {
-		d.bounce(10);
-		return WINDOW_HEIGHT - this.y - 20;
-  }
+
     public void result(Dooley d) {
 		d.bounce(100, 4);
 	}
@@ -185,12 +182,6 @@ public class Platform {
 		return y > WINDOW_HEIGHT - HEIGHT;
 	}
 	
-	/*
-	 * When it goes off the bottom of the screen, it respawns on the top
-	 */
-	public void respawn() {
-		//TODO: Logic to implement random spawning to guarantee no 
-		//      overlapping and adequate spacing
 	 /* Parameter: the max y the platform can spawn to
 	 * 
 	 */

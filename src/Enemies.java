@@ -39,6 +39,7 @@ public class Enemies extends Character {
 
 	public int getvy() {
 		return vy;
+	}
 		
 	public String toString() {
 			return x + " " + y;
