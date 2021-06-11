@@ -2,9 +2,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Enemies extends Character {
-	
-	
-	private boolean shot;
+
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
@@ -42,13 +40,11 @@ public class Enemies extends Character {
 	public int getvy() {
 		return vy;
 	}
-	
 		
 	public String toString() {
-		return x + " " + y;
+			return x + " " + y;
 	}
 
-	
 	public void setvx(int vx) {
 		this.vx = vx;
 	}
