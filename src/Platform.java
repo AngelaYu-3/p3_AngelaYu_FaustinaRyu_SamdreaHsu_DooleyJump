@@ -7,17 +7,6 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.util.ArrayList;
 
-
-/**
- * The is the class for the normal platform
- * 
- * TODO in driver: 
- * 1) create an arraylist of platforms
- * 2) initialize every platform in driver's constructor(have some logic that will give 20% chance of vine,
- * 		20% chance of broken, and 60% chance of normal)
- * 3) in paint, loop through each platform and call steppedOn to see
- * 
- */
 public class Platform {
 	
 	protected int x;

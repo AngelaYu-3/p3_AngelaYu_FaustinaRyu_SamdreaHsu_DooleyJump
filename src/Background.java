@@ -31,6 +31,8 @@ public class Background{
 		init(x, y);
 	}
 	
+
+	
 	/**
 	 * setting up start screen
 	 */

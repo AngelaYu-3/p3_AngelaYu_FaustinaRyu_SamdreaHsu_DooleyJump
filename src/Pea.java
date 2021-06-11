@@ -23,6 +23,14 @@ public class Pea extends Character{
 		isMoving = false;
 	}
 	
+	public void reset(Pea[] p, int numPeas) {
+			for(int i = 0; i < numPeas; i++) {
+		    	if(p[i].getMoving() && p[i].getY() < 0) {
+		    		p[i].reset();
+		    	}
+		    }
+	}
+	
 	/**
 	 * sets/returns if a pea is moving
 	 */
