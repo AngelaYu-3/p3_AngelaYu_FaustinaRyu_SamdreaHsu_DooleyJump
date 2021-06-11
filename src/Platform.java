@@ -21,49 +21,40 @@ import java.util.ArrayList;
 public class Platform {
 	
 	protected int x;
-	protected int y;
-	protected int vx;
-	protected int vy;
 
+	protected int y;
+
+	protected int vx;
+
+	protected int vy;
+	
 	protected Image img;
-	protected boolean isStepped, hasRocket;
 	final int WIDTH = 90;
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
 	final int WINDOW_HEIGHT = 800;
-	protected boolean shifting = false;
-	protected int startingY;
 	
 
 	
 	/*
 	 * constructor for custom platform
 	 */
-	
-	//jetpack: 115, 73
-	//platform: 100, 100
-	public Platform(String pType, int x, int y, int vx, int vy) {
-		respawn(WINDOW_HEIGHT);
-		this.vx = vx;
-		this.vy = vy;
-		hasRocket = false;
-
+	public Platform(String pType) {
+		// TODO: generate random x and y according to dimensions of platform and window 
+		
+		x = 50;
+		y = 247;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
 		init(x, y);
 	}
 	
-	public Platform(int x, int y) {
-		this("/Graphics/platform.png", x, y, 0, 0);
-	}
-	
-	public int jetX() {
-		return x + 15;
-	}
-	
-	public int jetY() {
-		return y - 27;
+	/*
+	 * Default constructor creates the normal platform
+	 */
+	public Platform() {
+		this("/Graphics/platform.png");
 	}
 
 	private AffineTransform tx = AffineTransform.getTranslateInstance(x, y);
@@ -71,16 +62,9 @@ public class Platform {
 	// draw the affine transform
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		move();
+		//TODO: move();
 		g2.drawImage(img, tx, null);
 		
-	}
-
-	private void move() {
-		// TODO Auto-generated method stub
-		y += vy;
-		x += vx;
-		tx.setToTranslation(x, y);
 	}
 
 	public void init(double a, double b) {
@@ -100,27 +84,17 @@ public class Platform {
 		return tempImage;
 	}
 	
-	public boolean checkPlat(Dooley d) {
-		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
-				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20)))) {
-			result(d);
-			return false;
-		}
-		else{
-			System.out.println("falling");
-			d.fall();
-			return true;
-		}
-	}
+	
 	
 	/*
 	 * Checks to see if Dooley stepped on a platform
 	 * Use this method when Dooley's vy < 0 to check if it lands on something
 	 */
 	public boolean isSteppedOn(Dooley d) {
-		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
-		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 45);
-		return platform.intersects(dooley) && d.getvy() >= 0;
+		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 40, 40);
+		Rectangle platform = new Rectangle(this.x + 20, this.y + 20, this.WIDTH - 30, this.HEIGHT - 30);
+		
+		return platform.intersects(dooley);
 	}
 	
 	public int getWidth() {
@@ -149,8 +123,9 @@ public class Platform {
 	 * the value that all objects need to shift by)
 	 * 
 	 */
-	public void result(Dooley d) {
-		d.bounce(100, 4);
+	public int result(Dooley d) {
+		d.bounce(10);
+		return WINDOW_HEIGHT - this.y - 20;
 	}
 	
 	public boolean offScreen() {
@@ -159,75 +134,9 @@ public class Platform {
 	
 	/*
 	 * When it goes off the bottom of the screen, it respawns on the top
-	 * Parameter: the max y the platform can spawn to
-	 * 
 	 */
-	public void respawn(int maxY) {
-		//The whole screen is essentially a 10 by 14 grid 
-		int rows = 14;
-		int cols = 7;
-		
-		// the max y
-		int max = (int)((double)maxY/WINDOW_HEIGHT * rows);
-		
-		// random indexes for x and y
-		int x = (int)(Math.random() * cols);
-		int y = (int)(Math.random() * max);
-		
-		// change x and y to match a cell on the grid
-		x = (int)((double) x / cols * WINDOW_WIDTH - 10);
-		y = (int)((double) y / rows * (WINDOW_HEIGHT - HEIGHT));
-		
-		this.x = x;
-		this.y = y;
-		
-	}
-	
-	public boolean tooClose(Platform p) {
-		Rectangle p1 = new Rectangle(this.x + 14, this.y + 26, this.WIDTH - 25, this.HEIGHT - 45);
-		Rectangle p2 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25, p.getHeight() - 45);
-		return p1.intersects(p2);
-	}
-	
-	public void shiftDown(int units, int vy) {
-		if (!shifting) {
-			setVy(vy);
-			shifting = true;
-			startingY = getY();
-		} else {
-			if (getY() - startingY >= units) {
-				setVy(0);
-				shifting = false;
-			}
-			if(getY() >= WINDOW_HEIGHT) {
-				respawn(-10);
-				startingY = startingY - WINDOW_HEIGHT;
-			}
-		}
-		
-		//return shifting;
-	}
-	
-	public boolean isShifting() {
-		return shifting;
-	}
-	
-	public void setX(int x) {
-		this.x = x;
-		tx.setToTranslation(x, y);
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-		tx.setToTranslation(x, y);
-	}
-	
-	public void setVx(int vx) {
-		this.vx = vx;
-	}
-	
-	
-	public void setVy(int vy) {
-		this.vy = vy;
+	public void respawn() {
+		//TODO: Logic to implement random spawning to guarantee no 
+		//      overlapping and adequate spacing
 	}
 }
