@@ -2,10 +2,10 @@
  * Dooley class
  * deals with dooley animation
  */
-
 public class Dooley extends Character{
 	private int currY = getY();
 	private boolean isUp = true;
+
 	private int numBounces = 0;	
 
 	public Dooley(String fileName, int width, int height, int x, int y, int vx, int vy) {
