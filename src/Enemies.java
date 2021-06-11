@@ -2,9 +2,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Enemies extends Character {
-	
-	
-	private boolean shot;
+
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
@@ -35,35 +33,17 @@ public class Enemies extends Character {
 		return enemy.intersects(dooley);
 	}
 	
-	public void reset() {
-		x = (int)(Math.random()*(500)+100);
-		y = (int)(Math.random()*(400)-100);
-		shot = false;
-	}
-	
-	public void reset(ArrayList<Enemies> e) {
-		for(int i = 0; i < 3; i++) {
-	    	if (shot) {
-	    		e.get(i).reset();
-	    	}
-	    }
-	}
-
-	
 	public int getvx() {
 		return vx;
 	}
 
 	public int getvy() {
 		return vy;
-	}
-	
 		
 	public String toString() {
-		return x + " " + y;
+			return x + " " + y;
 	}
 
-	
 	public void setvx(int vx) {
 		this.vx = vx;
 	}

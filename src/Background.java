@@ -12,11 +12,9 @@ public class Background{
 	private Image img; 
 	private Font f1 = new Font("Courier New", 1, 35);
 	private Font f2 = new Font("Courier New", 1, 25);
+	private Font f3 = new Font("Courier New", 1, 16);
 
-	
-	/* if filename is provided */
 	public Background(String fileName, int startx, int starty, int width, int height) {
-		// assignment statements for attributes
 		x = starty;
 		y = startx;
 		vy = 0;
@@ -54,7 +52,12 @@ public class Background{
 		g.setFont(f2);
 		g.setColor(Color.black);
 		g.drawString("play", 270, 330);
- 
+		
+		g.setFont(f3);
+		g.drawString("Programmers: Angela Yu, Faustina Ryu, Samdrea Hsu", 65, 380);
+		g.drawString("Graphics Help: Emily Yu", 65, 410);
+		g.drawString("Music: Blinding Lights-The Weeknd, Butter-BTS", 65, 440);
+		g.drawString("Never Gonna Give You Up-Rick Astley", 132, 465);
 	}
 
 	//still need to link end button & animate endScreen to come in at right time

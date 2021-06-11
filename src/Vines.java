@@ -1,7 +1,8 @@
-public class Vines extends Platform {
+
+  public class Vines extends Platform {
 	
-	public Vines() {
-		super("/Graphics/vine.png");
+	public Vines(int x, int y, int vx, int vy) {
+		super("/Graphics/vine.png", x, y, vx, vy);
 	}
 	
 	
@@ -11,8 +12,21 @@ public class Vines extends Platform {
 	 * 2) The vine goes off screen, so do some of the other platforms above it
 	 * 3) the method returns how much all characters need to move by
 	 */
-	public int result(Dooley d) {
-		d.bounce(10);
-		return WINDOW_HEIGHT - this.y + 20;
+	
+	public void result(Dooley d) {
+		d.bounce(100, 5);
 	}
-}
+	
+	public boolean checkPlat(Dooley d) {
+		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
+				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20))) && d.getNumBounces() < 2) {
+			result(d);
+			return false;
+		}
+		else{
+			d.fall();
+			return true;
+		}
+	}
+
+  }
