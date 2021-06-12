@@ -4,6 +4,7 @@ public class Dooley extends Character{
 	private int currY = getY();
 	private boolean isUp = true;
 	private int numBounces = 0;	
+	private int startingY;
 
 	public Dooley(String fileName, int width, int height, int x, int y, int vx, int vy) {
 		super(fileName, width, height, x, y, vx, vy);
@@ -41,9 +42,9 @@ public class Dooley extends Character{
 		if(!isUp) {
 			setvy(-10);
 			isUp = true;
-			currY = getY();
+			startingY = getY();
 		} else {
-			if (getY() - currY >= height) {
+			if (getY() - startingY >= height) {
 				System.out.println("this line is executed");
 				setvy(10);
 				isUp = false;

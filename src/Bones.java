@@ -6,6 +6,9 @@ public class Bones extends Platform{
 		super(fileName, x, y, vx, vy);
 	}
 	
+	public Bones() {
+		super("/Graphics/bone.png", 0, 0, 0, 0);
+	}
 	/*
 	 * The result of stepping on a bone is that
 	 * 1) Dooley bounces 

@@ -4,6 +4,10 @@ public class Vines extends Platform {
 		super("/Graphics/vine.png", x, y, vx, vy);
 	}
 	
+	public Vines() {
+		super("/Graphics/vine.png", 0, 0, 0, 0);
+	}
+	
 	
 	/*
 	 * The result of stepping on vines is that

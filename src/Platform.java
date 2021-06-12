@@ -58,6 +58,10 @@ public class Platform {
 		this("/Graphics/platform.png", x, y, 0, 0);
 	}
 	
+	public Platform() {
+		this("/Graphics/platform.png", 0, 0, 0, 0);
+	}
+	
 	public int jetX() {
 		return x + 15;
 	}
@@ -229,5 +233,108 @@ public class Platform {
 	
 	public void setVy(int vy) {
 		this.vy = vy;
+	}
+	
+	public static void moreRand(ArrayList<Platform> platforms) {
+
+    	
+    	int moreRand = (int)(Math.random() * 20);
+    	platforms.get(0).setX(platforms.get(0).getX() + moreRand);
+		platforms.get(0).setY(platforms.get(0).getY() + moreRand);
+    	
+    	boolean touching = true;
+    	while(touching) {
+    		touching = false;
+    		for(int j = 0; j < platforms.size(); j++) {
+    			if (j != 0 && platforms.get(0).tooClose(platforms.get(j))) {
+        			touching = true;
+        			
+        			// stagger the platforms if they intersect
+        			int fix = 10;
+        			if ( platforms.get(0).getX() < platforms.get(j).getX()) {
+        				// stagger to the left
+        				platforms.get(0).setX(platforms.get(0).getX() - fix);
+        				platforms.get(0).setY(platforms.get(0).getY() + fix);
+        			} else {
+        				// stagger to the right
+        				platforms.get(0).setX(platforms.get(0).getX() + fix);
+        				platforms.get(0).setY(platforms.get(0).getY() + fix);
+        			}
+    			}
+    		}
+    	}
+	}
+	
+	public static void fixCollision(ArrayList<Platform> platforms) {
+    	
+    	boolean touching = true;
+    	while(touching) {
+    		touching = false;
+    		for(int j = 0; j < platforms.size(); j++) {
+    			if (j != 0 && platforms.get(0).tooClose(platforms.get(j))) {
+        			touching = true;
+        			
+        			// stagger the platforms if they intersect
+        			int fix = 10;
+        			if ( platforms.get(0).getX() < platforms.get(j).getX()) {
+        				// stagger to the left
+        				platforms.get(0).setX(platforms.get(0).getX() - fix);
+        				platforms.get(0).setY(platforms.get(0).getY() + fix);
+        			} else {
+        				// stagger to the right
+        				platforms.get(0).setX(platforms.get(0).getX() + fix);
+        				platforms.get(0).setY(platforms.get(0).getY() + fix);
+        			}
+    			}
+    		}
+    	}
+	}
+	
+	/*
+	 * No set number of platforms... because it's based on levels
+	 * - can change the number of levels and min max to make game harder
+	 * 
+	 * The number of levels is for the entire window 
+	 * 
+	 * The y argument will dictate how many levels the method will generate 
+	 * - passing in a negative y value will cause all the platforms to be created at the top)
+	 */
+	public static void generate(ArrayList<Platform> platforms, int levels, int min, int max, int y) {
+		
+		// determine how many levels will be added to array
+		int addedLevel = (int)((double)y / 800 * levels);
+		
+		
+		// in each added level, spawn a random number of random type of platform
+		for(int i = 0; i < addedLevel; i++) {
+			
+			int numPlat = (int)(Math.random() * (max - min + 1)) + min;
+			
+			for(int j = 0; j < numPlat; j++) {
+				//  20% chance of vine,
+	        	//	20% chance of broken, and 60% chance of normal
+				int type = (int)(Math.random() * 10);
+	        	
+	        	if(type < 2) {
+	        		platforms.add(0, new Vines());
+	        	} else if(type < 4) {
+	        		platforms.add(0, new Bones());
+	        	} else {
+	        		platforms.add(0, new Platform());
+	        	}
+	        	
+	        	int randX = (int)(Math.random() * 535) + 10;
+	        	int randYAddOn = (int)(Math.random() * (800/levels - 10));
+	        	platforms.get(0).setX(randX);
+	    		platforms.get(0).setY(800/levels * i + randYAddOn);
+	    		
+	    		fixCollision(platforms);
+			}
+			
+        	
+        	
+		}
+		
+		
 	}
 }

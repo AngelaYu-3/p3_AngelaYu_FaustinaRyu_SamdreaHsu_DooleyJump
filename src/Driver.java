@@ -76,7 +76,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			for(Platform p: platforms) {
 				p.paint(g);
 				if(p.isSteppedOn(dooley[di])) {
-					//dooley[di].bounce(100, 10);
+					dooley[di].bounce(100, 10);
 					scrolling = true;
 					for(Platform i: platforms) {
 						i.shiftDown(600, 5);
@@ -98,7 +98,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 			
 			if(dooley[di].isUp()) {
-				dooley[di].bounce(100, 10);
+				dooley[di].bounce(100);
 			}
 			
 			
@@ -125,7 +125,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    //left right respawning
 		    if(dooley[di].getX() <= 0) dooley[di].setX(535);
 		    if(dooley[di].getX() >= 600) dooley[di].setX(5);
-		    
+		    if(dooley[di].getY() >= 800) dooley[di].setY(5);
+		    if(dooley[di].getY() <= 0) dooley[di].setY(735);
 		}
 		
 	//STARTSCREEN
@@ -212,36 +213,23 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         
       //Initialize platforms
         for(int i = 0; i < numPlatforms; i++) {
-        	// TODO: have some logic that will give 20% chance of vine,
-        	//		20% chance of broken, and 60% chance of normal
-        	platforms.add(0, new Platform(0,0));  
+        	//  20% chance of vine,
+        	//	20% chance of broken, and 60% chance of normal
+        	int type = (int)(Math.random() * 10);
         	
-        	int moreRand = (int)(Math.random() * 20);
-        	platforms.get(0).setX(platforms.get(0).getX() + moreRand);
-			platforms.get(0).setY(platforms.get(0).getY() + moreRand);
-        	
-        	boolean touching = true;
-        	while(touching) {
-        		touching = false;
-        		for(int j = 0; j < platforms.size(); j++) {
-        			if (j != 0 && platforms.get(0).tooClose(platforms.get(j))) {
-            			touching = true;
-            			
-            			// stagger the platforms if they intersect
-            			int fix = 10;
-            			if ( platforms.get(0).getX() < platforms.get(j).getX()) {
-            				// stagger to the left
-            				platforms.get(0).setX(platforms.get(0).getX() - fix);
-            				platforms.get(0).setY(platforms.get(0).getY() + fix);
-            			} else {
-            				// stagger to the right
-            				platforms.get(0).setX(platforms.get(0).getX() + fix);
-            				platforms.get(0).setY(platforms.get(0).getY() + fix);
-            			}
-        			}
-        		}
+        	if(type < 2) {
+        		platforms.add(0, new Vines());
+        	} else if(type < 4) {
+        		platforms.add(0, new Bones());
+        	} else {
+        		platforms.add(0, new Platform());
         	}
+        	
+        	// randomize platforms
+        	Platform.moreRand(platforms);
         }
+        
+        // dooley bounces up first
         
 	    f.setTitle("DooleyJump!");
 		f.setSize(600, 800);
