@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -179,7 +178,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				for(int i = 0; i < 10; i++) {
 			        p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
 			    }
-				p1 = platforms[4].randGenerate(score);
+				p1 = randGenerate(score);
 				mx = 0;
 				my = 0;
 			}
@@ -212,7 +211,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         platforms[2] = new Vines(240, 510, 0, 0);
         platforms[3] = new Platform(100, 100);
         platforms[4] = new Platform(xr, lowest + (510 - 475));
-        p1 = platforms[4].randGenerate(score);
+        p1 = randGenerate(score);
     	j = new Jetpack(platforms[3].jetX(), platforms[3].jetY(), 0, 0);
         
         shuffler[0] = new Music("BlindingLights.wav",false);
@@ -268,6 +267,33 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		f.setVisible(true);	
 	}
 
+	public ArrayList<Platform> randGenerate(int score) {
+		p1.clear();
+		int numPlat = 0;
+		
+		if(score < 100) {
+			numPlat = 20	;
+			for(int i = 0; i < numPlat; i++) {
+				p1.add(platforms[0].respawn(800));
+				while(platforms[0].tooClose(p1.get(p1.size() - 1)) || platforms[0].sameRow(p1.get(p1.size()-1))) {
+					System.out.println("hi");
+					p1.remove(p1.size() - 1);
+					p1.add(platforms[0].respawn(800));				
+				}
+				
+			}
+			//only platforms rand generated 20 platforms
+			
+		}
+		else if(score < 300) {
+			//enemies + jetpack
+		}
+		else if(score < 500) {
+			//bones + vines
+		}
+		
+		return p1;
+	}
 
 	/**
 	 * user (keys) game interaction

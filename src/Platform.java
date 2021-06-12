@@ -146,18 +146,20 @@ public class Platform {
 /**
  * random generation
  */
-	public ArrayList<Platform> randGenerate(int score) {
+	/*public ArrayList<Platform> randGenerate(int score) {
 		platform.clear();
 		int numPlat = 0;
 		
 		if(score < 100) {
-			numPlat = 20;
+			numPlat = 5	;
 			for(int i = 0; i < numPlat; i++) {
 				platform.add(respawn(800));
-				if(tooClose(platform.get(platform.size() - 1))) {
+				while(tooClose(platform.get(platform.size() - 1)) || sameRow(platform.get(platform.size()-1))) {
+					System.out.println("hi");
 					platform.remove(platform.size() - 1);
 					platform.add(respawn(800));				
 				}
+				
 			}
 			//only platforms rand generated 20 platforms
 			
@@ -170,7 +172,7 @@ public class Platform {
 		}
 		
 		return platform;
-	}
+	}*/
 	
 	public boolean viable() {
 		boolean viable = false;
@@ -180,8 +182,8 @@ public class Platform {
     
 	public Platform respawn(int maxY) {
 		//The whole screen is essentially a 10 by 14 grid 
-		int rows = 14;
-		int cols = 7;
+		int rows = 40;
+		int cols = 70;
 		
 		// the max y
 		int max = (int)((double)maxY/WINDOW_HEIGHT * rows);
@@ -203,6 +205,13 @@ public class Platform {
 	public boolean tooClose(Platform p) {
 		for(int i = 0; i < platform.size(); i++) {
 			if(pCollision(p, i)) return true;
+		}	
+		return false;
+	}
+	
+	public boolean sameRow(Platform p) {
+		for(int i = 0; i < platform.size(); i++) {
+			if(p.getX() == platform.get(i).getX()) return true;
 		}	
 		return false;
 	}
