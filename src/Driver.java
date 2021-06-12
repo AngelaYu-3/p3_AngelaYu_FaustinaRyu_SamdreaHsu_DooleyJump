@@ -21,7 +21,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
    
 	private boolean isStart, isDead, isUp, isLeft, isRight, reset;
 	private JFrame f;
-	private int mx, my, di, pi, x, y, xr, sy, sx, sm, px, py, pc, score;
+	private int mx, my, di, pi, x, y, xr, sy, sx, sm, px, py, pc, score, lowest, highest;
 	private int numPeas = 10;
 	
 	private Background bg[] = new Background[2]; 
@@ -30,6 +30,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Dooley[] dooley = new Dooley[5]; 
     private Pea[] p = new Pea[numPeas];
     private Platform[] platforms = new Platform[5];
+    private ArrayList<Platform> p1 = new ArrayList<Platform>();
     private Music[] shuffler = new Music[3];
     private Music[] soundEffects = new Music[3];
     private Jetpack j;
@@ -42,9 +43,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
      * painting on JFrame
      */
 	public void paint(Graphics g) {
-/**
- * KEEP!!!!
- */
 		super.paintComponent(g);	
 	//PLAYSCREEN
 		if(!isStart && !isDead) {
@@ -96,6 +94,15 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			   soundEffects[1].play(0.0f);
 			   if(dooley[di].getY() > 820) isDead = true;
 			}
+			
+			
+			
+			for(int i = 0; i < p1.size(); i++) {
+				p1.get(i).paint(g);
+			}
+			
+			p1.get(0).paint(g);
+			
 
 /**
  * BONE + VINE LOGIC--TESTED
@@ -129,7 +136,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    }*/
 			
 /**
- * SEEMINGLY UNNECESSARY
+ * UNNECESSARY
  */
 			//moving background
 		    //if(isUp) scroll(50, 5);	   
@@ -165,9 +172,14 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				isDead = false;
 				isStart = false;
 				di = 0;
-				dooley[di].setX(xr);
-				dooley[di].setY(475);
+				platforms[4].setX(xr);
+				dooley[di].setX(xr + 10);
+				dooley[di].setY(lowest);
 				soundEffects[1] = new Music("fall.wav", false);
+				for(int i = 0; i < 10; i++) {
+			        p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
+			    }
+				p1 = platforms[4].randGenerate(score);
 				mx = 0;
 				my = 0;
 			}
@@ -191,6 +203,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	 * Driver constructor, objects instantiated
 	 */
 	public Driver() {
+		lowest = 600;
 		xr = (int)(Math.random() * 500) + 5;
         bg[0] = new Background("/Graphics/background.png", 0, 0, 600, 800);
         bg[1] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
@@ -198,7 +211,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         platforms[1] = new Bones("/Graphics/bone1.png", 240, 510, 0, 3);
         platforms[2] = new Vines(240, 510, 0, 0);
         platforms[3] = new Platform(100, 100);
-        platforms[4] = new Platform(xr, 510);
+        platforms[4] = new Platform(xr, lowest + (510 - 475));
+        p1 = platforms[4].randGenerate(score);
     	j = new Jetpack(platforms[3].jetX(), platforms[3].jetY(), 0, 0);
         
         shuffler[0] = new Music("BlindingLights.wav",false);
@@ -214,9 +228,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0)); 
         enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
        
-        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, xr, 475, 0, 0);
-        dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 350, 475, 0, 0);
-        dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 350, 475, 0, 0);
+        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, xr + 10, lowest, 0, 0);
+        dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, xr + 10, lowest, 0, 0);
+        dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, xr + 10, lowest, 0, 0);
         dooley[3] = new Dooley("/Graphics/dooleyLeft.png",65, 65, 350, 247, 0, 0);
         dooley[4] = new Dooley("/Graphics/dooleyjetLeft.png", 80, 90, 350, 300, 0,0);
  
