@@ -7,17 +7,6 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.util.ArrayList;
 
-
-/**
- * The is the class for the normal platform
- * 
- * TODO in driver: 
- * 1) create an arraylist of platforms
- * 2) initialize every platform in driver's constructor(have some logic that will give 20% chance of vine,
- * 		20% chance of broken, and 60% chance of normal)
- * 3) in paint, loop through each platform and call steppedOn to see
- * 
- */
 public class Platform {
 	
 	protected int x;
@@ -35,7 +24,7 @@ public class Platform {
 	final int WINDOW_HEIGHT = 800;
 	protected boolean shifting = false;
 	protected int startingY;
-	
+	private ArrayList<Platform> platform = new ArrayList<Platform>();
 
   
 	public Platform(String pType, int x, int y, int vx, int vy) {
@@ -52,13 +41,6 @@ public class Platform {
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
 		init(x, y);
 	}
-	
-	/*
-	 * Default constructor creates the normal platform
-	 */
-	/*public Platform() {
-		this("/Graphics/platform.png");
-  }*/
   
   public Platform(int x, int y) {
 		this("/Graphics/platform.png", x, y, 0, 0);
@@ -114,7 +96,7 @@ public class Platform {
 	 */
 	public boolean checkPlat(Dooley d) {
 		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
-				&& (d.getX() + 10 > x + 14 && d.getX() + 10 < x + WIDTH - 20)))) {
+				&& (d.getX() >= x && d.getX() < x + WIDTH - 20)))) {
 			result(d);
 			return false;
 		}
@@ -129,13 +111,8 @@ public class Platform {
 	 * Use this method when Dooley's vy < 0 to check if it lands on something
 	 */
 	public boolean isSteppedOn(Dooley d) {
-// 		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 40, 40);
-// 		Rectangle platform = new Rectangle(this.x + 20, this.y + 20, this.WIDTH - 30, this.HEIGHT - 30);
-		
-// 		return platform.intersects(dooley);
 		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
 		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 45);
-		//System.out.println(platform.intersects(dooley));
 		return platform.intersects(dooley);
 	}
 	
@@ -159,14 +136,49 @@ public class Platform {
 	 */
 
     public void result(Dooley d) {
-		d.bounce(100, 4);
+		d.bounce(130, 5);
 	}
 	
 	public boolean offScreen() {
 		return y > WINDOW_HEIGHT - HEIGHT;
 	}
+	
+/**
+ * random generation
+ */
+	public ArrayList<Platform> randGenerate(int score) {
+		platform.clear();
+		int numPlat = 0;
+		
+		if(score < 100) {
+			numPlat = 20;
+			for(int i = 0; i < numPlat; i++) {
+				platform.add(respawn(800));
+				if(tooClose(platform.get(platform.size() - 1))) {
+					platform.remove(platform.size() - 1);
+					platform.add(respawn(800));				
+				}
+			}
+			//only platforms rand generated 20 platforms
+			
+		}
+		else if(score < 300) {
+			//enemies + jetpack
+		}
+		else if(score < 500) {
+			//bones + vines
+		}
+		
+		return platform;
+	}
+	
+	public boolean viable() {
+		boolean viable = false;
+		
+		return viable;
+	}
     
-	public void respawn(int maxY) {
+	public Platform respawn(int maxY) {
 		//The whole screen is essentially a 10 by 14 grid 
 		int rows = 14;
 		int cols = 7;
@@ -177,18 +189,26 @@ public class Platform {
 		// random indexes for x and y
 		int x = (int)(Math.random() * cols);
 		int y = (int)(Math.random() * max);
+		int ry = (int)(Math.random() * 60) - 30;
+		int rx = (int)(Math.random() * 60) - 30;
 		
 		// change x and y to match a cell on the grid
 		x = (int)((double) x / cols * WINDOW_WIDTH - 10);
-		y = (int)((double) y / rows * (WINDOW_HEIGHT - HEIGHT));
-		
-		this.x = x;
-		this.y = y;
+		y = (int)((double) y / rows * (600 - HEIGHT));
+	
+		return new Platform(x, y);
 		
 	}
 	
 	public boolean tooClose(Platform p) {
-		Rectangle p1 = new Rectangle(this.x + 14, this.y + 26, this.WIDTH - 25, this.HEIGHT - 45);
+		for(int i = 0; i < platform.size(); i++) {
+			if(pCollision(p, i)) return true;
+		}	
+		return false;
+	}
+	
+	public boolean pCollision(Platform p, int i) {
+		Rectangle p1 = new Rectangle(platform.get(i).getX() + 14, platform.get(i).getY() + 26, platform.get(i).getWidth() - 25, platform.get(i).getHeight() - 45);
 		Rectangle p2 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25, p.getHeight() - 45);
 		return p1.intersects(p2);
 	}
@@ -208,8 +228,6 @@ public class Platform {
 				startingY = startingY - WINDOW_HEIGHT;
 			}
 		}
-		
-		//return shifting;
 	}
 	
 	public boolean isShifting() {
