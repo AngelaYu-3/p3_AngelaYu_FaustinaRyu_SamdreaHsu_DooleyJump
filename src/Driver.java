@@ -35,8 +35,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
     private Timer t;
     
     private ArrayList<Platform> platforms = new ArrayList<Platform>();
-    private int numPlatforms = 10;
     private boolean scrolling;
+    private int levels, min, max;
 
 	public void paint(Graphics g) {
 	//TESTING
@@ -72,26 +72,42 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			//else isDead = true;
 			 * 
 			 */
-			
+			boolean stepped = false;
 			for(Platform p: platforms) {
 				p.paint(g);
+				/*
+				 * below is a bunch of gibberish... don't worry about it yet
+				 * 
 				if(p.isSteppedOn(dooley[di])) {
-					dooley[di].bounce(100, 10);
-					scrolling = true;
-					for(Platform i: platforms) {
-						i.shiftDown(600, 5);
-						}
-					
+					//dooley[di].bounce(100, 10);
+					stepped = true;
+					for(Platform p: platforms) {
+						
+					}
 				}
+				
 				
 				
 				if(p.isShifting()) {
 					p.shiftDown(600, 5);
 					//scroll(600, 5);
 				} 
+				
+				if(p.offScreen()) {
+					platforms.remove(p);
+				}
+				*/
 				 
 			}
+			/*
+			if(stepped) {
+				Platform.generate(platforms, levels, min, max, dooley[di].getY() - 800);
+				
+			}
 			
+			
+			
+			/*
 			if(scrolling) {
 				scroll(600, 5);
 			}
@@ -100,11 +116,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			if(dooley[di].isUp()) {
 				dooley[di].bounce(100);
 			}
+			*/
 			
 			
 		    
 		    dooley[di].paint(g);
-		    //dooley[di].setvy(0);
+		    dooley[di].setvy(0);
 		    
 		    //moving background
 		    
@@ -211,25 +228,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         	p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
         }
         
-      //Initialize platforms
-        for(int i = 0; i < numPlatforms; i++) {
-        	//  20% chance of vine,
-        	//	20% chance of broken, and 60% chance of normal
-        	int type = (int)(Math.random() * 10);
-        	
-        	if(type < 2) {
-        		platforms.add(0, new Vines());
-        	} else if(type < 4) {
-        		platforms.add(0, new Bones());
-        	} else {
-        		platforms.add(0, new Platform());
-        	}
-        	
-        	// randomize platforms
-        	Platform.moreRand(platforms);
-        }
+        //Initialize platforms
+        levels = 7;
+        min = 1;
+        max = 3;
+        Platform.generate(platforms, 7, 1, 3, 800);
         
-        // dooley bounces up first
         
 	    f.setTitle("DooleyJump!");
 		f.setSize(600, 800);

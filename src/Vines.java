@@ -4,6 +4,10 @@ public class Vines extends Platform {
 		super("/Graphics/vine.png", x, y, vx, vy);
 	}
 	
+	public Vines(int x, int y) {
+		super("/Graphics/vine.png", x, y, 0, 0);
+	}
+	
 	public Vines() {
 		super("/Graphics/vine.png", 0, 0, 0, 0);
 	}

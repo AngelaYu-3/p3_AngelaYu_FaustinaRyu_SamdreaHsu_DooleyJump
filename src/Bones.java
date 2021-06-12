@@ -6,6 +6,10 @@ public class Bones extends Platform{
 		super(fileName, x, y, vx, vy);
 	}
 	
+	public Bones(int x, int y) {
+		super("/Graphics/bone.png", x, y, 0, 0);
+	}
+	
 	public Bones() {
 		super("/Graphics/bone.png", 0, 0, 0, 0);
 	}

@@ -43,7 +43,10 @@ public class Platform {
 	//jetpack: 115, 73
 	//platform: 100, 100
 	public Platform(String pType, int x, int y, int vx, int vy) {
-		respawn(WINDOW_HEIGHT);
+		//respawn(WINDOW_HEIGHT);
+		
+		this.x = x;
+		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
 		hasRocket = false;
@@ -292,21 +295,23 @@ public class Platform {
 	
 	/*
 	 * No set number of platforms... because it's based on levels
-	 * - can change the number of levels and min max to make game harder
+	 * - can change the number of levels and min/max number of platforms on each level to make game harder
 	 * 
-	 * The number of levels is for the entire window 
+	 * The number of levels in parameter is for the entire window 
 	 * 
-	 * The y argument will dictate how many levels the method will generate 
-	 * - passing in a negative y value will cause all the platforms to be created at the top)
+	 * The "y" argument will dictate how many levels the method will generate 
+	 * - for example, a y value of 600 dictate to only generate platforms from y values of 0 to 600 
+	 * - passing in a negative y value will cause all the platforms to be created at the top, out of frame)
+	 * - in Driver, pass in dooley's current y - windowheight to generate more platforms at the top. 
 	 */
 	public static void generate(ArrayList<Platform> platforms, int levels, int min, int max, int y) {
 		
 		// determine how many levels will be added to array
-		int addedLevel = (int)((double)y / 800 * levels);
-		
-		
+		int addedLevels = (int)((double) Math.abs(y) / 800 * levels);
+		int eachLevelHeight = (int)((double) 820 / levels);
+	
 		// in each added level, spawn a random number of random type of platform
-		for(int i = 0; i < addedLevel; i++) {
+		for(int i = 0; i < addedLevels; i++) {
 			
 			int numPlat = (int)(Math.random() * (max - min + 1)) + min;
 			
@@ -314,24 +319,29 @@ public class Platform {
 				//  20% chance of vine,
 	        	//	20% chance of broken, and 60% chance of normal
 				int type = (int)(Math.random() * 10);
+				int randX = (int)(Math.random() * 535) + 10;
+	        	int randYAddOn = (int)(Math.random() * (eachLevelHeight - 10));
 	        	
-	        	if(type < 2) {
-	        		platforms.add(0, new Vines());
-	        	} else if(type < 4) {
-	        		platforms.add(0, new Bones());
+	        	if(type < 1) {
+	        		platforms.add(0, new Vines(randX, eachLevelHeight * i + randYAddOn));
+	        	} else if(type < 2) {
+	        		platforms.add(0, new Bones(randX, eachLevelHeight * i + randYAddOn));
 	        	} else {
-	        		platforms.add(0, new Platform());
+	        		platforms.add(0, new Platform(randX, eachLevelHeight * i + randYAddOn));
 	        	}
 	        	
-	        	int randX = (int)(Math.random() * 535) + 10;
-	        	int randYAddOn = (int)(Math.random() * (800/levels - 10));
-	        	platforms.get(0).setX(randX);
-	    		platforms.get(0).setY(800/levels * i + randYAddOn);
+	        	if(y < 0) {
+	        		platforms.get(0).setY(platforms.get(0).getY() * -1);
+	        	}
+	        	
+	        	//System.out.println("level " + i + " x: " + randX + " y: " + platforms.get(0).getY());
 	    		
 	    		fixCollision(platforms);
+	    		//System.out.println("level " + i + " x: " + randX + " y: " + platforms.get(0).getY() +" <--after fixing collision");
+	   
 			}
 			
-        	
+			
         	
 		}
 		
