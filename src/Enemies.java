@@ -7,13 +7,13 @@ import java.util.ArrayList;
  * deals with random generation/animation of Enemies
  */
 public class Enemies extends Character {
-
+	
+	private int tempY;
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
 			
-			
-			this.vx = 1;
+			this.vx = 3;
 			width = 65;
 			height = 65;
 	}
@@ -38,7 +38,43 @@ public class Enemies extends Character {
 		return enemy.intersects(dooley);
 	}
 	
-	public void noDooleySpawn(boolean isStart, ArrayList<Enemies> enemy, Graphics g) {
+	public void moveDown(int vy) {
+		y+=vy;
+		tx.setToTranslation(x, y);
+	}
+	
+ 	public void respawn(int maxY) {
+		//The whole screen is essentially a 10 by 14 grid 
+		int rows = 14;
+		int cols = 7;
+		
+		// the max y
+		int max = (int)((double)maxY/800 * rows);
+		
+		// random indexes for x and y
+		int x = (int)(Math.random() * cols);
+		int y = (int)(Math.random() * max);
+		
+		// change x and y to match a cell on the grid
+		x = (int)((double) x / cols * 600 - 10);
+		y = (int)((double) y / rows * (800 - 60));
+		
+		this.x = x;
+		this.y = y;
+		
+	}
+	
+	public void shiftDown(int units, int vy) {
+		tempY = this.y;
+		if (this.y - tempY >= units) {
+			this.vy = 0;
+		}
+		if(getY() >= 800) {
+			respawn(-10);
+			tempY = tempY - 800;
+		}
+
+    public void noDooleySpawn(boolean isStart, ArrayList<Enemies> enemy, Graphics g) {
 		//make sure enemy doesn't spawn on dooley
 		for (int i = 0; i < enemy.size() - 1; i++) {
 			if (!isStart && enemy.get(i).getY()<350) {
