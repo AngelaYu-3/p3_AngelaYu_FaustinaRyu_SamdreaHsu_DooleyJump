@@ -142,78 +142,15 @@ public class Platform {
 	public boolean offScreen() {
 		return y > WINDOW_HEIGHT - HEIGHT;
 	}
+
 	
-/**
- * random generation
- */
-	public ArrayList<Platform> randGenerate(int score) {
-		platform.clear();
-		int numPlat = 0;
-		
-		if(score < 100) {
-			numPlat = 20;
-			for(int i = 0; i < numPlat; i++) {
-				platform.add(respawn(800));
-				if(tooClose(platform.get(platform.size() - 1))) {
-					platform.remove(platform.size() - 1);
-					platform.add(respawn(800));				
-				}
-			}
-			//only platforms rand generated 20 platforms
-			
-		}
-		else if(score < 300) {
-			//enemies + jetpack
-		}
-		else if(score < 500) {
-			//bones + vines
-		}
-		
-		return platform;
-	}
-	
-	public boolean viable() {
-		boolean viable = false;
-		
-		return viable;
-	}
-    
-	public Platform respawn(int maxY) {
-		//The whole screen is essentially a 10 by 14 grid 
-		int rows = 14;
-		int cols = 7;
-		
-		// the max y
-		int max = (int)((double)maxY/WINDOW_HEIGHT * rows);
-		
-		// random indexes for x and y
-		int x = (int)(Math.random() * cols);
-		int y = (int)(Math.random() * max);
-		int ry = (int)(Math.random() * 60) - 30;
-		int rx = (int)(Math.random() * 60) - 30;
-		
-		// change x and y to match a cell on the grid
-		x = (int)((double) x / cols * WINDOW_WIDTH - 10);
-		y = (int)((double) y / rows * (600 - HEIGHT));
-	
-		return new Platform(x, y);
-		
-	}
-	
-	public boolean tooClose(Platform p) {
-		for(int i = 0; i < platform.size(); i++) {
-			if(pCollision(p, i)) return true;
-		}	
-		return false;
-	}
-	
-	public boolean pCollision(Platform p, int i) {
-		Rectangle p1 = new Rectangle(platform.get(i).getX() + 14, platform.get(i).getY() + 26, platform.get(i).getWidth() - 25, platform.get(i).getHeight() - 45);
-		Rectangle p2 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25, p.getHeight() - 45);
+	public boolean pCollision(Platform p, int i, int b) {
+		Rectangle p1 = new Rectangle(platform.get(i).getX() + 14, platform.get(i).getY() + 26, platform.get(i).getWidth() - 25 + b, platform.get(i).getHeight() - 45 + (b/2));
+		Rectangle p2 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25 + b, p.getHeight() - 45 + (b/2));
 		return p1.intersects(p2);
 	}
 	
-	public void shiftDown(int units, int vy) {
+	/*public void shiftDown(int units, int vy) {
 		if (!shifting) {
 			setVy(vy);
 			shifting = true;
@@ -228,7 +165,7 @@ public class Platform {
 				startingY = startingY - WINDOW_HEIGHT;
 			}
 		}
-	}
+	}*/
 	
 	public boolean isShifting() {
 		return shifting;

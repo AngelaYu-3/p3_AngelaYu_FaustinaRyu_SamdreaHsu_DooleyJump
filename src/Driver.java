@@ -46,7 +46,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		super.paintComponent(g);	
 	//PLAYSCREEN
 		if(!isStart && !isDead) {
-			shuffler[sm].play(-20.0f);
+			if(p1.size() == 1) randGenerate(score);
+			
+			//shuffler[1].play(-20.0f);
 			scroll[0].paint(g);
 			scroll[1].paint(g);
 			g.setFont(font);
@@ -73,19 +75,19 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 /**
  * ENEMIES/SHOOTING ENEMIES TEST CODE--TESTED
  */
-		   /* if(enemy.size() > 1) {
+		   if(enemy.size() > 1) {
 		    	enemy.get(0).noDooleySpawn(isStart, enemy, g);
 				enemy.get(0).enemiesShot(enemy, p);
 				isDead = enemy.get(0).dooleyEnemy(enemy, dooley[di], isDead);
 				enemy.get(0).move(enemy);
-		    }*/
+		    }
 		   
 		    
 /**
  * ROCKET PLATFORM TEST CODE--TESTED
  */
-			//platforms[3].paint(g);
-			//j.paint(g);
+			platforms[3].paint(g);
+			j.paint(g);
 
 /**
  * REPLAY BUTTON TEST CODE--TESTED
@@ -100,8 +102,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			for(int i = 0; i < p1.size(); i++) {
 				p1.get(i).paint(g);
 			}
-			
-			p1.get(0).paint(g);
 			
 
 /**
@@ -179,7 +179,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				for(int i = 0; i < 10; i++) {
 			        p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
 			    }
-				p1 = platforms[4].randGenerate(score);
+				
 				mx = 0;
 				my = 0;
 			}
@@ -212,7 +212,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         platforms[2] = new Vines(240, 510, 0, 0);
         platforms[3] = new Platform(100, 100);
         platforms[4] = new Platform(xr, lowest + (510 - 475));
-        p1 = platforms[4].randGenerate(score);
+        //p1 = platforms[4].randGenerate(score);
+        p1.add(platforms[4]);
     	j = new Jetpack(platforms[3].jetX(), platforms[3].jetY(), 0, 0);
         
         shuffler[0] = new Music("BlindingLights.wav",false);
@@ -350,6 +351,80 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		// TODO Auto-generated method stub
 		
 	}
+	
+	 public void randGenerate(int score) {
+		int numPlat = 0;
+		
+		if(score < 100) {
+			System.out.println("hello");
+			numPlat = 20;
+			for(int i = 0; i < numPlat; i++) {
+				
+				p1.add(respawn(800));
+				if(tooClose(p1.get(p1.size() - 1)) || !isViable(p1.get(p1.size() - 1), 60)) {
+					p1.remove(p1.size() - 1);
+					p1.add(respawn(800));				
+				}
+			}
+			//only platforms rand generated 20 platforms
+			
+		}
+		else if(score < 300) {
+			//enemies + jetpack
+		}
+		else if(score < 500) {
+			//bones + vines
+		}
+	}
+	 
+	 public boolean isViable(Platform p, int dist) {
+			int width = WIDTH - 25;
+			int height = HEIGHT - 45;
+			
+			for(int i = 0; i < p1.size(); i++) {
+				//checking left platform
+				if(p1.get(i).getX() + width + dist == p.getX()) return true;
+				
+				//checking right platform
+				if(p1.get(i).getX() - width - dist == p.getX()) return true;
+				
+				//checking top platform
+				if(p1.get(i).getY() + dist + height == p.getY()) return true;
+				
+				//checking bottom platform
+				if(p1.get(i).getY() - dist - height == p.getY()) return true;
+			}
+			return false;
+		}
+	 
+		public boolean tooClose(Platform p) {
+			for(int i = 0; i < p1.size(); i++) {
+				if(p1.get(i).pCollision(p, i, 8)) return true;
+			}	
+			return false;
+		}
+	 
+	 public Platform respawn(int maxY) {
+			//The whole screen is essentially a 10 by 14 grid 
+			int rows = 14;
+			int cols = 7;
+			
+			// the max y
+			int max = (int)((double)maxY/800 * rows);
+			
+			// random indexes for x and y
+			int x = (int)(Math.random() * cols);
+			int y = (int)(Math.random() * max);
+			int ry = (int)(Math.random() * 60) - 30;
+			int rx = (int)(Math.random() * 60) - 30;
+			
+			// change x and y to match a cell on the grid
+			x = (int)((double) x / cols * 600 - 10);
+			y = (int)((double) y / rows * (600 - HEIGHT));
+		
+			return new Platform(x, y);
+			
+		}
 	
 	public void resetPos(int di) {
 		x = dooley[this.di].getX();
