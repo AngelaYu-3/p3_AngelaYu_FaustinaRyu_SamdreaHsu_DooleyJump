@@ -73,6 +73,7 @@ public class Enemies extends Character {
 			respawn(-10);
 			tempY = tempY - 800;
 		}
+	}
 
     public void noDooleySpawn(boolean isStart, ArrayList<Enemies> enemy, Graphics g) {
 		//make sure enemy doesn't spawn on dooley
