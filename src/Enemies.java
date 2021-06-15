@@ -1,6 +1,11 @@
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+/**
+ * Enemies class
+ * deals with random generation/animation of Enemies
+ */
 public class Enemies extends Character {
 	
 	private int tempY;
@@ -68,6 +73,52 @@ public class Enemies extends Character {
 			respawn(-10);
 			tempY = tempY - 800;
 		}
+
+    public void noDooleySpawn(boolean isStart, ArrayList<Enemies> enemy, Graphics g) {
+		//make sure enemy doesn't spawn on dooley
+		for (int i = 0; i < enemy.size() - 1; i++) {
+			if (!isStart && enemy.get(i).getY()<350) {
+				enemy.get(i).paint(g);
+			}
+		}
+	}
+	
+	public void enemiesShot(ArrayList<Enemies> enemy, Pea[] p) {
+		//enemies die after getting shot more than 1 time 
+				for (int i = enemy.size()-2; i >= 0; i--) {
+					for (int j = 0; j < p.length; j++) {
+						if (enemy.get(i).isColliding(p[j])) {
+							enemy.get(i).setvx(0);
+							enemy.remove(i);
+							break;
+									
+		 				} 
+					}
+				}
+	}
+	
+	public boolean dooleyEnemy(ArrayList<Enemies> enemy, Dooley d, boolean isDead) {
+		//dooley dies
+				for (int i = 0; i < enemy.size() - 1; i++) {
+					if (enemy.get(i).isColliding(d)) {
+						enemy.get(i).setvx(0);
+						System.out.println("dooley die");
+						isDead = true;
+					}
+				}
+				
+				return isDead;
+	}
+	
+	public void move(ArrayList<Enemies> enemy) {
+		//move back and forth
+				for (int i = 0; i < enemy.size() - 1; i++) {
+					if (enemy.get(i).getX()<0 || enemy.get(i).getX()>510) {
+						//System.out.println("overbounds");
+						enemy.get(i).setvx(enemy.get(i).getvx()*(-1));
+						
+					} 
+				}
 	}
 	
 	public int getvx() {

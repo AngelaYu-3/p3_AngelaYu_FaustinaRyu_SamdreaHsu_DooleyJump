@@ -1,3 +1,7 @@
+/**
+ * Dooley class
+ * deals with dooley animation
+ */
 public class Dooley extends Character{
 	private int currY = getY();
 	private boolean isUp = true;
@@ -8,7 +12,11 @@ public class Dooley extends Character{
 		super(fileName, width, height, x, y, vx, vy);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	/**
+	 * based on height and vy entered,
+	 * continuously bounces Dooley
+	 */
 	public int bounce(int height, int vy) {
 		if(isUp) {
 			setvy(-vy);
@@ -27,7 +35,7 @@ public class Dooley extends Character{
 	}
 	
 	public void fall() {
-		setvy(1);
+		setvy(8);
 	}
 	
 	public int getNumBounces() {
