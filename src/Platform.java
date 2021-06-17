@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class Platform {
 	
-	protected int x;
-	protected int y;
+	protected int x, xi;
+	protected int y, yi;
 	protected int vx;
 	protected int vy;
 	protected int count;
@@ -22,24 +22,42 @@ public class Platform {
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
 	final int WINDOW_HEIGHT = 800;
-	protected boolean shifting = false;
+	protected boolean shifting, isSteppedOn;
 	protected int startingY;
-	private ArrayList<Platform> platform = new ArrayList<Platform>();
+	Platform[] p = new Platform[40];
 
   
 	public Platform(String pType, int x, int y, int vx, int vy) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
 		this.x = x;
+		this.xi = x;
 		this.y = y;
+		this.yi = y;
 		this.vx = vx;
 		this.vy = vy;
 		hasRocket = false;
+		shifting = true;
 		count = 0;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
 		init(x, y);
+	}
+	
+	public boolean endShift(Platform[] p) {
+		for(int i = 0; i < 1; i++) {
+			if(p[i].getShift()) return true;
+		}
+		return false;
+	}
+	
+	public boolean getShift() {
+		return shifting;
+	}
+	
+	public void setShift(boolean shifting) {
+		this.shifting = shifting;
 	}
   
   public Platform(int x, int y) {
@@ -63,6 +81,10 @@ public class Platform {
 		move();
 		g2.drawImage(img, tx, null);
 		
+	}
+	
+	public String toString() {
+		return "x: " + x + "y: " + y;
 	}
 
 
@@ -94,17 +116,45 @@ public class Platform {
 	 * continuously having dooley bounce on platform 
 	 * unless dooley falls off
 	 */
-	public boolean checkPlat(Dooley d) {
+	public boolean checkPlat(Dooley d, Platform p, boolean platDiff, int i) {
 		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
 				&& (d.getX() >= x && d.getX() < x + WIDTH - 20)))) {
-			result(d);
 			return false;
 		}
 		else{
-			d.fall();
 			return true;
 		}
 	}
+	
+	public boolean tooClose(Platform p, ArrayList<Platform> pl) {
+		for(int i = 0; i < pl.size() - 1; i++) {
+			if(pCollision(p, pl, i, 20)) return true;
+		}
+		return false;
+	}
+	
+	public boolean pCollision(Platform p, ArrayList<Platform> pl, int i, int b) {
+		Rectangle p0 = new Rectangle(pl.get(i).getX() + 14, pl.get(i).getY() + 26, pl.get(i).getWidth() - 25 + b, pl.get(i).getHeight() - 45 + (b/2));
+		Rectangle p1 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25 + b, p.getHeight() - 45 + (b/2));
+		return p0.intersects(p1);
+	}
+ 
+    public Platform[] path() {
+    	p[0] = new Platform(300, 600);
+    	p[1] = new Platform(350, 550);
+    	//p[2] = new Platform(350, );
+    	
+    	return p;
+    }
+    
+    public Platform[] resetPath() {
+    	for(int i = 0; i < 1; i++) {
+    		int initial = p[i].getYi();
+    		p[i].setY(initial);
+    	}
+    	
+    	return p;
+    }
 	
 	/**
 	 * Checks to see if Dooley stepped on a platform
@@ -112,7 +162,7 @@ public class Platform {
 	 */
 	public boolean isSteppedOn(Dooley d) {
 		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
-		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 45);
+		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 58);
 		return platform.intersects(dooley);
 	}
 	
@@ -136,18 +186,22 @@ public class Platform {
 	 */
 
     public void result(Dooley d) {
-		d.bounce(130, 5);
+		d.bounce(100, 3);
 	}
 	
 	public boolean offScreen() {
 		return y > WINDOW_HEIGHT - HEIGHT;
 	}
-
 	
-	public boolean pCollision(Platform p, int i, int b) {
-		Rectangle p1 = new Rectangle(platform.get(i).getX() + 14, platform.get(i).getY() + 26, platform.get(i).getWidth() - 25 + b, platform.get(i).getHeight() - 45 + (b/2));
-		Rectangle p2 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25 + b, p.getHeight() - 45 + (b/2));
-		return p1.intersects(p2);
+	public int getYi() {
+		return yi;
+	}
+
+	public void shiftDown(Platform[] p, int y, int vy, int plat) {
+		
+		//if(p[plat].getY() > yi + y) {
+			
+		//}
 	}
 	
 	/*public void shiftDown(int units, int vy) {

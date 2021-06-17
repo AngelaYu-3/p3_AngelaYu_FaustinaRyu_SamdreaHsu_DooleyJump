@@ -19,9 +19,9 @@ import javax.swing.Timer;
  */
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
    
-	private boolean isStart, isDead, isUp, isLeft, isRight, reset;
+	private boolean isStart, isDead, isUp, isLeft, isRight, reset, platDiff, shiftDown;
 	private JFrame f;
-	private int mx, my, di, pi, x, y, xr, sy, sx, sm, px, py, pc, score, lowest, highest;
+	private int mx, my, di, pi, x, y, xr, sy, sx, sm, px, py, pc, plat, score, lowest, highest;
 	private int numPeas = 10;
 	
 	private Background bg[] = new Background[2]; 
@@ -29,12 +29,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
     private Dooley[] dooley = new Dooley[5]; 
     private Pea[] p = new Pea[numPeas];
-    private Platform[] platforms = new Platform[5];
-    private ArrayList<Platform> p1 = new ArrayList<Platform>();
+    private Platform[] platforms = new Platform[40];
+    Platform dummy = new Platform(300, 300);
     private Music[] shuffler = new Music[3];
     private Music[] soundEffects = new Music[3];
     private Jetpack j;
     private ArrayList<Integer> scoreBoard = new ArrayList<Integer>();
+    private ArrayList<Platform> pl = new ArrayList<Platform>();
     
     private Font font = new Font("Courier New", 1, 25);
     private Timer t;
@@ -46,7 +47,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		super.paintComponent(g);	
 	//PLAYSCREEN
 		if(!isStart && !isDead) {
-			if(p1.size() == 1) randGenerate(score);
+			//if(pl.size() == 2) randPlatGen(score);
 			
 			//shuffler[1].play(-20.0f);
 			scroll[0].paint(g);
@@ -69,8 +70,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    if(dooley[di].getX() <= 0) dooley[di].setX(535);
 		    if(dooley[di].getX() >= 600) dooley[di].setX(5);
 			
-		    if(isLeft && !isDead) translate(-65);
-		    if(isRight && !isDead) translate(65);
+		    
 		    
 /**
  * ENEMIES/SHOOTING ENEMIES TEST CODE--TESTED
@@ -86,23 +86,71 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 /**
  * ROCKET PLATFORM TEST CODE--TESTED
  */
-			platforms[3].paint(g);
-			j.paint(g);
+			//platforms[3].paint(g);
+			//j.paint(g);
 
 /**
  * REPLAY BUTTON TEST CODE--TESTED
- */         platforms[4].paint(g);
-			if(platforms[4].checkPlat(dooley[di])) { //look into checkPlat for intial randomization & bounce method
-			   soundEffects[1].play(0.0f);
-			   if(dooley[di].getY() > 820) isDead = true;
+ */     
+			if(isLeft && !isDead) {
+				dooley[di].setvx(-1);
+				translate(-65);
 			}
-			
-			
-			
-			for(int i = 0; i < p1.size(); i++) {
-				p1.get(i).paint(g);
-			}
-			
+		    if(isRight && !isDead) {
+		    	dooley[di].setvx(1);
+		    	translate(65);
+		    }
+
+		    for(int i = 0; i < 2; i++) {
+		    	platforms[i].paint(g);
+		    
+		    	if(platforms[i].isSteppedOn(dooley[di])) {
+		    		if(i != plat) platDiff = true;
+		    		else platDiff = false;
+		    		plat = i;
+		    	}
+		    }
+		    
+		    if(platforms[plat].checkPlat(dooley[di], platforms[plat], platDiff, plat)) {
+	    		dooley[di].setvy(8);
+	    	}else {
+	    		if(platDiff) {
+	    			shiftDown = true;
+				}
+	    		
+	    		if(shiftDown) {
+	    			for(int i = 0; i < 2; i++) {
+	    				if(platforms[i].getY() < platforms[i].getYi() + (600-platforms[plat].getYi())) {
+	    					platforms[i].setVy(5);
+	    				}
+	    				else{
+	    					platforms[i].setShift(false);
+	    					platforms[i].setVy(0);
+	    				}
+	    			}shiftDown = platforms[0].endShift(platforms);
+	    			scroll(600-platforms[plat].getYi(), 5);
+	    			score += (int)((600-platforms[plat].getYi())/10);
+	    		}
+	    		
+	    		dooley[di].bounce(70, 5);
+	    	}
+		    
+		    if(scroll[0].getY() >= 800) scroll[0].setY(-800);
+			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
+		    
+		    if(dooley[di].getY() > 600) {
+		    	soundEffects[1].play(0.0f);
+		    	if(dooley[di].getY() > 820) isDead = true;
+		    }
+
+		    for(int i = 1; i < 6; i++) {
+		        g.drawLine(i * 100, 0, i * 100, 800);
+		    }
+		    
+		    for(int i = 1; i < 8; i++) {
+		    	g.drawLine(0, i*100, 800, i*100);
+		    }
+		    
 
 /**
  * BONE + VINE LOGIC--TESTED
@@ -142,6 +190,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    //if(isUp) scroll(50, 5);	   
 			 //if(isUp) scroll(50, 5);
 		}
+
 		
 	//STARTSCREEN
 		if(isStart) {
@@ -167,21 +216,26 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			
 			//replay button
 			if(mx < 400 && mx > 200 && my > 300 && my < 380) {	
-				xr = (int)(Math.random() * 500) + 5;
 				score = 0;
 				isDead = false;
 				isStart = false;
 				di = 0;
-				platforms[4].setX(xr);
-				dooley[di].setX(xr + 10);
-				dooley[di].setY(lowest);
+				dooley[di].setX(300);
+				dooley[di].setY(567);
 				soundEffects[1] = new Music("fall.wav", false);
 				for(int i = 0; i < 10; i++) {
 			        p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
 			    }
-				
+				//platforms = dummy.resetPath();
+				scroll[0].setY(0);
+				scroll[1].setY(-800);
 				mx = 0;
 				my = 0;
+				enemy.clear();
+				enemy.add(new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+			    enemy.add(new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+			    enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0)); 
+			    enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
 			}
 			if(mx < 400 && mx > 200 && my > 370 && my < 450) {
 				System.exit(1);
@@ -212,9 +266,11 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         platforms[2] = new Vines(240, 510, 0, 0);
         platforms[3] = new Platform(100, 100);
         platforms[4] = new Platform(xr, lowest + (510 - 475));
-        //p1 = platforms[4].randGenerate(score);
-        p1.add(platforms[4]);
-    	j = new Jetpack(platforms[3].jetX(), platforms[3].jetY(), 0, 0);
+        platforms = platforms[4].path();
+        pl.add(new Platform(xr, lowest + (510-475)));
+        pl.add(new Platform(xr, lowest + (510-475-100)));
+      
+    	//j = new Jetpack(platforms[3].jetX(), platforms[3].jetY(), 0, 0);
         
         shuffler[0] = new Music("BlindingLights.wav",false);
         shuffler[1] = new Music("Butter.wav",false);
@@ -229,9 +285,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0)); 
         enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
        
-        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, xr + 10, lowest, 0, 0);
-        dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, xr + 10, lowest, 0, 0);
-        dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, xr + 10, lowest, 0, 0);
+        dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 300, 567, 0, 0);
+        dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 300, 567, 0, 0);
+        dooley[2] = new Dooley("/Graphics/dooleyUp.png", 65, 65, 300, 567, 0, 0);
         dooley[3] = new Dooley("/Graphics/dooleyLeft.png",65, 65, 350, 247, 0, 0);
         dooley[4] = new Dooley("/Graphics/dooleyjetLeft.png", 80, 90, 350, 300, 0,0);
  
@@ -280,16 +336,9 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    
 	    case 'w':
 	    	resetPos(2);
-	  		sy = scroll[0].getY();
-	  		if(scroll[0].getY() >= 800) scroll[0].setY(-800);
-			if(scroll[1].getY() >= 800) scroll[1].setY(-800);
-                
-	  		sy = scroll[0].getY();
-			isUp = true;
 			pc = 1;
 	    	break;
     	
-	    //add horizontal movement here look at logic for up movement
 	    case 'a':
 	    	resetPos(0);
 	    	sx = dooley[di].getX();
@@ -325,7 +374,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		// TODO Auto-generated method stub
 		mx = e.getX();
 		my = e.getY();
-		//System.out.println(mx + " " + my);
 	}
 
 	@Override
@@ -349,87 +397,17 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
-	
-	 public void randGenerate(int score) {
-		int numPlat = 0;
-		
-		if(score < 100) {
-			System.out.println("hello");
-			numPlat = 20;
-			for(int i = 0; i < numPlat; i++) {
-				
-				p1.add(respawn(800));
-				if(tooClose(p1.get(p1.size() - 1)) || !isViable(p1.get(p1.size() - 1), 60)) {
-					p1.remove(p1.size() - 1);
-					p1.add(respawn(800));				
-				}
-			}
-			//only platforms rand generated 20 platforms
-			
-		}
-		else if(score < 300) {
-			//enemies + jetpack
-		}
-		else if(score < 500) {
-			//bones + vines
-		}
-	}
-	 
-	 public boolean isViable(Platform p, int dist) {
-			int width = WIDTH - 25;
-			int height = HEIGHT - 45;
-			
-			for(int i = 0; i < p1.size(); i++) {
-				//checking left platform
-				if(p1.get(i).getX() + width + dist == p.getX()) return true;
-				
-				//checking right platform
-				if(p1.get(i).getX() - width - dist == p.getX()) return true;
-				
-				//checking top platform
-				if(p1.get(i).getY() + dist + height == p.getY()) return true;
-				
-				//checking bottom platform
-				if(p1.get(i).getY() - dist - height == p.getY()) return true;
-			}
-			return false;
-		}
-	 
-		public boolean tooClose(Platform p) {
-			for(int i = 0; i < p1.size(); i++) {
-				if(p1.get(i).pCollision(p, i, 8)) return true;
-			}	
-			return false;
-		}
-	 
-	 public Platform respawn(int maxY) {
-			//The whole screen is essentially a 10 by 14 grid 
-			int rows = 14;
-			int cols = 7;
-			
-			// the max y
-			int max = (int)((double)maxY/800 * rows);
-			
-			// random indexes for x and y
-			int x = (int)(Math.random() * cols);
-			int y = (int)(Math.random() * max);
-			int ry = (int)(Math.random() * 60) - 30;
-			int rx = (int)(Math.random() * 60) - 30;
-			
-			// change x and y to match a cell on the grid
-			x = (int)((double) x / cols * 600 - 10);
-			y = (int)((double) y / rows * (600 - HEIGHT));
-		
-			return new Platform(x, y);
-			
-		}
 	
 	public void resetPos(int di) {
+		
 		x = dooley[this.di].getX();
-    	y = dooley[this.di].getY();
+    	y = platforms[plat].getY() - 32;
+		//if(plat == 0) y = 535;
+		//if(plat == 1) y = 485;
     	this.di = di;
+    	
+    	if(di == 2) y -= 30;
     	dooley[di].setX(x);
     	dooley[di].setY(y);
 	}

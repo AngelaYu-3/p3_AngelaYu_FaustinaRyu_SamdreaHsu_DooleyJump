@@ -34,8 +34,16 @@ public class Dooley extends Character{
 		return numBounces;
 	}
 	
+	public void setCurrY(int y) {
+		currY = y;
+	}
+	
+	public void setUp(boolean isUp) {
+		this.isUp = isUp;
+	}
+	
 	public void fall() {
-		setvy(8);
+		setvy(10);
 	}
 	
 	public int getNumBounces() {

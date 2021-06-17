@@ -11,8 +11,6 @@ public class Enemies extends Character {
 	// default constructor, sets all to zero
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
-			
-			
 			this.vx = 1;
 			width = 65;
 			height = 65;
