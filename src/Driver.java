@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -19,26 +20,29 @@ import javax.swing.Timer;
  */
 public class Driver extends JPanel implements ActionListener, KeyListener, MouseListener{
    
-	private boolean isStart, isDead, isUp, isLeft, isRight, reset, platDiff, shiftDown;
+	private boolean isStart, isDead, isUp, isLeft, isRight, platDiff, shiftDown, isTranslate, isWinner;
 	private JFrame f;
-	private int mx, my, di, pi, x, y, xr, sy, sx, sm, px, py, pc, plat, score, lowest, highest;
+	private int mx, my, di, pi, x, y, xr, sy, sx, sm, px, py, pc, plat, score, lowest;
 	private int numPeas = 10;
+	private int numPlat = 17;
 	
 	private Background bg[] = new Background[2]; 
 	private Background[] scroll = new Background[2]; 
-	private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
+	//private ArrayList<Enemies> enemy = new ArrayList<Enemies>();
+	private Enemies finalBoss = new Enemies("Graphics/enemy1.png", 150, 150, 100, 200, 4, 0);
     private Dooley[] dooley = new Dooley[5]; 
     private Pea[] p = new Pea[numPeas];
-    private Platform[] platforms = new Platform[40];
-    Platform dummy = new Platform(300, 300);
+    private Platform[] platforms = new Platform[numPlat];
+    private Platform dummy = new Platform(300, 300);
     private Music[] shuffler = new Music[3];
     private Music[] soundEffects = new Music[3];
     private Jetpack j;
-    private ArrayList<Integer> scoreBoard = new ArrayList<Integer>();
     private ArrayList<Platform> pl = new ArrayList<Platform>();
     
     private Font font = new Font("Courier New", 1, 25);
     private Timer t;
+    private double currTime = (System.currentTimeMillis()/1000.0);
+    private double value;
 
     /**
      * painting on JFrame
@@ -47,14 +51,20 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		super.paintComponent(g);	
 	//PLAYSCREEN
 		if(!isStart && !isDead) {
-			//if(pl.size() == 2) randPlatGen(score);
-			
-			//shuffler[1].play(-20.0f);
+			shuffler[sm].play(-20.0f);
 			scroll[0].paint(g);
 			scroll[1].paint(g);
+			if(plat == 16 || plat == 17) finalBoss.paint(g);
+			finalBoss.move(finalBoss);
+			isWinner = finalBoss.enemiesShot(finalBoss, p);
+			if(isWinner) isDead = true;
 			g.setFont(font);
 			g.setColor(Color.black);
-			g.drawString("Score: " + score, 5, 20);	
+			value = (System.currentTimeMillis()/1000.0) - currTime;
+			value = value * Math.pow(10, 3);
+		    value = Math.floor(value);
+		    value = value / Math.pow(10, 3);
+			g.drawString("Time: " + value, 5, 20);	
 			dooley[di].paint(g);
 			
 			//shooting
@@ -70,56 +80,46 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    if(dooley[di].getX() <= 0) dooley[di].setX(535);
 		    if(dooley[di].getX() >= 600) dooley[di].setX(5);
 			
-		    
-		    
-/**
- * ENEMIES/SHOOTING ENEMIES TEST CODE--TESTED
- */
-		   if(enemy.size() > 1) {
-		    	enemy.get(0).noDooleySpawn(isStart, enemy, g);
-				enemy.get(0).enemiesShot(enemy, p);
-				isDead = enemy.get(0).dooleyEnemy(enemy, dooley[di], isDead);
-				enemy.get(0).move(enemy);
-		    }
-		   
-		    
-/**
- * ROCKET PLATFORM TEST CODE--TESTED
- */
-			//platforms[3].paint(g);
-			//j.paint(g);
 
 /**
  * REPLAY BUTTON TEST CODE--TESTED
  */     
 			if(isLeft && !isDead) {
 				dooley[di].setvx(-1);
-				translate(-65);
+				dooley[di].setvy(-1);
+				translate(-70);
+				if(dooley[di].getX() - sx <= -70) isTranslate = true;
 			}
 		    if(isRight && !isDead) {
 		    	dooley[di].setvx(1);
-		    	translate(65);
+		    	dooley[di].setvy(-1);
+		    	translate(70);
+		    	if(dooley[di].getX() - sx >= 70) isTranslate = true;
 		    }
 
-		    for(int i = 0; i < 2; i++) {
-		    	platforms[i].paint(g);
-		    
+		    for(int i = 0; i < numPlat; i++) {
+		    	if(platforms[i].getPaint()) platforms[i].paint(g);
 		    	if(platforms[i].isSteppedOn(dooley[di])) {
+		    		if(i - plat < -2) isDead = true;
 		    		if(i != plat) platDiff = true;
 		    		else platDiff = false;
 		    		plat = i;
 		    	}
 		    }
-		    
-		    if(platforms[plat].checkPlat(dooley[di], platforms[plat], platDiff, plat)) {
-	    		dooley[di].setvy(8);
+
+		    if(platforms[plat].checkPlat(dooley[di], platforms[plat], platDiff, plat) && isTranslate) {
+	    		dooley[di].setvy(8);	    		
 	    	}else {
+
 	    		if(platDiff) {
 	    			shiftDown = true;
+	    			for(int i = 0; i < numPlat; i++) {
+	    		    	platforms[i].setShift(true);
+	    		    }
 				}
 	    		
 	    		if(shiftDown) {
-	    			for(int i = 0; i < 2; i++) {
+	    			for(int i = 0; i < numPlat; i++) {
 	    				if(platforms[i].getY() < platforms[i].getYi() + (600-platforms[plat].getYi())) {
 	    					platforms[i].setVy(5);
 	    				}
@@ -127,12 +127,13 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 	    					platforms[i].setShift(false);
 	    					platforms[i].setVy(0);
 	    				}
-	    			}shiftDown = platforms[0].endShift(platforms);
+	    			}
+	    			shiftDown = platforms[0].endShift(platforms, numPlat);
 	    			scroll(600-platforms[plat].getYi(), 5);
 	    			score += (int)((600-platforms[plat].getYi())/10);
 	    		}
-	    		
-	    		dooley[di].bounce(70, 5);
+	    		dooley[di].bounce(76, 5);
+	    		isTranslate = false;
 	    	}
 		    
 		    if(scroll[0].getY() >= 800) scroll[0].setY(-800);
@@ -162,36 +163,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    }
 			if(!platforms[2].checkPlat(dooley[di])) platforms[2].paint(g);
 			else if(dooley[di].getY() > 820) isDead = true;*/
-		    
-/**
- * RANDOM PLATFORM--UNTESTED
- */
-		    /*for(Platform p: platforms) {
-			p.paint(g);
-			if(p.isSteppedOn(dooley[di])) {
-				for(Platform i: platforms) {
-					i.shiftDown(600, 5);
-					scroll(600, 5);
-					}
-				
-			}
-			
-			if(p.isShifting()) {
-				p.shiftDown(600, 5);
-				scroll(600, 5);
-			} 
-			 
-		    }*/
-			
-/**
- * UNNECESSARY
- */
-			//moving background
-		    //if(isUp) scroll(50, 5);	   
-			 //if(isUp) scroll(50, 5);
-		}
 
-		
 	//STARTSCREEN
 		if(isStart) {
 			bg[0].paint(g);
@@ -207,39 +179,42 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		}
 			
 	//ENDSCREEN
-		if(isDead) {
+		if(isDead || isWinner) {
 			bg[1].paint(g);
-			scoreBoard.add(score);
-			bg[1].endScreen(g, scoreBoard);
+			bg[1].endScreen(g, value);
 			dooley[3].paint(g);
 			dooley[3].bounce(25, 1);
 			
 			//replay button
 			if(mx < 400 && mx > 200 && my > 300 && my < 380) {	
-				score = 0;
+				//score = 0;
 				isDead = false;
 				isStart = false;
 				di = 0;
 				dooley[di].setX(300);
 				dooley[di].setY(567);
+				currTime = (int)(System.currentTimeMillis()/1000);
 				soundEffects[1] = new Music("fall.wav", false);
 				for(int i = 0; i < 10; i++) {
 			        p[i] = new Pea("/Graphics/Pea.png", 38, 38, px, py, 0, -10);
 			    }
-				//platforms = dummy.resetPath();
+				
+				resetPath();
 				scroll[0].setY(0);
 				scroll[1].setY(-800);
+				shiftDown = false;
+				platDiff = false;
+				isTranslate = false;
+				plat = 0;
 				mx = 0;
 				my = 0;
-				enemy.clear();
-				enemy.add(new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
-			    enemy.add(new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
-			    enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0)); 
-			    enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
+				isWinner = false;
+				finalBoss = new Enemies("Graphics/enemy1.png", 150, 150, 100, 100, 3, 0);
 			}
 			if(mx < 400 && mx > 200 && my > 370 && my < 450) {
 				System.exit(1);
 			}
+		}
 		}
 		
 	}	
@@ -264,9 +239,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         platforms[0] = new Bones("/Graphics/bone.png", 240, 510, 0, 0);
         platforms[1] = new Bones("/Graphics/bone1.png", 240, 510, 0, 3);
         platforms[2] = new Vines(240, 510, 0, 0);
-        platforms[3] = new Platform(100, 100);
-        platforms[4] = new Platform(xr, lowest + (510 - 475));
-        platforms = platforms[4].path();
+        platforms = platforms[0].path();
         pl.add(new Platform(xr, lowest + (510-475)));
         pl.add(new Platform(xr, lowest + (510-475-100)));
       
@@ -278,12 +251,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
         
        	scroll[0] = new Background("/Graphics/background1.png", 0, 0, 600, 800);
         scroll[1] = new Background("/Graphics/background1.png", -800, 0, 600, 800);
-
-        enemy = new ArrayList<Enemies>();
-        enemy.add(new Enemies("/Graphics/Enemy1.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
-        enemy.add(new Enemies("/Graphics/Enemy2.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
-        enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0)); 
-        enemy.add(new Enemies("/Graphics/Enemy3.png", 65, 65, (int)(Math.random()*(500)),(int)(Math.random()*(150)), 1, 0));
        
         dooley[0] = new Dooley("/Graphics/dooleyLeft.png", 65, 65, 300, 567, 0, 0);
         dooley[1] = new Dooley("/Graphics/dooleyRight.png", 65, 65, 300, 567, 0, 0);
@@ -403,8 +370,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		
 		x = dooley[this.di].getX();
     	y = platforms[plat].getY() - 32;
-		//if(plat == 0) y = 535;
-		//if(plat == 1) y = 485;
     	this.di = di;
     	
     	if(di == 2) y -= 30;
@@ -442,5 +407,12 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 			isUp = false;
 		}
 	}
+  
+  public void resetPath() {
+  	for(int i = 0; i < numPlat; i++) {
+  		platforms[i].setY(platforms[i].getYi());
+  		platforms[i].setShift(true);
+  	}
+  }
 
 }

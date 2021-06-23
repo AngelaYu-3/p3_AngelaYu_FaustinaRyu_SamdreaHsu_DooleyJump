@@ -11,8 +11,8 @@ import java.net.URL;
 public class Character{
 	// attributes of a character
 	protected int x; // Position of character
-	protected int y;
-	protected int vx, vy;
+	protected int y, yi;
+	protected int vx, vy, ay;
 	protected int width; 
 	protected int height;
 	protected String fileName;
@@ -29,9 +29,11 @@ public class Character{
 		this.height = height;
 		this.x = x;
 		this.y = y;
+		this.yi = y;
 		this.vx = vx;
 		this.vy = vy;
 		this.fileName = fileName;
+		ay = 10;
 		img = getImage(fileName);
 		img = img.getScaledInstance(width, height, img.SCALE_SMOOTH);
 		init(x, y);
@@ -43,6 +45,10 @@ public class Character{
 		x += vx;
 		tx.setToTranslation(x, y);
 
+	}
+	
+	public int getYi() {
+		return yi;
 	}
 
 	public void hop(int x, int y) {

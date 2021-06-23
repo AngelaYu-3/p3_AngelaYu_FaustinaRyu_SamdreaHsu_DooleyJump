@@ -8,12 +8,13 @@ import java.util.ArrayList;
  */
 public class Enemies extends Character {
 
-	// default constructor, sets all to zero
+	// default constructor, sets all to zero\
+	private int countShoot = 0;
 	public Enemies(String filename, int w, int h, int x, int y, int vx, int vy) {
 			super(filename, w, h, x, y, vx, vy);
 			this.vx = 1;
-			width = 65;
-			height = 65;
+			width = 80;
+			height = 80;
 	}
 		
 	
@@ -45,18 +46,19 @@ public class Enemies extends Character {
 		}
 	}
 	
-	public void enemiesShot(ArrayList<Enemies> enemy, Pea[] p) {
+	public boolean enemiesShot(Enemies e, Pea[] p) {
 		//enemies die after getting shot more than 1 time 
-				for (int i = enemy.size()-2; i >= 0; i--) {
 					for (int j = 0; j < p.length; j++) {
-						if (enemy.get(i).isColliding(p[j])) {
-							enemy.get(i).setvx(0);
-							enemy.remove(i);
-							break;
-									
+						if (e.isColliding(p[j])) countShoot++;
+						
+						if(countShoot >= 15) {
+							e.setvx(0);
+							return true;	
 		 				} 
 					}
-				}
+					
+					return false;
+				
 	}
 	
 	public boolean dooleyEnemy(ArrayList<Enemies> enemy, Dooley d, boolean isDead) {
@@ -72,15 +74,15 @@ public class Enemies extends Character {
 				return isDead;
 	}
 	
-	public void move(ArrayList<Enemies> enemy) {
+	public void move(Enemies e) {
 		//move back and forth
-				for (int i = 0; i < enemy.size() - 1; i++) {
-					if (enemy.get(i).getX()<0 || enemy.get(i).getX()>510) {
+				
+					if (e.getX()<0 || e.getX()>510) {
 						//System.out.println("overbounds");
-						enemy.get(i).setvx(enemy.get(i).getvx()*(-1));
+						e.setvx(e.getvx()*(-1));
 						
 					} 
-				}
+				
 	}
 	
 	public int getvx() {

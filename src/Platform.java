@@ -15,6 +15,7 @@ public class Platform {
 	protected int vy;
 	protected int count;
 	protected Image img;
+	protected String pType;
 
 	protected boolean isStepped, hasRocket;
 
@@ -22,7 +23,7 @@ public class Platform {
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
 	final int WINDOW_HEIGHT = 800;
-	protected boolean shifting, isSteppedOn;
+	protected boolean shifting, isSteppedOn, paint, isMoving;
 	protected int startingY;
 	Platform[] p = new Platform[40];
 
@@ -36,6 +37,8 @@ public class Platform {
 		this.yi = y;
 		this.vx = vx;
 		this.vy = vy;
+		this.pType = pType;
+		paint = true;
 		hasRocket = false;
 		shifting = true;
 		count = 0;
@@ -45,9 +48,17 @@ public class Platform {
 		init(x, y);
 	}
 	
-	public boolean endShift(Platform[] p) {
-		for(int i = 0; i < 1; i++) {
-			if(p[i].getShift()) return true;
+	public boolean getPaint() {
+		return paint;
+	}
+	
+	public void setPaint(boolean paint) {
+		this.paint = paint;
+	}
+	
+	public boolean endShift(Platform[] pl, int numPlat) {
+		for(int i = 0; i < numPlat; i++) {
+			if(pl[i].getShift()) return true;
 		}
 		return false;
 	}
@@ -62,6 +73,7 @@ public class Platform {
   
   public Platform(int x, int y) {
 		this("/Graphics/platform.png", x, y, 0, 0);
+		this.shifting = true;
 	}
 	
 	public int jetX() {
@@ -141,17 +153,22 @@ public class Platform {
  
     public Platform[] path() {
     	p[0] = new Platform(300, 600);
-    	p[1] = new Platform(350, 550);
-    	//p[2] = new Platform(350, );
-    	
-    	return p;
-    }
-    
-    public Platform[] resetPath() {
-    	for(int i = 0; i < 1; i++) {
-    		int initial = p[i].getYi();
-    		p[i].setY(initial);
-    	}
+    	p[1] = new Platform(340, 500);
+    	p[2] = new Platform(430, 415);
+    	p[3] = new Platform(300, 370);
+    	p[4] = new Platform(200, 280);
+    	p[5] = new Platform(270, 200);
+    	p[6] = new Platform(200, 130);
+    	p[7] = new Platform(120, 90);
+    	p[8] = new Platform(210, 550);
+    	p[9] = new Platform(150, 320);
+    	p[10] = new Platform(85, 120);
+    	p[11] = new Platform(270, 40);
+    	p[12] = new Platform(160, 20);
+    	p[13] = new Platform(220, 20);
+    	p[14] = new Platform(260, -20);
+    	p[15] = new Platform(150, -90);
+    	p[16] = new Platform(240, -70);
     	
     	return p;
     }
@@ -239,6 +256,10 @@ public class Platform {
 		this.vx = vx;
 	}
 	
+	public String getType() {
+		if(pType == "Graphics/vines.png") return "vine";
+		else return "bone";
+	}
 	
 	public void setVy(int vy) {
 		this.vy = vy;
