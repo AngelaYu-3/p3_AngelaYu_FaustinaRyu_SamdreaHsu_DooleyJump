@@ -48,7 +48,7 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
      * painting on JFrame
      */
 	public void paint(Graphics g) {
-		super.paintComponent(g);
+		super.paintComponent(g);	
 	//PLAYSCREEN
 		if(!isStart && !isDead) {
 			shuffler[sm].play(-20.0f);
@@ -151,8 +151,8 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 		    for(int i = 1; i < 8; i++) {
 		    	g.drawLine(0, i*100, 800, i*100);
 		    }
-		}   
-
+		    
+		}
 /**
  * BONE + VINE LOGIC--TESTED
  */
@@ -215,7 +215,6 @@ public class Driver extends JPanel implements ActionListener, KeyListener, Mouse
 				System.exit(1);
 			}
 		}
-		
 		
 	}	
 
