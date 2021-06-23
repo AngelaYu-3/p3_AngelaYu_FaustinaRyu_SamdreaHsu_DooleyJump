@@ -58,7 +58,7 @@ public class Background{
 	/**
 	 * setting up end screen
 	 */
-	public void endScreen(Graphics g, ArrayList<Integer> scoreBoard) {
+	public void endScreen(Graphics g, double value) {
 		g.setFont(f1);
 		g.setColor(Color.black);
 		g.drawString("Dooley is ded RIP", 120, 260);
@@ -74,6 +74,8 @@ public class Background{
 		g.setFont(f2);
 		g.setColor(Color.black);
 		g.drawString("end", 275, 400);
+		
+		g.drawString("FINAL TIME: " + value, 160, 470);
 		
 		/*g.setFont(f3);
 		for(int i = 0; i < scoreBoard.size(); i++) {

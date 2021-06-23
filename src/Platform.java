@@ -9,12 +9,13 @@ import java.util.ArrayList;
 
 public class Platform {
 	
-	protected int x;
-	protected int y;
+	protected int x, xi;
+	protected int y, yi;
 	protected int vx;
 	protected int vy;
 	protected int count;
 	protected Image img;
+	protected String pType;
 
 	protected boolean isStepped, hasRocket;
 
@@ -22,28 +23,57 @@ public class Platform {
 	final int HEIGHT = 60;
 	final int WINDOW_WIDTH = 600;
 	final int WINDOW_HEIGHT = 800;
-	protected boolean shifting = false;
+	protected boolean shifting, isSteppedOn, paint, isMoving;
 	protected int startingY;
-	private ArrayList<Platform> platform = new ArrayList<Platform>();
+	Platform[] p = new Platform[40];
 
   
 	public Platform(String pType, int x, int y, int vx, int vy) {
 		// TODO: generate random x and y according to dimensions of platform and window 
 		
 		this.x = x;
+		this.xi = x;
 		this.y = y;
+		this.yi = y;
 		this.vx = vx;
 		this.vy = vy;
+		this.pType = pType;
+		paint = true;
 		hasRocket = false;
+		shifting = true;
 		count = 0;
 		
 		img = getImage(pType);
 		img = img.getScaledInstance(WIDTH, HEIGHT, img.SCALE_SMOOTH);
 		init(x, y);
 	}
+	
+	public boolean getPaint() {
+		return paint;
+	}
+	
+	public void setPaint(boolean paint) {
+		this.paint = paint;
+	}
+	
+	public boolean endShift(Platform[] pl, int numPlat) {
+		for(int i = 0; i < numPlat; i++) {
+			if(pl[i].getShift()) return true;
+		}
+		return false;
+	}
+	
+	public boolean getShift() {
+		return shifting;
+	}
+	
+	public void setShift(boolean shifting) {
+		this.shifting = shifting;
+	}
   
   public Platform(int x, int y) {
 		this("/Graphics/platform.png", x, y, 0, 0);
+		this.shifting = true;
 	}
 	
 	public int jetX() {
@@ -63,6 +93,10 @@ public class Platform {
 		move();
 		g2.drawImage(img, tx, null);
 		
+	}
+	
+	public String toString() {
+		return "x: " + x + "y: " + y;
 	}
 
 
@@ -94,17 +128,50 @@ public class Platform {
 	 * continuously having dooley bounce on platform 
 	 * unless dooley falls off
 	 */
-	public boolean checkPlat(Dooley d) {
+	public boolean checkPlat(Dooley d, Platform p, boolean platDiff, int i) {
 		if((isSteppedOn(d) || (!isSteppedOn(d) && d.getY() - 55 < y + 26 
 				&& (d.getX() >= x && d.getX() < x + WIDTH - 20)))) {
-			result(d);
 			return false;
 		}
 		else{
-			d.fall();
 			return true;
 		}
 	}
+	
+	public boolean tooClose(Platform p, ArrayList<Platform> pl) {
+		for(int i = 0; i < pl.size() - 1; i++) {
+			if(pCollision(p, pl, i, 20)) return true;
+		}
+		return false;
+	}
+	
+	public boolean pCollision(Platform p, ArrayList<Platform> pl, int i, int b) {
+		Rectangle p0 = new Rectangle(pl.get(i).getX() + 14, pl.get(i).getY() + 26, pl.get(i).getWidth() - 25 + b, pl.get(i).getHeight() - 45 + (b/2));
+		Rectangle p1 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25 + b, p.getHeight() - 45 + (b/2));
+		return p0.intersects(p1);
+	}
+ 
+    public Platform[] path() {
+    	p[0] = new Platform(300, 600);
+    	p[1] = new Platform(340, 500);
+    	p[2] = new Platform(430, 415);
+    	p[3] = new Platform(300, 370);
+    	p[4] = new Platform(200, 280);
+    	p[5] = new Platform(270, 200);
+    	p[6] = new Platform(200, 130);
+    	p[7] = new Platform(120, 90);
+    	p[8] = new Platform(210, 550);
+    	p[9] = new Platform(150, 320);
+    	p[10] = new Platform(85, 120);
+    	p[11] = new Platform(270, 40);
+    	p[12] = new Platform(160, 20);
+    	p[13] = new Platform(220, 20);
+    	p[14] = new Platform(260, -20);
+    	p[15] = new Platform(150, -90);
+    	p[16] = new Platform(240, -70);
+    	
+    	return p;
+    }
 	
 	/**
 	 * Checks to see if Dooley stepped on a platform
@@ -112,7 +179,7 @@ public class Platform {
 	 */
 	public boolean isSteppedOn(Dooley d) {
 		Rectangle dooley = new Rectangle(d.getX() + 10, d.getY() + 10, 48, 55);
-		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 45);
+		Rectangle platform = new Rectangle(x + 20, y + 26, WIDTH - 25, HEIGHT - 58);
 		return platform.intersects(dooley);
 	}
 	
@@ -136,93 +203,25 @@ public class Platform {
 	 */
 
     public void result(Dooley d) {
-		d.bounce(130, 5);
+		d.bounce(100, 3);
 	}
 	
 	public boolean offScreen() {
 		return y > WINDOW_HEIGHT - HEIGHT;
 	}
 	
-/**
- * random generation
- */
-	/*public ArrayList<Platform> randGenerate(int score) {
-		platform.clear();
-		int numPlat = 0;
+	public int getYi() {
+		return yi;
+	}
+
+	public void shiftDown(Platform[] p, int y, int vy, int plat) {
 		
-		if(score < 100) {
-			numPlat = 5	;
-			for(int i = 0; i < numPlat; i++) {
-				platform.add(respawn(800));
-				while(tooClose(platform.get(platform.size() - 1)) || sameRow(platform.get(platform.size()-1))) {
-					System.out.println("hi");
-					platform.remove(platform.size() - 1);
-					platform.add(respawn(800));				
-				}
-				
-			}
-			//only platforms rand generated 20 platforms
+		//if(p[plat].getY() > yi + y) {
 			
-		}
-		else if(score < 300) {
-			//enemies + jetpack
-		}
-		else if(score < 500) {
-			//bones + vines
-		}
-		
-		return platform;
-	}*/
-	
-	public boolean viable() {
-		boolean viable = false;
-		
-		return viable;
-	}
-    
-	public Platform respawn(int maxY) {
-		//The whole screen is essentially a 10 by 14 grid 
-		int rows = 40;
-		int cols = 70;
-		
-		// the max y
-		int max = (int)((double)maxY/WINDOW_HEIGHT * rows);
-		
-		// random indexes for x and y
-		int x = (int)(Math.random() * cols);
-		int y = (int)(Math.random() * max);
-		int ry = (int)(Math.random() * 60) - 30;
-		int rx = (int)(Math.random() * 60) - 30;
-		
-		// change x and y to match a cell on the grid
-		x = (int)((double) x / cols * WINDOW_WIDTH - 10);
-		y = (int)((double) y / rows * (600 - HEIGHT));
-	
-		return new Platform(x, y);
-		
+		//}
 	}
 	
-	public boolean tooClose(Platform p) {
-		for(int i = 0; i < platform.size(); i++) {
-			if(pCollision(p, i)) return true;
-		}	
-		return false;
-	}
-	
-	public boolean sameRow(Platform p) {
-		for(int i = 0; i < platform.size(); i++) {
-			if(p.getX() == platform.get(i).getX()) return true;
-		}	
-		return false;
-	}
-	
-	public boolean pCollision(Platform p, int i) {
-		Rectangle p1 = new Rectangle(platform.get(i).getX() + 14, platform.get(i).getY() + 26, platform.get(i).getWidth() - 25, platform.get(i).getHeight() - 45);
-		Rectangle p2 = new Rectangle(p.getX() + 14, p.getY() + 26, p.getWidth() - 25, p.getHeight() - 45);
-		return p1.intersects(p2);
-	}
-	
-	public void shiftDown(int units, int vy) {
+	/*public void shiftDown(int units, int vy) {
 		if (!shifting) {
 			setVy(vy);
 			shifting = true;
@@ -237,7 +236,7 @@ public class Platform {
 				startingY = startingY - WINDOW_HEIGHT;
 			}
 		}
-	}
+	}*/
 	
 	public boolean isShifting() {
 		return shifting;
@@ -257,6 +256,10 @@ public class Platform {
 		this.vx = vx;
 	}
 	
+	public String getType() {
+		if(pType == "Graphics/vines.png") return "vine";
+		else return "bone";
+	}
 	
 	public void setVy(int vy) {
 		this.vy = vy;
